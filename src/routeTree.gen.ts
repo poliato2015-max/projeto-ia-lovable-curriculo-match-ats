@@ -9,8 +9,50 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as IaCoachRouteImport } from './routes/ia-coach'
+import { Route as HistoricoRouteImport } from './routes/historico'
+import { Route as CurriculosAtsRouteImport } from './routes/curriculos-ats'
+import { Route as CurriculosRouteImport } from './routes/curriculos'
+import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
+import { Route as AnalyticsRouteImport } from './routes/analytics'
+import { Route as AnalisarVagaRouteImport } from './routes/analisar-vaga'
 import { Route as IndexRouteImport } from './routes/index'
 
+const IaCoachRoute = IaCoachRouteImport.update({
+  id: '/ia-coach',
+  path: '/ia-coach',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HistoricoRoute = HistoricoRouteImport.update({
+  id: '/historico',
+  path: '/historico',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CurriculosAtsRoute = CurriculosAtsRouteImport.update({
+  id: '/curriculos-ats',
+  path: '/curriculos-ats',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CurriculosRoute = CurriculosRouteImport.update({
+  id: '/curriculos',
+  path: '/curriculos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfiguracoesRoute = ConfiguracoesRouteImport.update({
+  id: '/configuracoes',
+  path: '/configuracoes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnalyticsRoute = AnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnalisarVagaRoute = AnalisarVagaRouteImport.update({
+  id: '/analisar-vaga',
+  path: '/analisar-vaga',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +61,130 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/analisar-vaga': typeof AnalisarVagaRoute
+  '/analytics': typeof AnalyticsRoute
+  '/configuracoes': typeof ConfiguracoesRoute
+  '/curriculos': typeof CurriculosRoute
+  '/curriculos-ats': typeof CurriculosAtsRoute
+  '/historico': typeof HistoricoRoute
+  '/ia-coach': typeof IaCoachRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/analisar-vaga': typeof AnalisarVagaRoute
+  '/analytics': typeof AnalyticsRoute
+  '/configuracoes': typeof ConfiguracoesRoute
+  '/curriculos': typeof CurriculosRoute
+  '/curriculos-ats': typeof CurriculosAtsRoute
+  '/historico': typeof HistoricoRoute
+  '/ia-coach': typeof IaCoachRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/analisar-vaga': typeof AnalisarVagaRoute
+  '/analytics': typeof AnalyticsRoute
+  '/configuracoes': typeof ConfiguracoesRoute
+  '/curriculos': typeof CurriculosRoute
+  '/curriculos-ats': typeof CurriculosAtsRoute
+  '/historico': typeof HistoricoRoute
+  '/ia-coach': typeof IaCoachRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/analisar-vaga'
+    | '/analytics'
+    | '/configuracoes'
+    | '/curriculos'
+    | '/curriculos-ats'
+    | '/historico'
+    | '/ia-coach'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/analisar-vaga'
+    | '/analytics'
+    | '/configuracoes'
+    | '/curriculos'
+    | '/curriculos-ats'
+    | '/historico'
+    | '/ia-coach'
+  id:
+    | '__root__'
+    | '/'
+    | '/analisar-vaga'
+    | '/analytics'
+    | '/configuracoes'
+    | '/curriculos'
+    | '/curriculos-ats'
+    | '/historico'
+    | '/ia-coach'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AnalisarVagaRoute: typeof AnalisarVagaRoute
+  AnalyticsRoute: typeof AnalyticsRoute
+  ConfiguracoesRoute: typeof ConfiguracoesRoute
+  CurriculosRoute: typeof CurriculosRoute
+  CurriculosAtsRoute: typeof CurriculosAtsRoute
+  HistoricoRoute: typeof HistoricoRoute
+  IaCoachRoute: typeof IaCoachRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/ia-coach': {
+      id: '/ia-coach'
+      path: '/ia-coach'
+      fullPath: '/ia-coach'
+      preLoaderRoute: typeof IaCoachRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/historico': {
+      id: '/historico'
+      path: '/historico'
+      fullPath: '/historico'
+      preLoaderRoute: typeof HistoricoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/curriculos-ats': {
+      id: '/curriculos-ats'
+      path: '/curriculos-ats'
+      fullPath: '/curriculos-ats'
+      preLoaderRoute: typeof CurriculosAtsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/curriculos': {
+      id: '/curriculos'
+      path: '/curriculos'
+      fullPath: '/curriculos'
+      preLoaderRoute: typeof CurriculosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/configuracoes': {
+      id: '/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/configuracoes'
+      preLoaderRoute: typeof ConfiguracoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/analytics': {
+      id: '/analytics'
+      path: '/analytics'
+      fullPath: '/analytics'
+      preLoaderRoute: typeof AnalyticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/analisar-vaga': {
+      id: '/analisar-vaga'
+      path: '/analisar-vaga'
+      fullPath: '/analisar-vaga'
+      preLoaderRoute: typeof AnalisarVagaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,17 +197,14 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AnalisarVagaRoute: AnalisarVagaRoute,
+  AnalyticsRoute: AnalyticsRoute,
+  ConfiguracoesRoute: ConfiguracoesRoute,
+  CurriculosRoute: CurriculosRoute,
+  CurriculosAtsRoute: CurriculosAtsRoute,
+  HistoricoRoute: HistoricoRoute,
+  IaCoachRoute: IaCoachRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
