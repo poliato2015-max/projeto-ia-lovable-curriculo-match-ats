@@ -5,6 +5,8 @@ export type ResumeSource = "upload" | "paste" | "saved";
 
 export interface JobData {
   source: JobSource;
+  title: string;
+  company: string;
   url: string;
   description: string;
   fileName?: string;
@@ -29,10 +31,10 @@ export interface WizardData {
 }
 
 export const OBJECTIVE_OPTIONS = [
-  { id: "maximize-ats", label: "Maximizar Score ATS" },
-  { id: "leadership", label: "Destacar liderança" },
+  { id: "maximize-ats", label: "Maximizar ATS" },
   { id: "narrative", label: "Melhorar narrativa" },
+  { id: "leadership", label: "Destacar liderança" },
   { id: "career-transition", label: "Adaptar para transição de carreira" },
-  { id: "one-page", label: "Reduzir para uma página" },
+  { id: "reduce", label: "Reduzir currículo" },
   { id: "translate-en", label: "Traduzir para inglês" },
 ] as const;

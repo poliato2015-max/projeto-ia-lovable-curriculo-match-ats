@@ -10,6 +10,7 @@ import { StepVaga } from "@/components/analysis/wizard/StepVaga";
 import { StepCurriculo } from "@/components/analysis/wizard/StepCurriculo";
 import { StepObjetivo } from "@/components/analysis/wizard/StepObjetivo";
 import { StepResultado } from "@/components/analysis/wizard/StepResultado";
+import { StepCurriculoATS } from "@/components/analysis/wizard/StepCurriculoATS";
 import type { WizardData } from "@/components/analysis/wizard/types";
 
 export const Route = createFileRoute("/analisar-vaga")({
@@ -31,10 +32,11 @@ const STEPS = [
   { id: 2, label: "Currículo" },
   { id: 3, label: "Objetivo" },
   { id: 4, label: "Resultado" },
+  { id: 5, label: "Currículo ATS" },
 ];
 
 const INITIAL_DATA: WizardData = {
-  job: { source: "url", url: "", description: "" },
+  job: { source: "url", title: "", company: "", url: "", description: "" },
   resume: { source: "upload", content: "" },
   objective: { goals: ["maximize-ats"], instructions: "" },
 };
@@ -44,6 +46,7 @@ function AnalisarVagaPage() {
   const [data, setData] = useState<WizardData>(INITIAL_DATA);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
+  const [analyzedAt, setAnalyzedAt] = useState<Date>(new Date());
 
   const runAnalysis = () => {
     setIsAnalyzing(true);
@@ -51,6 +54,7 @@ function AnalisarVagaPage() {
     setStep(4);
     window.setTimeout(() => {
       setResult(MOCK_ANALYSIS);
+      setAnalyzedAt(new Date());
       setIsAnalyzing(false);
     }, 2000);
   };
@@ -108,8 +112,24 @@ function AnalisarVagaPage() {
           (isAnalyzing || !result ? (
             <AnalysisLoading />
           ) : (
-            <StepResultado result={result} onReset={reset} />
+            <StepResultado
+              result={result}
+              jobTitle={data.job.title}
+              company={data.job.company}
+              analyzedAt={analyzedAt}
+              onReset={reset}
+              onGenerate={() => setStep(5)}
+            />
           ))}
+
+        {step === 5 && result && (
+          <StepCurriculoATS
+            result={result}
+            jobTitle={data.job.title}
+            company={data.job.company}
+            onBack={() => setStep(4)}
+          />
+        )}
       </ContentCard>
     </PageContainer>
   );
