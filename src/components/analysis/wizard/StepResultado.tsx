@@ -1,4 +1,4 @@
-import { Briefcase, GraduationCap, Save, Sparkles, RotateCcw } from "lucide-react";
+import { Briefcase, GraduationCap, Languages, Save, Sparkles, RotateCcw, Building2, CalendarDays } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { ATSScoreCard } from "../ATSScoreCard";
@@ -12,20 +12,46 @@ import type { AnalysisResult } from "../mock";
 
 interface StepResultadoProps {
   result: AnalysisResult;
+  jobTitle: string;
+  company: string;
+  analyzedAt: Date;
   onReset: () => void;
+  onGenerate: () => void;
 }
 
-export function StepResultado({ result, onReset }: StepResultadoProps) {
+export function StepResultado({
+  result,
+  jobTitle,
+  company,
+  analyzedAt,
+  onReset,
+  onGenerate,
+}: StepResultadoProps) {
   const gaps = [...result.hardSkills, ...result.softSkills];
+  const dateStr = analyzedAt.toLocaleDateString("pt-BR", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-col gap-3 border-b border-border/60 pb-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h2 className="text-lg font-semibold text-foreground">Resultado da Análise ATS</h2>
-          <p className="text-sm text-muted-foreground">
-            Score, gaps e recomendações personalizadas para esta vaga.
-          </p>
+    <div className="space-y-6">
+      {/* Cabeçalho */}
+      <div className="flex flex-col gap-4 border-b border-border/60 pb-4 lg:flex-row lg:items-start lg:justify-between">
+        <div className="min-w-0 space-y-1">
+          <h2 className="truncate text-xl font-semibold text-foreground">
+            {jobTitle || "Análise ATS"}
+          </h2>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+            <span className="inline-flex items-center gap-1.5">
+              <Building2 className="h-3.5 w-3.5" />
+              {company || "—"}
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <CalendarDays className="h-3.5 w-3.5" />
+              {dateStr}
+            </span>
+          </div>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <Button variant="ghost" size="sm" className="gap-2" onClick={onReset}>
@@ -43,25 +69,38 @@ export function StepResultado({ result, onReset }: StepResultadoProps) {
           >
             <Save className="h-4 w-4" /> Salvar análise
           </Button>
-          <Button
-            size="sm"
-            className="gap-2"
-            onClick={() =>
-              toast("Otimizar Currículo", {
-                description: "Esta funcionalidade será implementada na próxima Sprint.",
-              })
-            }
-          >
-            <Sparkles className="h-4 w-4" /> Otimizar Currículo
+          <Button size="sm" className="gap-2" onClick={onGenerate}>
+            <Sparkles className="h-4 w-4" /> Gerar Currículo ATS
           </Button>
         </div>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-3">
-        <div className="lg:col-span-1">
+      {/* Hero: Match ATS + Resumo Executivo */}
+      <div className="grid gap-4 lg:grid-cols-5">
+        <div className="lg:col-span-2">
           <ATSScoreCard score={result.score} label={result.scoreLabel} />
         </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:col-span-2">
+        <div className="lg:col-span-3">
+          <AnalysisSummary summary={result.summary} />
+        </div>
+      </div>
+
+      {/* Métricas */}
+      <div>
+        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+          Métricas da análise
+        </h3>
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          <SkillsCard
+            title="Hard Skills"
+            description="Competências técnicas exigidas."
+            skills={result.hardSkills}
+          />
+          <SkillsCard
+            title="Soft Skills"
+            description="Competências comportamentais."
+            skills={result.softSkills}
+          />
           <KeywordsCard found={result.keywords.found} total={result.keywords.total} />
           <MetricCard
             title="Experiência"
@@ -76,26 +115,31 @@ export function StepResultado({ result, onReset }: StepResultadoProps) {
             value={result.education}
             hint="Requisitos acadêmicos atendidos."
           />
-          <GapsCard skills={gaps} />
+          <MetricCard
+            title="Idiomas"
+            icon={Languages}
+            value={`${result.languages.length} identificados`}
+            badges={result.languages}
+          />
+          <div className="md:col-span-2 xl:col-span-3">
+            <GapsCard skills={gaps} />
+          </div>
         </div>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
-        <SkillsCard
-          title="Hard Skills"
-          description="Competências técnicas exigidas."
-          skills={result.hardSkills}
-        />
-        <SkillsCard
-          title="Soft Skills"
-          description="Competências comportamentais."
-          skills={result.softSkills}
-        />
+      {/* Recomendações */}
+      <div>
+        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+          Recomendações prioritárias
+        </h3>
+        <RecommendationsCard items={result.recommendations} />
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-2">
-        <RecommendationsCard items={result.recommendations} />
-        <AnalysisSummary summary={result.summary} />
+      {/* Ação final */}
+      <div className="flex justify-end border-t border-border/60 pt-4">
+        <Button size="lg" className="gap-2" onClick={onGenerate}>
+          <Sparkles className="h-4 w-4" /> Gerar Currículo ATS
+        </Button>
       </div>
     </div>
   );

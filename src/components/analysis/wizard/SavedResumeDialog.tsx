@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FileText, Search } from "lucide-react";
+import { FileText, Search, Sparkles } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -21,8 +21,9 @@ interface SavedResumeDialogProps {
 
 export function SavedResumeDialog({ open, onOpenChange, onSelect }: SavedResumeDialogProps) {
   const [query, setQuery] = useState("");
+  const q = query.toLowerCase();
   const list = MOCK_RESUMES.filter((r) =>
-    (r.name + r.role).toLowerCase().includes(query.toLowerCase()),
+    (r.name + " " + r.role + " " + r.area).toLowerCase().includes(q),
   );
 
   return (
@@ -31,7 +32,7 @@ export function SavedResumeDialog({ open, onOpenChange, onSelect }: SavedResumeD
         <DialogHeader>
           <DialogTitle>Selecionar currículo salvo</DialogTitle>
           <DialogDescription>
-            Escolha um currículo da sua biblioteca para usar nesta análise.
+            Escolha um currículo da sua biblioteca para utilizar nesta análise.
           </DialogDescription>
         </DialogHeader>
 
@@ -40,7 +41,7 @@ export function SavedResumeDialog({ open, onOpenChange, onSelect }: SavedResumeD
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Buscar por nome ou cargo..."
+            placeholder="Buscar por nome do currículo, vaga ou cargo..."
             className="pl-9"
           />
         </div>
@@ -69,11 +70,14 @@ export function SavedResumeDialog({ open, onOpenChange, onSelect }: SavedResumeD
                       isAts ? "bg-secondary/15 text-secondary" : "bg-primary/10 text-primary",
                     )}
                   >
-                    <FileText className="h-5 w-5" />
+                    {isAts ? <Sparkles className="h-5 w-5" /> : <FileText className="h-5 w-5" />}
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-semibold text-foreground">{r.name}</p>
-                    <p className="truncate text-xs text-muted-foreground">{r.role}</p>
+                    <p className="truncate text-xs text-muted-foreground">
+                      {r.role}
+                      {isAts && r.area ? ` • ${r.area}` : ""}
+                    </p>
                   </div>
                   <Badge
                     variant="secondary"
@@ -84,7 +88,7 @@ export function SavedResumeDialog({ open, onOpenChange, onSelect }: SavedResumeD
                         : "border-primary/20 bg-primary/10 text-primary",
                     )}
                   >
-                    {isAts ? "ATS" : "Original"}
+                    {isAts ? "ATS Gerado" : "Importado"}
                   </Badge>
                 </button>
               );
