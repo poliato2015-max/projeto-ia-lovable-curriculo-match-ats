@@ -39,6 +39,9 @@ export function ImportResumeDialog({
         </DialogHeader>
         <UploadPlaceholder />
         <p className="text-center text-xs text-muted-foreground">
+          Formatos suportados: PDF ou DOCX • até 10 MB
+        </p>
+        <p className="text-center text-xs text-muted-foreground">
           Seus dados são processados com segurança e nunca compartilhados.
         </p>
       </DialogContent>
