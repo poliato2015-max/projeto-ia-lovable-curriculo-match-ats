@@ -8,3 +8,4 @@ export { ResumeStats } from "./ResumeStats";
 export { ImportResumeDialog } from "./ImportResumeDialog";
 export { UploadPlaceholder } from "./UploadPlaceholder";
 export { EmptyResumeLibrary } from "./EmptyResumeLibrary";
+export { ResumeViewDialog } from "./ResumeViewDialog";

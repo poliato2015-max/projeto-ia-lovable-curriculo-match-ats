@@ -4,10 +4,9 @@ import type { ResumeFilter } from "./types";
 
 const FILTERS: { key: ResumeFilter; label: string }[] = [
   { key: "all", label: "Todos" },
-  { key: "original", label: "Originais" },
-  { key: "ats", label: "ATS" },
-  { key: "pt", label: "Português" },
-  { key: "en", label: "Inglês" },
+  { key: "original", label: "Importados" },
+  { key: "ats", label: "ATS Gerados" },
+  { key: "favorites", label: "Favoritos" },
   { key: "recent", label: "Mais recentes" },
 ];
 

@@ -1,4 +1,4 @@
-import { FileText, FileCheck2, Sparkles, Languages } from "lucide-react";
+import { FileText, FileUp, Sparkles, Star } from "lucide-react";
 import type { Resume } from "./types";
 
 interface ResumeStatsProps {
@@ -7,15 +7,15 @@ interface ResumeStatsProps {
 
 export function ResumeStats({ resumes }: ResumeStatsProps) {
   const total = resumes.length;
-  const originals = resumes.filter((r) => r.kind === "original").length;
+  const importados = resumes.filter((r) => r.kind === "original").length;
   const ats = resumes.filter((r) => r.kind === "ats").length;
-  const languages = new Set(resumes.map((r) => r.language)).size;
+  const favoritos = resumes.filter((r) => r.favorite).length;
 
   const items = [
-    { icon: FileText, label: "Total", value: total },
-    { icon: Sparkles, label: "Originais", value: originals },
-    { icon: FileCheck2, label: "Versões ATS", value: ats },
-    { icon: Languages, label: "Idiomas", value: languages },
+    { icon: FileText, label: "Total de Currículos", value: total },
+    { icon: FileUp, label: "Importados", value: importados },
+    { icon: Sparkles, label: "ATS Gerados", value: ats },
+    { icon: Star, label: "Favoritos", value: favoritos },
   ];
 
   return (

@@ -3,9 +3,10 @@ import type { Resume } from "./types";
 
 interface ResumeListProps {
   resumes: Resume[];
-  onOpen?: (r: Resume) => void;
+  onView?: (r: Resume) => void;
   onEdit?: (r: Resume) => void;
-  onDuplicate?: (r: Resume) => void;
+  onExportPdf?: (r: Resume) => void;
+  onExportDocx?: (r: Resume) => void;
   onDelete?: (r: Resume) => void;
 }
 
