@@ -3,7 +3,6 @@ import {
   LayoutDashboard,
   FileText,
   Search,
-  FileCheck2,
   History,
   BarChart3,
   Sparkles,
@@ -28,7 +27,6 @@ const mainItems = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
   { title: "Currículos", url: "/curriculos", icon: FileText },
   { title: "Analisar Vaga", url: "/analisar-vaga", icon: Search },
-  { title: "Currículos ATS", url: "/curriculos-ats", icon: FileCheck2 },
 ];
 
 const insightsItems = [

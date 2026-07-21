@@ -12,6 +12,7 @@ export const MOCK_RESUMES: Resume[] = [
     analyses: 12,
     atsVersions: 3,
     fileType: "pdf",
+    favorite: true,
   },
   {
     id: "r2",
@@ -36,6 +37,8 @@ export const MOCK_RESUMES: Resume[] = [
     analyses: 4,
     atsVersions: 1,
     fileType: "pdf",
+    company: "Nubank",
+    favorite: true,
   },
   {
     id: "r4",
@@ -48,5 +51,6 @@ export const MOCK_RESUMES: Resume[] = [
     analyses: 6,
     atsVersions: 1,
     fileType: "pdf",
+    company: "Cliente confidencial",
   },
 ];

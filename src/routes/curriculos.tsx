@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { SlidersHorizontal, Upload } from "lucide-react";
+import { toast } from "sonner";
 
 import { PageContainer } from "@/components/common/PageContainer";
 import { PageTitle } from "@/components/common/PageTitle";
@@ -13,6 +14,7 @@ import {
   ResumeList,
   ResumeSearch,
   ResumeStats,
+  ResumeViewDialog,
   type Resume,
   type ResumeFilter,
 } from "@/components/resumes";
@@ -24,7 +26,7 @@ export const Route = createFileRoute("/curriculos")({
       {
         name: "description",
         content:
-          "Gerencie, filtre e organize seus currículos originais e versões ATS em um só lugar.",
+          "Organize seus currículos importados e versões otimizadas para ATS em um único lugar.",
       },
     ],
   }),
@@ -37,10 +39,8 @@ function applyFilter(resumes: Resume[], filter: ResumeFilter): Resume[] {
       return resumes.filter((r) => r.kind === "original");
     case "ats":
       return resumes.filter((r) => r.kind === "ats");
-    case "pt":
-      return resumes.filter((r) => r.language === "pt");
-    case "en":
-      return resumes.filter((r) => r.language === "en");
+    case "favorites":
+      return resumes.filter((r) => r.favorite);
     case "recent":
       return [...resumes].sort(
         (a, b) =>
@@ -52,12 +52,11 @@ function applyFilter(resumes: Resume[], filter: ResumeFilter): Resume[] {
 }
 
 function CurriculosPage() {
-  // Estado mockado — toggle rápido para visualizar a Empty State:
-  // troque `MOCK_RESUMES` por `[]` para ver o estado vazio.
   const [resumes] = useState<Resume[]>(MOCK_RESUMES);
   const [importOpen, setImportOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<ResumeFilter>("all");
+  const [viewing, setViewing] = useState<Resume | null>(null);
 
   const isEmpty = resumes.length === 0;
 
@@ -69,17 +68,18 @@ function CurriculosPage() {
       (r) =>
         r.name.toLowerCase().includes(q) ||
         r.role.toLowerCase().includes(q) ||
-        r.area.toLowerCase().includes(q),
+        (r.company ?? "").toLowerCase().includes(q),
     );
   }, [resumes, filter, query]);
 
   const openImport = () => setImportOpen(true);
+  const mock = (label: string) => toast.success(`${label} (mock)`);
 
   return (
     <PageContainer>
       <PageTitle
         title="Biblioteca de Currículos"
-        description="Organize seus currículos originais e versões otimizadas para ATS."
+        description="Organize seus currículos importados e versões otimizadas para ATS em um único lugar."
         actions={
           !isEmpty ? (
             <>
@@ -113,12 +113,25 @@ function CurriculosPage() {
               Nenhum currículo encontrado para os filtros aplicados.
             </div>
           ) : (
-            <ResumeList resumes={filtered} />
+            <ResumeList
+              resumes={filtered}
+              onView={setViewing}
+              onEdit={() => mock("Editar currículo")}
+              onExportPdf={() => mock("Exportação PDF iniciada")}
+              onExportDocx={() => mock("Exportação DOCX iniciada")}
+              onDelete={() => mock("Currículo excluído")}
+            />
           )}
         </div>
       )}
 
       <ImportResumeDialog open={importOpen} onOpenChange={setImportOpen} />
+      <ResumeViewDialog
+        resume={viewing}
+        open={viewing !== null}
+        onOpenChange={(o) => !o && setViewing(null)}
+        onEdit={() => mock("Modo edição")}
+      />
     </PageContainer>
   );
 }

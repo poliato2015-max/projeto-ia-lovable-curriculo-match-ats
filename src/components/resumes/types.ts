@@ -12,12 +12,15 @@ export interface Resume {
   analyses: number;
   atsVersions: number;
   fileType: "pdf" | "docx" | "txt" | "md";
+  /** Empresa para a qual o currículo ATS foi gerado. */
+  company?: string;
+  /** Marcado como favorito pelo usuário. */
+  favorite?: boolean;
 }
 
 export type ResumeFilter =
   | "all"
   | "original"
   | "ats"
-  | "pt"
-  | "en"
+  | "favorites"
   | "recent";
