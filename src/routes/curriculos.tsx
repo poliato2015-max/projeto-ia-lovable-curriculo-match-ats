@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
-import { SlidersHorizontal, Upload } from "lucide-react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Sparkles, Upload } from "lucide-react";
 import { toast } from "sonner";
 
 import { PageContainer } from "@/components/common/PageContainer";
