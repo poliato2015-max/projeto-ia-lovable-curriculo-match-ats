@@ -4,7 +4,6 @@ import {
   FileText,
   Search,
   History,
-  BarChart3,
   Sparkles,
   Settings,
   Radar,
@@ -25,13 +24,12 @@ import {
 
 const mainItems = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
-  { title: "Currículos", url: "/curriculos", icon: FileText },
   { title: "Analisar Vaga", url: "/analisar-vaga", icon: Search },
+  { title: "Currículos", url: "/curriculos", icon: FileText },
 ];
 
 const insightsItems = [
   { title: "Histórico", url: "/historico", icon: History },
-  { title: "Analytics", url: "/analytics", icon: BarChart3 },
   { title: "IA Coach", url: "/ia-coach", icon: Sparkles },
 ];
 

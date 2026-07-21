@@ -16,7 +16,7 @@ export function AppHeader() {
         <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           type="search"
-          placeholder="Buscar currículos, vagas..."
+          placeholder="Pesquisar no RadarCV..."
           aria-label="Buscar"
           className="pl-9"
         />

@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
-import { SlidersHorizontal, Upload } from "lucide-react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { Sparkles, Upload } from "lucide-react";
 import { toast } from "sonner";
 
 import { PageContainer } from "@/components/common/PageContainer";
@@ -52,6 +52,7 @@ function applyFilter(resumes: Resume[], filter: ResumeFilter): Resume[] {
 }
 
 function CurriculosPage() {
+  const navigate = useNavigate();
   const [resumes] = useState<Resume[]>(MOCK_RESUMES);
   const [importOpen, setImportOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -83,9 +84,10 @@ function CurriculosPage() {
         actions={
           !isEmpty ? (
             <>
-              <Button variant="outline" size="sm" className="gap-2">
-                <SlidersHorizontal className="h-4 w-4" />
-                <span className="hidden sm:inline">Filtros</span>
+              <Button variant="outline" size="sm" className="gap-2" onClick={() => navigate({ to: "/analisar-vaga" })}>
+                <Sparkles className="h-4 w-4" />
+                <span className="hidden sm:inline">Nova análise</span>
+                <span className="sm:hidden">Analisar</span>
               </Button>
               <Button size="sm" className="gap-2" onClick={openImport}>
                 <Upload className="h-4 w-4" />
