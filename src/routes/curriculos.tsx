@@ -52,6 +52,7 @@ function applyFilter(resumes: Resume[], filter: ResumeFilter): Resume[] {
 }
 
 function CurriculosPage() {
+  const navigate = useNavigate();
   const [resumes] = useState<Resume[]>(MOCK_RESUMES);
   const [importOpen, setImportOpen] = useState(false);
   const [query, setQuery] = useState("");
