@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IaCoachRouteImport } from './routes/ia-coach'
 import { Route as HistoricoRouteImport } from './routes/historico'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CurriculosAtsRouteImport } from './routes/curriculos-ats'
 import { Route as CurriculosRouteImport } from './routes/curriculos'
 import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
@@ -25,6 +26,11 @@ const IaCoachRoute = IaCoachRouteImport.update({
 const HistoricoRoute = HistoricoRouteImport.update({
   id: '/historico',
   path: '/historico',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CurriculosAtsRoute = CurriculosAtsRouteImport.update({
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   '/configuracoes': typeof ConfiguracoesRoute
   '/curriculos': typeof CurriculosRoute
   '/curriculos-ats': typeof CurriculosAtsRoute
+  '/dashboard': typeof DashboardRoute
   '/historico': typeof HistoricoRoute
   '/ia-coach': typeof IaCoachRoute
 }
@@ -68,6 +75,7 @@ export interface FileRoutesByTo {
   '/configuracoes': typeof ConfiguracoesRoute
   '/curriculos': typeof CurriculosRoute
   '/curriculos-ats': typeof CurriculosAtsRoute
+  '/dashboard': typeof DashboardRoute
   '/historico': typeof HistoricoRoute
   '/ia-coach': typeof IaCoachRoute
 }
@@ -78,6 +86,7 @@ export interface FileRoutesById {
   '/configuracoes': typeof ConfiguracoesRoute
   '/curriculos': typeof CurriculosRoute
   '/curriculos-ats': typeof CurriculosAtsRoute
+  '/dashboard': typeof DashboardRoute
   '/historico': typeof HistoricoRoute
   '/ia-coach': typeof IaCoachRoute
 }
@@ -89,6 +98,7 @@ export interface FileRouteTypes {
     | '/configuracoes'
     | '/curriculos'
     | '/curriculos-ats'
+    | '/dashboard'
     | '/historico'
     | '/ia-coach'
   fileRoutesByTo: FileRoutesByTo
@@ -98,6 +108,7 @@ export interface FileRouteTypes {
     | '/configuracoes'
     | '/curriculos'
     | '/curriculos-ats'
+    | '/dashboard'
     | '/historico'
     | '/ia-coach'
   id:
@@ -107,6 +118,7 @@ export interface FileRouteTypes {
     | '/configuracoes'
     | '/curriculos'
     | '/curriculos-ats'
+    | '/dashboard'
     | '/historico'
     | '/ia-coach'
   fileRoutesById: FileRoutesById
@@ -117,6 +129,7 @@ export interface RootRouteChildren {
   ConfiguracoesRoute: typeof ConfiguracoesRoute
   CurriculosRoute: typeof CurriculosRoute
   CurriculosAtsRoute: typeof CurriculosAtsRoute
+  DashboardRoute: typeof DashboardRoute
   HistoricoRoute: typeof HistoricoRoute
   IaCoachRoute: typeof IaCoachRoute
 }
@@ -135,6 +148,13 @@ declare module '@tanstack/react-router' {
       path: '/historico'
       fullPath: '/historico'
       preLoaderRoute: typeof HistoricoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/curriculos-ats': {
@@ -181,6 +201,7 @@ const rootRouteChildren: RootRouteChildren = {
   ConfiguracoesRoute: ConfiguracoesRoute,
   CurriculosRoute: CurriculosRoute,
   CurriculosAtsRoute: CurriculosAtsRoute,
+  DashboardRoute: DashboardRoute,
   HistoricoRoute: HistoricoRoute,
   IaCoachRoute: IaCoachRoute,
 }
