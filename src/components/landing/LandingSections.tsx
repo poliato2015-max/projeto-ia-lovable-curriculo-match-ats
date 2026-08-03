@@ -6,7 +6,6 @@ import {
   BookOpen,
   Brain,
   ClipboardList,
-  Copy,
   FileCheck2,
   FileSearch,
   FileText,
@@ -16,7 +15,6 @@ import {
   Library,
   ListChecks,
   Radar,
-  Search,
   Sparkles,
   Target,
   Wand2,
@@ -422,4 +420,3 @@ export function LandingFooter() {
   );
 }
 
-export const unusedIcons = { Search, Copy };
