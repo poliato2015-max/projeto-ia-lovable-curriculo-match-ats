@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/sidebar";
 
 const mainItems = [
-  { title: "Dashboard", url: "/", icon: LayoutDashboard },
+  { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
   { title: "Analisar Vaga", url: "/analisar-vaga", icon: Search },
   { title: "Currículos", url: "/curriculos", icon: FileText },
 ];
@@ -37,12 +37,12 @@ const bottomItems = [{ title: "Configurações", url: "/configuracoes", icon: Se
 
 export function AppSidebar() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const isActive = (url: string) => (url === "/" ? pathname === "/" : pathname.startsWith(url));
+  const isActive = (url: string) => pathname.startsWith(url);
 
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="border-b border-sidebar-border">
-        <div className="flex items-center gap-2 px-2 py-2">
+        <Link to="/" className="flex items-center gap-2 px-2 py-2">
           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-secondary text-primary-foreground shadow-sm">
             <Radar className="h-5 w-5" />
           </div>
@@ -52,7 +52,7 @@ export function AppSidebar() {
               Inteligência de carreira
             </div>
           </div>
-        </div>
+        </Link>
       </SidebarHeader>
 
       <SidebarContent>

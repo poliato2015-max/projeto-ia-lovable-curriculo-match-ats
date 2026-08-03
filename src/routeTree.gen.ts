@@ -16,6 +16,7 @@ import { Route as CurriculosAtsRouteImport } from './routes/curriculos-ats'
 import { Route as CurriculosRouteImport } from './routes/curriculos'
 import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
 import { Route as AnalisarVagaRouteImport } from './routes/analisar-vaga'
+import { Route as IndexRouteImport } from './routes/index'
 
 const IaCoachRoute = IaCoachRouteImport.update({
   id: '/ia-coach',
@@ -52,8 +53,14 @@ const AnalisarVagaRoute = AnalisarVagaRouteImport.update({
   path: '/analisar-vaga',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '/analisar-vaga': typeof AnalisarVagaRoute
   '/configuracoes': typeof ConfiguracoesRoute
   '/curriculos': typeof CurriculosRoute
@@ -63,6 +70,7 @@ export interface FileRoutesByFullPath {
   '/ia-coach': typeof IaCoachRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/analisar-vaga': typeof AnalisarVagaRoute
   '/configuracoes': typeof ConfiguracoesRoute
   '/curriculos': typeof CurriculosRoute
@@ -73,6 +81,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/analisar-vaga': typeof AnalisarVagaRoute
   '/configuracoes': typeof ConfiguracoesRoute
   '/curriculos': typeof CurriculosRoute
@@ -84,6 +93,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/analisar-vaga'
     | '/configuracoes'
     | '/curriculos'
@@ -93,6 +103,7 @@ export interface FileRouteTypes {
     | '/ia-coach'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
     | '/analisar-vaga'
     | '/configuracoes'
     | '/curriculos'
@@ -102,6 +113,7 @@ export interface FileRouteTypes {
     | '/ia-coach'
   id:
     | '__root__'
+    | '/'
     | '/analisar-vaga'
     | '/configuracoes'
     | '/curriculos'
@@ -112,6 +124,7 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   AnalisarVagaRoute: typeof AnalisarVagaRoute
   ConfiguracoesRoute: typeof ConfiguracoesRoute
   CurriculosRoute: typeof CurriculosRoute
@@ -172,10 +185,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AnalisarVagaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   AnalisarVagaRoute: AnalisarVagaRoute,
   ConfiguracoesRoute: ConfiguracoesRoute,
   CurriculosRoute: CurriculosRoute,
