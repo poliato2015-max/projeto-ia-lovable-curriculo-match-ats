@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { FileCheck2 } from "lucide-react";
 import { ComingSoonPage } from "@/components/common/ComingSoonPage";
 
-export const Route = createFileRoute("/curriculos-ats")({
+export const Route = createFileRoute("/_authenticated/_authenticated/curriculos-ats")({
   head: () => ({
     meta: [
       { title: "Currículos ATS — RadarCV AI" },

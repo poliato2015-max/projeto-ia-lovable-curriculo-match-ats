@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Sparkles } from "lucide-react";
 import { ComingSoonPage } from "@/components/common/ComingSoonPage";
 
-export const Route = createFileRoute("/ia-coach")({
+export const Route = createFileRoute("/_authenticated/_authenticated/ia-coach")({
   head: () => ({
     meta: [
       { title: "IA Coach — RadarCV AI" },

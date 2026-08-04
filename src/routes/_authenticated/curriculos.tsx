@@ -19,7 +19,7 @@ import {
   type ResumeFilter,
 } from "@/components/resumes";
 
-export const Route = createFileRoute("/curriculos")({
+export const Route = createFileRoute("/_authenticated/_authenticated/curriculos")({
   head: () => ({
     meta: [
       { title: "Biblioteca de Currículos — RadarCV AI" },

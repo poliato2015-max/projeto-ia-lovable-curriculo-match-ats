@@ -9,86 +9,89 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IaCoachRouteImport } from './routes/ia-coach'
-import { Route as HistoricoRouteImport } from './routes/historico'
-import { Route as DashboardRouteImport } from './routes/dashboard'
-import { Route as CurriculosAtsRouteImport } from './routes/curriculos-ats'
-import { Route as CurriculosRouteImport } from './routes/curriculos'
-import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
-import { Route as AnalisarVagaRouteImport } from './routes/analisar-vaga'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedIaCoachRouteImport } from './routes/_authenticated/ia-coach'
+import { Route as AuthenticatedHistoricoRouteImport } from './routes/_authenticated/historico'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedCurriculosAtsRouteImport } from './routes/_authenticated/curriculos-ats'
+import { Route as AuthenticatedCurriculosRouteImport } from './routes/_authenticated/curriculos'
+import { Route as AuthenticatedConfiguracoesRouteImport } from './routes/_authenticated/configuracoes'
+import { Route as AuthenticatedAnalisarVagaRouteImport } from './routes/_authenticated/analisar-vaga'
 
-const IaCoachRoute = IaCoachRouteImport.update({
-  id: '/ia-coach',
-  path: '/ia-coach',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HistoricoRoute = HistoricoRouteImport.update({
-  id: '/historico',
-  path: '/historico',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CurriculosAtsRoute = CurriculosAtsRouteImport.update({
-  id: '/curriculos-ats',
-  path: '/curriculos-ats',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CurriculosRoute = CurriculosRouteImport.update({
-  id: '/curriculos',
-  path: '/curriculos',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ConfiguracoesRoute = ConfiguracoesRouteImport.update({
-  id: '/configuracoes',
-  path: '/configuracoes',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AnalisarVagaRoute = AnalisarVagaRouteImport.update({
-  id: '/analisar-vaga',
-  path: '/analisar-vaga',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedIaCoachRoute = AuthenticatedIaCoachRouteImport.update({
+  id: '/_authenticated/ia-coach',
+  path: '/ia-coach',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedHistoricoRoute = AuthenticatedHistoricoRouteImport.update({
+  id: '/_authenticated/historico',
+  path: '/historico',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/_authenticated/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedCurriculosAtsRoute =
+  AuthenticatedCurriculosAtsRouteImport.update({
+    id: '/_authenticated/curriculos-ats',
+    path: '/curriculos-ats',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AuthenticatedCurriculosRoute = AuthenticatedCurriculosRouteImport.update({
+  id: '/_authenticated/curriculos',
+  path: '/curriculos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedConfiguracoesRoute =
+  AuthenticatedConfiguracoesRouteImport.update({
+    id: '/_authenticated/configuracoes',
+    path: '/configuracoes',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AuthenticatedAnalisarVagaRoute =
+  AuthenticatedAnalisarVagaRouteImport.update({
+    id: '/_authenticated/analisar-vaga',
+    path: '/analisar-vaga',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/analisar-vaga': typeof AnalisarVagaRoute
-  '/configuracoes': typeof ConfiguracoesRoute
-  '/curriculos': typeof CurriculosRoute
-  '/curriculos-ats': typeof CurriculosAtsRoute
-  '/dashboard': typeof DashboardRoute
-  '/historico': typeof HistoricoRoute
-  '/ia-coach': typeof IaCoachRoute
+  '/analisar-vaga': typeof AuthenticatedAnalisarVagaRoute
+  '/configuracoes': typeof AuthenticatedConfiguracoesRoute
+  '/curriculos': typeof AuthenticatedCurriculosRoute
+  '/curriculos-ats': typeof AuthenticatedCurriculosAtsRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/historico': typeof AuthenticatedHistoricoRoute
+  '/ia-coach': typeof AuthenticatedIaCoachRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/analisar-vaga': typeof AnalisarVagaRoute
-  '/configuracoes': typeof ConfiguracoesRoute
-  '/curriculos': typeof CurriculosRoute
-  '/curriculos-ats': typeof CurriculosAtsRoute
-  '/dashboard': typeof DashboardRoute
-  '/historico': typeof HistoricoRoute
-  '/ia-coach': typeof IaCoachRoute
+  '/analisar-vaga': typeof AuthenticatedAnalisarVagaRoute
+  '/configuracoes': typeof AuthenticatedConfiguracoesRoute
+  '/curriculos': typeof AuthenticatedCurriculosRoute
+  '/curriculos-ats': typeof AuthenticatedCurriculosAtsRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/historico': typeof AuthenticatedHistoricoRoute
+  '/ia-coach': typeof AuthenticatedIaCoachRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/analisar-vaga': typeof AnalisarVagaRoute
-  '/configuracoes': typeof ConfiguracoesRoute
-  '/curriculos': typeof CurriculosRoute
-  '/curriculos-ats': typeof CurriculosAtsRoute
-  '/dashboard': typeof DashboardRoute
-  '/historico': typeof HistoricoRoute
-  '/ia-coach': typeof IaCoachRoute
+  '/_authenticated/analisar-vaga': typeof AuthenticatedAnalisarVagaRoute
+  '/_authenticated/configuracoes': typeof AuthenticatedConfiguracoesRoute
+  '/_authenticated/curriculos': typeof AuthenticatedCurriculosRoute
+  '/_authenticated/curriculos-ats': typeof AuthenticatedCurriculosAtsRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/historico': typeof AuthenticatedHistoricoRoute
+  '/_authenticated/ia-coach': typeof AuthenticatedIaCoachRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -114,77 +117,28 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/analisar-vaga'
-    | '/configuracoes'
-    | '/curriculos'
-    | '/curriculos-ats'
-    | '/dashboard'
-    | '/historico'
-    | '/ia-coach'
+    | '/_authenticated/analisar-vaga'
+    | '/_authenticated/configuracoes'
+    | '/_authenticated/curriculos'
+    | '/_authenticated/curriculos-ats'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/historico'
+    | '/_authenticated/ia-coach'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AnalisarVagaRoute: typeof AnalisarVagaRoute
-  ConfiguracoesRoute: typeof ConfiguracoesRoute
-  CurriculosRoute: typeof CurriculosRoute
-  CurriculosAtsRoute: typeof CurriculosAtsRoute
-  DashboardRoute: typeof DashboardRoute
-  HistoricoRoute: typeof HistoricoRoute
-  IaCoachRoute: typeof IaCoachRoute
+  AuthenticatedAnalisarVagaRoute: typeof AuthenticatedAnalisarVagaRoute
+  AuthenticatedConfiguracoesRoute: typeof AuthenticatedConfiguracoesRoute
+  AuthenticatedCurriculosRoute: typeof AuthenticatedCurriculosRoute
+  AuthenticatedCurriculosAtsRoute: typeof AuthenticatedCurriculosAtsRoute
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedHistoricoRoute: typeof AuthenticatedHistoricoRoute
+  AuthenticatedIaCoachRoute: typeof AuthenticatedIaCoachRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/ia-coach': {
-      id: '/ia-coach'
-      path: '/ia-coach'
-      fullPath: '/ia-coach'
-      preLoaderRoute: typeof IaCoachRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/historico': {
-      id: '/historico'
-      path: '/historico'
-      fullPath: '/historico'
-      preLoaderRoute: typeof HistoricoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/curriculos-ats': {
-      id: '/curriculos-ats'
-      path: '/curriculos-ats'
-      fullPath: '/curriculos-ats'
-      preLoaderRoute: typeof CurriculosAtsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/curriculos': {
-      id: '/curriculos'
-      path: '/curriculos'
-      fullPath: '/curriculos'
-      preLoaderRoute: typeof CurriculosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/configuracoes': {
-      id: '/configuracoes'
-      path: '/configuracoes'
-      fullPath: '/configuracoes'
-      preLoaderRoute: typeof ConfiguracoesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/analisar-vaga': {
-      id: '/analisar-vaga'
-      path: '/analisar-vaga'
-      fullPath: '/analisar-vaga'
-      preLoaderRoute: typeof AnalisarVagaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -192,18 +146,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/ia-coach': {
+      id: '/_authenticated/ia-coach'
+      path: '/ia-coach'
+      fullPath: '/ia-coach'
+      preLoaderRoute: typeof AuthenticatedIaCoachRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/historico': {
+      id: '/_authenticated/historico'
+      path: '/historico'
+      fullPath: '/historico'
+      preLoaderRoute: typeof AuthenticatedHistoricoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/curriculos-ats': {
+      id: '/_authenticated/curriculos-ats'
+      path: '/curriculos-ats'
+      fullPath: '/curriculos-ats'
+      preLoaderRoute: typeof AuthenticatedCurriculosAtsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/curriculos': {
+      id: '/_authenticated/curriculos'
+      path: '/curriculos'
+      fullPath: '/curriculos'
+      preLoaderRoute: typeof AuthenticatedCurriculosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/configuracoes': {
+      id: '/_authenticated/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/configuracoes'
+      preLoaderRoute: typeof AuthenticatedConfiguracoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/analisar-vaga': {
+      id: '/_authenticated/analisar-vaga'
+      path: '/analisar-vaga'
+      fullPath: '/analisar-vaga'
+      preLoaderRoute: typeof AuthenticatedAnalisarVagaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AnalisarVagaRoute: AnalisarVagaRoute,
-  ConfiguracoesRoute: ConfiguracoesRoute,
-  CurriculosRoute: CurriculosRoute,
-  CurriculosAtsRoute: CurriculosAtsRoute,
-  DashboardRoute: DashboardRoute,
-  HistoricoRoute: HistoricoRoute,
-  IaCoachRoute: IaCoachRoute,
+  AuthenticatedAnalisarVagaRoute: AuthenticatedAnalisarVagaRoute,
+  AuthenticatedConfiguracoesRoute: AuthenticatedConfiguracoesRoute,
+  AuthenticatedCurriculosRoute: AuthenticatedCurriculosRoute,
+  AuthenticatedCurriculosAtsRoute: AuthenticatedCurriculosAtsRoute,
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedHistoricoRoute: AuthenticatedHistoricoRoute,
+  AuthenticatedIaCoachRoute: AuthenticatedIaCoachRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
