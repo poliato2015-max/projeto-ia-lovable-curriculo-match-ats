@@ -39,7 +39,7 @@ export function LandingHeader() {
 
         <div className="ml-auto md:ml-0">
           <Button asChild size="sm" className="gap-1.5">
-            <Link to={APP_ENTRY_ROUTE}>
+            <Link to={entryRoute}>
               Analisar uma vaga
               <ArrowRight className="h-4 w-4" />
             </Link>
