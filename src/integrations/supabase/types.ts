@@ -14,7 +14,187 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      analyses: {
+        Row: {
+          company: string | null
+          created_at: string
+          id: string
+          job_description: string | null
+          job_title: string
+          match_score: number | null
+          resume_id: string | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string
+          id?: string
+          job_description?: string | null
+          job_title: string
+          match_score?: number | null
+          resume_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          company?: string | null
+          created_at?: string
+          id?: string
+          job_description?: string | null
+          job_title?: string
+          match_score?: number | null
+          resume_id?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "analyses_resume_id_fkey"
+            columns: ["resume_id"]
+            isOneToOne: false
+            referencedRelation: "resumes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      analysis_results: {
+        Row: {
+          analysis_id: string
+          created_at: string
+          id: string
+          keywords_found: Json
+          keywords_missing: Json
+          next_steps: Json
+          recommendations: Json
+          strengths: Json
+          summary: string | null
+          weaknesses: Json
+        }
+        Insert: {
+          analysis_id: string
+          created_at?: string
+          id?: string
+          keywords_found?: Json
+          keywords_missing?: Json
+          next_steps?: Json
+          recommendations?: Json
+          strengths?: Json
+          summary?: string | null
+          weaknesses?: Json
+        }
+        Update: {
+          analysis_id?: string
+          created_at?: string
+          id?: string
+          keywords_found?: Json
+          keywords_missing?: Json
+          next_steps?: Json
+          recommendations?: Json
+          strengths?: Json
+          summary?: string | null
+          weaknesses?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "analysis_results_analysis_id_fkey"
+            columns: ["analysis_id"]
+            isOneToOne: false
+            referencedRelation: "analyses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ats_resumes: {
+        Row: {
+          analysis_id: string | null
+          content: string | null
+          created_at: string
+          id: string
+          resume_id: string | null
+          version: number
+        }
+        Insert: {
+          analysis_id?: string | null
+          content?: string | null
+          created_at?: string
+          id?: string
+          resume_id?: string | null
+          version?: number
+        }
+        Update: {
+          analysis_id?: string | null
+          content?: string | null
+          created_at?: string
+          id?: string
+          resume_id?: string | null
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ats_resumes_analysis_id_fkey"
+            columns: ["analysis_id"]
+            isOneToOne: false
+            referencedRelation: "analyses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ats_resumes_resume_id_fkey"
+            columns: ["resume_id"]
+            isOneToOne: false
+            referencedRelation: "resumes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      resumes: {
+        Row: {
+          company: string | null
+          created_at: string
+          file_name: string | null
+          file_path: string | null
+          id: string
+          is_default: boolean
+          position: string | null
+          raw_text: string | null
+          title: string
+          type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string
+          file_name?: string | null
+          file_path?: string | null
+          id?: string
+          is_default?: boolean
+          position?: string | null
+          raw_text?: string | null
+          title: string
+          type?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          company?: string | null
+          created_at?: string
+          file_name?: string | null
+          file_path?: string | null
+          id?: string
+          is_default?: boolean
+          position?: string | null
+          raw_text?: string | null
+          title?: string
+          type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
