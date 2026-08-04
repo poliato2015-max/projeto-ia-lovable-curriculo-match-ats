@@ -58,6 +58,7 @@ function SectionHeading({ title, text }: { title: string; text?: string }) {
 }
 
 export function HeroSection() {
+  const entryRoute = useAppEntryRoute();
   return (
     <section className="relative overflow-hidden px-4 pb-16 pt-28 md:px-6 md:pb-24 md:pt-36">
       <div
@@ -366,6 +367,7 @@ export function AboutSection() {
 }
 
 export function FinalCTASection() {
+  const entryRoute = useAppEntryRoute();
   return (
     <Section>
       <div className="relative overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary/10 via-background to-secondary/10 px-6 py-12 text-center md:px-12 md:py-16">
