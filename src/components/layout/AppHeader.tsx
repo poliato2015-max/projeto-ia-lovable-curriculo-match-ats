@@ -64,11 +64,27 @@ export function AppHeader() {
           <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-secondary" />
         </Button>
         <Separator orientation="vertical" className="mx-1 h-6" />
-        <Avatar className="h-8 w-8">
-          <AvatarFallback className="bg-gradient-to-br from-primary to-secondary text-xs font-semibold text-primary-foreground">
-            RC
-          </AvatarFallback>
-        </Avatar>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button type="button" aria-label="Conta" className="rounded-full">
+              <Avatar className="h-8 w-8">
+                <AvatarFallback className="bg-gradient-to-br from-primary to-secondary text-xs font-semibold text-primary-foreground">
+                  {initials}
+                </AvatarFallback>
+              </Avatar>
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuLabel className="truncate text-xs font-normal text-muted-foreground">
+              {user?.email ?? "Minha conta"}
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => void handleSignOut()}>
+              <LogOut className="mr-2 h-4 w-4" /> Sair
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
       </div>
     </header>
   );
