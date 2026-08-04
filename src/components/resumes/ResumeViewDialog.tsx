@@ -111,7 +111,7 @@ export function ResumeViewDialog({
 
           <div className="max-h-[50vh] overflow-y-auto rounded-lg border border-border/60 bg-muted/30 p-5">
             <pre className="whitespace-pre-wrap font-sans text-sm leading-relaxed text-foreground">
-              {PREVIEW_TEXT}
+              {resume.rawText?.trim() ? resume.rawText : PREVIEW_TEXT}
             </pre>
           </div>
         </div>
