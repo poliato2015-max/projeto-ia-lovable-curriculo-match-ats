@@ -23,7 +23,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { APP_ENTRY_ROUTE, scrollToSection } from "@/lib/navigation";
+import { scrollToSection } from "@/lib/navigation";
+import { useAppEntryRoute } from "@/hooks/useAppEntry";
 import { HeroMockup } from "./HeroMockup";
 
 import shotAnalisar from "@/assets/landing/shot-analisar-vaga.png";
@@ -57,6 +58,7 @@ function SectionHeading({ title, text }: { title: string; text?: string }) {
 }
 
 export function HeroSection() {
+  const entryRoute = useAppEntryRoute();
   return (
     <section className="relative overflow-hidden px-4 pb-16 pt-28 md:px-6 md:pb-24 md:pt-36">
       <div
@@ -82,7 +84,7 @@ export function HeroSection() {
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Button asChild size="lg" className="gap-1.5">
-              <Link to={APP_ENTRY_ROUTE}>
+              <Link to={entryRoute}>
                 Analisar uma vaga
                 <ArrowRight className="h-4 w-4" />
               </Link>
@@ -365,6 +367,7 @@ export function AboutSection() {
 }
 
 export function FinalCTASection() {
+  const entryRoute = useAppEntryRoute();
   return (
     <Section>
       <div className="relative overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary/10 via-background to-secondary/10 px-6 py-12 text-center md:px-12 md:py-16">
@@ -386,7 +389,7 @@ export function FinalCTASection() {
           </p>
           <div className="mt-7 flex justify-center">
             <Button asChild size="lg" className="gap-1.5">
-              <Link to={APP_ENTRY_ROUTE}>
+              <Link to={entryRoute}>
                 Analisar uma vaga
                 <ArrowRight className="h-4 w-4" />
               </Link>

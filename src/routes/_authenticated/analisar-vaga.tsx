@@ -13,7 +13,7 @@ import { StepResultado } from "@/components/analysis/wizard/StepResultado";
 import { StepCurriculoATS } from "@/components/analysis/wizard/StepCurriculoATS";
 import type { WizardData } from "@/components/analysis/wizard/types";
 
-export const Route = createFileRoute("/analisar-vaga")({
+export const Route = createFileRoute("/_authenticated/analisar-vaga")({
   head: () => ({
     meta: [
       { title: "Analisar Vaga — RadarCV AI" },

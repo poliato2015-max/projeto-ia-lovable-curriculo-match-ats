@@ -1,3 +1,5 @@
+import { useRef, useState } from "react";
+import { Loader2 } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -10,25 +12,38 @@ import { UploadPlaceholder } from "./UploadPlaceholder";
 interface ImportResumeDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onFileSelected?: (file: File) => void;
+  onFileSelected?: (file: File) => Promise<void> | void;
 }
 
-/**
- * Modal reutilizável para importação de currículos.
- * Estruturado para receber, nas próximas sprints:
- *  - Upload real
- *  - Drag & Drop funcional
- *  - Barra de progresso
- *  - Validação de arquivos
- *  - Extração automática via IA
- */
+const MAX_SIZE = 10 * 1024 * 1024;
+
+/** Modal de importação de currículos: envia o arquivo para o Storage e persiste os metadados. */
 export function ImportResumeDialog({
   open,
   onOpenChange,
-  onFileSelected: _onFileSelected,
+  onFileSelected,
 }: ImportResumeDialogProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleFile = async (file: File) => {
+    setError(null);
+    if (file.size > MAX_SIZE) {
+      setError("O arquivo excede o limite de 10 MB.");
+      return;
+    }
+    setBusy(true);
+    try {
+      await onFileSelected?.(file);
+    } finally {
+      setBusy(false);
+      if (inputRef.current) inputRef.current.value = "";
+    }
+  };
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={(o) => !busy && onOpenChange(o)}>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>Importar Currículo</DialogTitle>
@@ -37,7 +52,30 @@ export function ImportResumeDialog({
             profissionais.
           </DialogDescription>
         </DialogHeader>
-        <UploadPlaceholder />
+
+        <input
+          ref={inputRef}
+          type="file"
+          accept=".pdf,.docx,.txt,.md"
+          className="hidden"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) void handleFile(file);
+          }}
+        />
+
+        {busy ? (
+          <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-border bg-surface/50 px-6 py-10 text-center">
+            <Loader2 className="mb-3 h-6 w-6 animate-spin text-primary" />
+            <p className="text-sm font-medium text-foreground">Enviando currículo...</p>
+          </div>
+        ) : (
+          <UploadPlaceholder onSelect={() => inputRef.current?.click()} />
+        )}
+
+        {error && (
+          <p className="text-center text-xs text-destructive">{error}</p>
+        )}
         <p className="text-center text-xs text-muted-foreground">
           Formatos suportados: PDF ou DOCX • até 10 MB
         </p>

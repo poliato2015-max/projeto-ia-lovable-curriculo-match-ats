@@ -8,6 +8,7 @@ interface ResumeListProps {
   onExportPdf?: (r: Resume) => void;
   onExportDocx?: (r: Resume) => void;
   onDelete?: (r: Resume) => void;
+  onToggleDefault?: (r: Resume) => void;
 }
 
 export function ResumeList({ resumes, ...actions }: ResumeListProps) {

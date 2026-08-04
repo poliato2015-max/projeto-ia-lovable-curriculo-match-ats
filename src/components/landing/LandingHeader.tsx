@@ -1,7 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { Radar, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { APP_ENTRY_ROUTE, scrollToSection } from "@/lib/navigation";
+import { scrollToSection } from "@/lib/navigation";
+import { useAppEntryRoute } from "@/hooks/useAppEntry";
+
 
 const menu = [
   { label: "Como funciona", id: "como-funciona" },
@@ -10,7 +12,9 @@ const menu = [
 ];
 
 export function LandingHeader() {
+  const entryRoute = useAppEntryRoute();
   return (
+
     <header className="fixed inset-x-0 top-0 z-50 border-b border-border/70 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto flex h-16 w-full max-w-7xl items-center gap-4 px-4 md:px-6">
         <div className="flex items-center gap-2">
@@ -35,7 +39,7 @@ export function LandingHeader() {
 
         <div className="ml-auto md:ml-0">
           <Button asChild size="sm" className="gap-1.5">
-            <Link to={APP_ENTRY_ROUTE}>
+            <Link to={entryRoute}>
               Analisar uma vaga
               <ArrowRight className="h-4 w-4" />
             </Link>

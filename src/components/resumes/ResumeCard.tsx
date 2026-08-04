@@ -8,6 +8,7 @@ import {
   FileDown,
   Sparkles,
   FileUp,
+  Star,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -29,6 +30,7 @@ interface ResumeCardProps {
   onExportPdf?: (r: Resume) => void;
   onExportDocx?: (r: Resume) => void;
   onDelete?: (r: Resume) => void;
+  onToggleDefault?: (r: Resume) => void;
 }
 
 function formatDate(iso: string) {
@@ -46,6 +48,7 @@ export function ResumeCard({
   onExportPdf,
   onExportDocx,
   onDelete,
+  onToggleDefault,
 }: ResumeCardProps) {
   const isAts = resume.kind === "ats";
   const KindIcon = isAts ? Sparkles : FileUp;
@@ -102,6 +105,10 @@ export function ResumeCard({
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onEdit?.(resume)}>
                   <Pencil className="mr-2 h-4 w-4" /> Editar
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onToggleDefault?.(resume)}>
+                  <Star className="mr-2 h-4 w-4" />
+                  {resume.favorite ? "Remover padrão" : "Definir como padrão"}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onExportPdf?.(resume)}>
                   <FileDown className="mr-2 h-4 w-4" /> Exportar PDF
