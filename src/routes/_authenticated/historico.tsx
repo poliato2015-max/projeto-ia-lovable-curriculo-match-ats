@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { History } from "lucide-react";
 import { ComingSoonPage } from "@/components/common/ComingSoonPage";
 
-export const Route = createFileRoute("/_authenticated/_authenticated/historico")({
+export const Route = createFileRoute("/_authenticated/historico")({
   head: () => ({
     meta: [
       { title: "Histórico — RadarCV AI" },
