@@ -23,7 +23,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { APP_ENTRY_ROUTE, scrollToSection } from "@/lib/navigation";
+import { scrollToSection } from "@/lib/navigation";
+import { useAppEntryRoute } from "@/hooks/useAppEntry";
 import { HeroMockup } from "./HeroMockup";
 
 import shotAnalisar from "@/assets/landing/shot-analisar-vaga.png";
@@ -82,7 +83,7 @@ export function HeroSection() {
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Button asChild size="lg" className="gap-1.5">
-              <Link to={APP_ENTRY_ROUTE}>
+              <Link to={entryRoute}>
                 Analisar uma vaga
                 <ArrowRight className="h-4 w-4" />
               </Link>
@@ -386,7 +387,7 @@ export function FinalCTASection() {
           </p>
           <div className="mt-7 flex justify-center">
             <Button asChild size="lg" className="gap-1.5">
-              <Link to={APP_ENTRY_ROUTE}>
+              <Link to={entryRoute}>
                 Analisar uma vaga
                 <ArrowRight className="h-4 w-4" />
               </Link>
