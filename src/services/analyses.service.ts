@@ -148,7 +148,7 @@ export async function saveAnalysis(input: SaveAnalysisInput): Promise<string> {
     strengths: [],
     weaknesses: [],
     next_steps: [],
-    payload: input.result as unknown as Record<string, unknown>,
+    payload: JSON.parse(JSON.stringify(input.result)),
   });
 
   if (resultError) throw new Error("Não foi possível salvar o resultado desta análise.");
