@@ -16,7 +16,14 @@ interface StepResultadoProps {
   company: string;
   analyzedAt: Date;
   onReset: () => void;
-  onGenerate: () => void;
+  onGenerate?: () => void;
+  /** Ação de salvar a análise no histórico. */
+  onSave?: () => void;
+  saving?: boolean;
+  /** Modo leitura, usado ao reabrir uma análise do histórico. */
+  readOnly?: boolean;
+  resumeTitle?: string | null;
+  resetLabel?: string;
 }
 
 export function StepResultado({
@@ -26,6 +33,11 @@ export function StepResultado({
   analyzedAt,
   onReset,
   onGenerate,
+  onSave,
+  saving,
+  readOnly,
+  resumeTitle,
+  resetLabel,
 }: StepResultadoProps) {
   const gaps = [...result.hardSkills, ...result.softSkills];
   const dateStr = analyzedAt.toLocaleDateString("pt-BR", {
