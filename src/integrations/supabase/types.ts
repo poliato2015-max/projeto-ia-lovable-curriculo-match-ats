@@ -21,8 +21,10 @@ export type Database = {
           id: string
           job_description: string | null
           job_title: string
+          job_url: string | null
           match_score: number | null
           resume_id: string | null
+          resume_title: string | null
           status: string
           updated_at: string
           user_id: string
@@ -33,8 +35,10 @@ export type Database = {
           id?: string
           job_description?: string | null
           job_title: string
+          job_url?: string | null
           match_score?: number | null
           resume_id?: string | null
+          resume_title?: string | null
           status?: string
           updated_at?: string
           user_id: string
@@ -45,8 +49,10 @@ export type Database = {
           id?: string
           job_description?: string | null
           job_title?: string
+          job_url?: string | null
           match_score?: number | null
           resume_id?: string | null
+          resume_title?: string | null
           status?: string
           updated_at?: string
           user_id?: string
@@ -69,6 +75,7 @@ export type Database = {
           keywords_found: Json
           keywords_missing: Json
           next_steps: Json
+          payload: Json
           recommendations: Json
           strengths: Json
           summary: string | null
@@ -81,6 +88,7 @@ export type Database = {
           keywords_found?: Json
           keywords_missing?: Json
           next_steps?: Json
+          payload?: Json
           recommendations?: Json
           strengths?: Json
           summary?: string | null
@@ -93,6 +101,7 @@ export type Database = {
           keywords_found?: Json
           keywords_missing?: Json
           next_steps?: Json
+          payload?: Json
           recommendations?: Json
           strengths?: Json
           summary?: string | null
