@@ -14,7 +14,6 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedIaCoachRouteImport } from './routes/_authenticated/ia-coach'
-import { Route as AuthenticatedHistoricoRouteImport } from './routes/_authenticated/historico'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedCurriculosAtsRouteImport } from './routes/_authenticated/curriculos-ats'
 import { Route as AuthenticatedCurriculosRouteImport } from './routes/_authenticated/curriculos'
@@ -43,11 +42,6 @@ const IndexRoute = IndexRouteImport.update({
 const AuthenticatedIaCoachRoute = AuthenticatedIaCoachRouteImport.update({
   id: '/ia-coach',
   path: '/ia-coach',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedHistoricoRoute = AuthenticatedHistoricoRouteImport.update({
-  id: '/historico',
-  path: '/historico',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
@@ -88,7 +82,6 @@ export interface FileRoutesByFullPath {
   '/curriculos': typeof AuthenticatedCurriculosRoute
   '/curriculos-ats': typeof AuthenticatedCurriculosAtsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
-  '/historico': typeof AuthenticatedHistoricoRoute
   '/ia-coach': typeof AuthenticatedIaCoachRoute
 }
 export interface FileRoutesByTo {
@@ -100,7 +93,6 @@ export interface FileRoutesByTo {
   '/curriculos': typeof AuthenticatedCurriculosRoute
   '/curriculos-ats': typeof AuthenticatedCurriculosAtsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
-  '/historico': typeof AuthenticatedHistoricoRoute
   '/ia-coach': typeof AuthenticatedIaCoachRoute
 }
 export interface FileRoutesById {
@@ -114,7 +106,6 @@ export interface FileRoutesById {
   '/_authenticated/curriculos': typeof AuthenticatedCurriculosRoute
   '/_authenticated/curriculos-ats': typeof AuthenticatedCurriculosAtsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
-  '/_authenticated/historico': typeof AuthenticatedHistoricoRoute
   '/_authenticated/ia-coach': typeof AuthenticatedIaCoachRoute
 }
 export interface FileRouteTypes {
@@ -128,7 +119,6 @@ export interface FileRouteTypes {
     | '/curriculos'
     | '/curriculos-ats'
     | '/dashboard'
-    | '/historico'
     | '/ia-coach'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -140,7 +130,6 @@ export interface FileRouteTypes {
     | '/curriculos'
     | '/curriculos-ats'
     | '/dashboard'
-    | '/historico'
     | '/ia-coach'
   id:
     | '__root__'
@@ -153,7 +142,6 @@ export interface FileRouteTypes {
     | '/_authenticated/curriculos'
     | '/_authenticated/curriculos-ats'
     | '/_authenticated/dashboard'
-    | '/_authenticated/historico'
     | '/_authenticated/ia-coach'
   fileRoutesById: FileRoutesById
 }
@@ -201,13 +189,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedIaCoachRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/historico': {
-      id: '/_authenticated/historico'
-      path: '/historico'
-      fullPath: '/historico'
-      preLoaderRoute: typeof AuthenticatedHistoricoRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -252,7 +233,6 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedCurriculosRoute: typeof AuthenticatedCurriculosRoute
   AuthenticatedCurriculosAtsRoute: typeof AuthenticatedCurriculosAtsRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
-  AuthenticatedHistoricoRoute: typeof AuthenticatedHistoricoRoute
   AuthenticatedIaCoachRoute: typeof AuthenticatedIaCoachRoute
 }
 
@@ -262,7 +242,6 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCurriculosRoute: AuthenticatedCurriculosRoute,
   AuthenticatedCurriculosAtsRoute: AuthenticatedCurriculosAtsRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
-  AuthenticatedHistoricoRoute: AuthenticatedHistoricoRoute,
   AuthenticatedIaCoachRoute: AuthenticatedIaCoachRoute,
 }
 
@@ -278,13 +257,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
