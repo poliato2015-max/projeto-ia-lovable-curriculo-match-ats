@@ -167,11 +167,14 @@ export function StepResultado({
       </div>
 
       {/* Ação final */}
-      <div className="flex justify-end border-t border-border/60 pt-4">
-        <Button size="lg" className="gap-2" onClick={onGenerate}>
-          <Sparkles className="h-4 w-4" /> Gerar Currículo ATS
-        </Button>
-      </div>
+      {onGenerate && (
+        <div className="flex justify-end border-t border-border/60 pt-4">
+          <Button size="lg" className="gap-2" onClick={onGenerate}>
+            <Sparkles className="h-4 w-4" /> Gerar Currículo ATS
+          </Button>
+        </div>
+      )}
     </div>
+
   );
 }
