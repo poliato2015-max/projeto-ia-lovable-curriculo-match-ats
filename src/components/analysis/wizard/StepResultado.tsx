@@ -1,4 +1,4 @@
-import { Briefcase, GraduationCap, Languages, Save, Sparkles, RotateCcw, Building2, CalendarDays } from "lucide-react";
+import { Briefcase, GraduationCap, Languages, Save, Sparkles, RotateCcw, Building2, CalendarDays, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { ATSScoreCard } from "../ATSScoreCard";
@@ -16,7 +16,14 @@ interface StepResultadoProps {
   company: string;
   analyzedAt: Date;
   onReset: () => void;
-  onGenerate: () => void;
+  onGenerate?: () => void;
+  /** Ação de salvar a análise no histórico. */
+  onSave?: () => void;
+  saving?: boolean;
+  /** Modo leitura, usado ao reabrir uma análise do histórico. */
+  readOnly?: boolean;
+  resumeTitle?: string | null;
+  resetLabel?: string;
 }
 
 export function StepResultado({
@@ -26,6 +33,11 @@ export function StepResultado({
   analyzedAt,
   onReset,
   onGenerate,
+  onSave,
+  saving,
+  readOnly,
+  resumeTitle,
+  resetLabel,
 }: StepResultadoProps) {
   const gaps = [...result.hardSkills, ...result.softSkills];
   const dateStr = analyzedAt.toLocaleDateString("pt-BR", {
@@ -51,29 +63,48 @@ export function StepResultado({
               <CalendarDays className="h-3.5 w-3.5" />
               {dateStr}
             </span>
+            {resumeTitle && (
+              <span className="inline-flex min-w-0 items-center gap-1.5">
+                <FileText className="h-3.5 w-3.5 shrink-0" />
+                <span className="truncate">{resumeTitle}</span>
+              </span>
+            )}
+            {readOnly && (
+              <span className="inline-flex rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+                Análise do histórico
+              </span>
+            )}
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <Button variant="ghost" size="sm" className="gap-2" onClick={onReset}>
-            <RotateCcw className="h-4 w-4" /> Nova análise
+            <RotateCcw className="h-4 w-4" /> {resetLabel ?? "Nova análise"}
           </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            className="gap-2"
-            onClick={() =>
-              toast("Análise salva (mock)", {
-                description: "A persistência será implementada na próxima Sprint.",
-              })
-            }
-          >
-            <Save className="h-4 w-4" /> Salvar análise
-          </Button>
-          <Button size="sm" className="gap-2" onClick={onGenerate}>
-            <Sparkles className="h-4 w-4" /> Gerar Currículo ATS
-          </Button>
+          {!readOnly && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2"
+              disabled={saving}
+              onClick={() =>
+                onSave
+                  ? onSave()
+                  : toast("Análise salva", {
+                      description: "Disponível no seu histórico.",
+                    })
+              }
+            >
+              <Save className="h-4 w-4" /> {saving ? "Salvando..." : "Salvar análise"}
+            </Button>
+          )}
+          {onGenerate && (
+            <Button size="sm" className="gap-2" onClick={onGenerate}>
+              <Sparkles className="h-4 w-4" /> Gerar Currículo ATS
+            </Button>
+          )}
         </div>
       </div>
+
 
       {/* Hero: Match ATS + Resumo Executivo */}
       <div className="grid gap-4 lg:grid-cols-5">
@@ -136,11 +167,14 @@ export function StepResultado({
       </div>
 
       {/* Ação final */}
-      <div className="flex justify-end border-t border-border/60 pt-4">
-        <Button size="lg" className="gap-2" onClick={onGenerate}>
-          <Sparkles className="h-4 w-4" /> Gerar Currículo ATS
-        </Button>
-      </div>
+      {onGenerate && (
+        <div className="flex justify-end border-t border-border/60 pt-4">
+          <Button size="lg" className="gap-2" onClick={onGenerate}>
+            <Sparkles className="h-4 w-4" /> Gerar Currículo ATS
+          </Button>
+        </div>
+      )}
     </div>
+
   );
 }

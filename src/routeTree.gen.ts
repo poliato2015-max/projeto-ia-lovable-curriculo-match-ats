@@ -14,12 +14,13 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedIaCoachRouteImport } from './routes/_authenticated/ia-coach'
-import { Route as AuthenticatedHistoricoRouteImport } from './routes/_authenticated/historico'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedCurriculosAtsRouteImport } from './routes/_authenticated/curriculos-ats'
 import { Route as AuthenticatedCurriculosRouteImport } from './routes/_authenticated/curriculos'
 import { Route as AuthenticatedConfiguracoesRouteImport } from './routes/_authenticated/configuracoes'
 import { Route as AuthenticatedAnalisarVagaRouteImport } from './routes/_authenticated/analisar-vaga'
+import { Route as AuthenticatedHistoricoIndexRouteImport } from './routes/_authenticated/historico/index'
+import { Route as AuthenticatedHistoricoAnalysisIdRouteImport } from './routes/_authenticated/historico/$analysisId'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
@@ -43,11 +44,6 @@ const IndexRoute = IndexRouteImport.update({
 const AuthenticatedIaCoachRoute = AuthenticatedIaCoachRouteImport.update({
   id: '/ia-coach',
   path: '/ia-coach',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedHistoricoRoute = AuthenticatedHistoricoRouteImport.update({
-  id: '/historico',
-  path: '/historico',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
@@ -78,6 +74,18 @@ const AuthenticatedAnalisarVagaRoute =
     path: '/analisar-vaga',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedHistoricoIndexRoute =
+  AuthenticatedHistoricoIndexRouteImport.update({
+    id: '/historico/',
+    path: '/historico/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedHistoricoAnalysisIdRoute =
+  AuthenticatedHistoricoAnalysisIdRouteImport.update({
+    id: '/historico/$analysisId',
+    path: '/historico/$analysisId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -88,8 +96,9 @@ export interface FileRoutesByFullPath {
   '/curriculos': typeof AuthenticatedCurriculosRoute
   '/curriculos-ats': typeof AuthenticatedCurriculosAtsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
-  '/historico': typeof AuthenticatedHistoricoRoute
   '/ia-coach': typeof AuthenticatedIaCoachRoute
+  '/historico/$analysisId': typeof AuthenticatedHistoricoAnalysisIdRoute
+  '/historico/': typeof AuthenticatedHistoricoIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -100,8 +109,9 @@ export interface FileRoutesByTo {
   '/curriculos': typeof AuthenticatedCurriculosRoute
   '/curriculos-ats': typeof AuthenticatedCurriculosAtsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
-  '/historico': typeof AuthenticatedHistoricoRoute
   '/ia-coach': typeof AuthenticatedIaCoachRoute
+  '/historico/$analysisId': typeof AuthenticatedHistoricoAnalysisIdRoute
+  '/historico': typeof AuthenticatedHistoricoIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -114,8 +124,9 @@ export interface FileRoutesById {
   '/_authenticated/curriculos': typeof AuthenticatedCurriculosRoute
   '/_authenticated/curriculos-ats': typeof AuthenticatedCurriculosAtsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
-  '/_authenticated/historico': typeof AuthenticatedHistoricoRoute
   '/_authenticated/ia-coach': typeof AuthenticatedIaCoachRoute
+  '/_authenticated/historico/$analysisId': typeof AuthenticatedHistoricoAnalysisIdRoute
+  '/_authenticated/historico/': typeof AuthenticatedHistoricoIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -128,8 +139,9 @@ export interface FileRouteTypes {
     | '/curriculos'
     | '/curriculos-ats'
     | '/dashboard'
-    | '/historico'
     | '/ia-coach'
+    | '/historico/$analysisId'
+    | '/historico/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -140,8 +152,9 @@ export interface FileRouteTypes {
     | '/curriculos'
     | '/curriculos-ats'
     | '/dashboard'
-    | '/historico'
     | '/ia-coach'
+    | '/historico/$analysisId'
+    | '/historico'
   id:
     | '__root__'
     | '/'
@@ -153,8 +166,9 @@ export interface FileRouteTypes {
     | '/_authenticated/curriculos'
     | '/_authenticated/curriculos-ats'
     | '/_authenticated/dashboard'
-    | '/_authenticated/historico'
     | '/_authenticated/ia-coach'
+    | '/_authenticated/historico/$analysisId'
+    | '/_authenticated/historico/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -201,13 +215,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedIaCoachRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/historico': {
-      id: '/_authenticated/historico'
-      path: '/historico'
-      fullPath: '/historico'
-      preLoaderRoute: typeof AuthenticatedHistoricoRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -243,6 +250,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAnalisarVagaRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/historico/': {
+      id: '/_authenticated/historico/'
+      path: '/historico'
+      fullPath: '/historico/'
+      preLoaderRoute: typeof AuthenticatedHistoricoIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/historico/$analysisId': {
+      id: '/_authenticated/historico/$analysisId'
+      path: '/historico/$analysisId'
+      fullPath: '/historico/$analysisId'
+      preLoaderRoute: typeof AuthenticatedHistoricoAnalysisIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -252,8 +273,9 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedCurriculosRoute: typeof AuthenticatedCurriculosRoute
   AuthenticatedCurriculosAtsRoute: typeof AuthenticatedCurriculosAtsRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
-  AuthenticatedHistoricoRoute: typeof AuthenticatedHistoricoRoute
   AuthenticatedIaCoachRoute: typeof AuthenticatedIaCoachRoute
+  AuthenticatedHistoricoAnalysisIdRoute: typeof AuthenticatedHistoricoAnalysisIdRoute
+  AuthenticatedHistoricoIndexRoute: typeof AuthenticatedHistoricoIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -262,8 +284,9 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCurriculosRoute: AuthenticatedCurriculosRoute,
   AuthenticatedCurriculosAtsRoute: AuthenticatedCurriculosAtsRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
-  AuthenticatedHistoricoRoute: AuthenticatedHistoricoRoute,
   AuthenticatedIaCoachRoute: AuthenticatedIaCoachRoute,
+  AuthenticatedHistoricoAnalysisIdRoute: AuthenticatedHistoricoAnalysisIdRoute,
+  AuthenticatedHistoricoIndexRoute: AuthenticatedHistoricoIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
