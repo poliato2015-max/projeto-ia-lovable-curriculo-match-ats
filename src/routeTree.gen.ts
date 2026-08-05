@@ -19,6 +19,7 @@ import { Route as AuthenticatedCurriculosAtsRouteImport } from './routes/_authen
 import { Route as AuthenticatedCurriculosRouteImport } from './routes/_authenticated/curriculos'
 import { Route as AuthenticatedConfiguracoesRouteImport } from './routes/_authenticated/configuracoes'
 import { Route as AuthenticatedAnalisarVagaRouteImport } from './routes/_authenticated/analisar-vaga'
+import { Route as AuthenticatedHistoricoIndexRouteImport } from './routes/_authenticated/historico/index'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
@@ -72,6 +73,12 @@ const AuthenticatedAnalisarVagaRoute =
     path: '/analisar-vaga',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedHistoricoIndexRoute =
+  AuthenticatedHistoricoIndexRouteImport.update({
+    id: '/historico/',
+    path: '/historico/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -83,6 +90,7 @@ export interface FileRoutesByFullPath {
   '/curriculos-ats': typeof AuthenticatedCurriculosAtsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/ia-coach': typeof AuthenticatedIaCoachRoute
+  '/historico/': typeof AuthenticatedHistoricoIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -94,6 +102,7 @@ export interface FileRoutesByTo {
   '/curriculos-ats': typeof AuthenticatedCurriculosAtsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/ia-coach': typeof AuthenticatedIaCoachRoute
+  '/historico': typeof AuthenticatedHistoricoIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -107,6 +116,7 @@ export interface FileRoutesById {
   '/_authenticated/curriculos-ats': typeof AuthenticatedCurriculosAtsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/ia-coach': typeof AuthenticatedIaCoachRoute
+  '/_authenticated/historico/': typeof AuthenticatedHistoricoIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -120,6 +130,7 @@ export interface FileRouteTypes {
     | '/curriculos-ats'
     | '/dashboard'
     | '/ia-coach'
+    | '/historico/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -131,6 +142,7 @@ export interface FileRouteTypes {
     | '/curriculos-ats'
     | '/dashboard'
     | '/ia-coach'
+    | '/historico'
   id:
     | '__root__'
     | '/'
@@ -143,6 +155,7 @@ export interface FileRouteTypes {
     | '/_authenticated/curriculos-ats'
     | '/_authenticated/dashboard'
     | '/_authenticated/ia-coach'
+    | '/_authenticated/historico/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -224,6 +237,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAnalisarVagaRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/historico/': {
+      id: '/_authenticated/historico/'
+      path: '/historico'
+      fullPath: '/historico/'
+      preLoaderRoute: typeof AuthenticatedHistoricoIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
@@ -234,6 +254,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedCurriculosAtsRoute: typeof AuthenticatedCurriculosAtsRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedIaCoachRoute: typeof AuthenticatedIaCoachRoute
+  AuthenticatedHistoricoIndexRoute: typeof AuthenticatedHistoricoIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -243,6 +264,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCurriculosAtsRoute: AuthenticatedCurriculosAtsRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedIaCoachRoute: AuthenticatedIaCoachRoute,
+  AuthenticatedHistoricoIndexRoute: AuthenticatedHistoricoIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
