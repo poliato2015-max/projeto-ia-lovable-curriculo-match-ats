@@ -63,29 +63,48 @@ export function StepResultado({
               <CalendarDays className="h-3.5 w-3.5" />
               {dateStr}
             </span>
+            {resumeTitle && (
+              <span className="inline-flex min-w-0 items-center gap-1.5">
+                <FileText className="h-3.5 w-3.5 shrink-0" />
+                <span className="truncate">{resumeTitle}</span>
+              </span>
+            )}
+            {readOnly && (
+              <span className="inline-flex rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+                Análise do histórico
+              </span>
+            )}
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <Button variant="ghost" size="sm" className="gap-2" onClick={onReset}>
-            <RotateCcw className="h-4 w-4" /> Nova análise
+            <RotateCcw className="h-4 w-4" /> {resetLabel ?? "Nova análise"}
           </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            className="gap-2"
-            onClick={() =>
-              toast("Análise salva (mock)", {
-                description: "A persistência será implementada na próxima Sprint.",
-              })
-            }
-          >
-            <Save className="h-4 w-4" /> Salvar análise
-          </Button>
-          <Button size="sm" className="gap-2" onClick={onGenerate}>
-            <Sparkles className="h-4 w-4" /> Gerar Currículo ATS
-          </Button>
+          {!readOnly && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2"
+              disabled={saving}
+              onClick={() =>
+                onSave
+                  ? onSave()
+                  : toast("Análise salva", {
+                      description: "Disponível no seu histórico.",
+                    })
+              }
+            >
+              <Save className="h-4 w-4" /> {saving ? "Salvando..." : "Salvar análise"}
+            </Button>
+          )}
+          {onGenerate && (
+            <Button size="sm" className="gap-2" onClick={onGenerate}>
+              <Sparkles className="h-4 w-4" /> Gerar Currículo ATS
+            </Button>
+          )}
         </div>
       </div>
+
 
       {/* Hero: Match ATS + Resumo Executivo */}
       <div className="grid gap-4 lg:grid-cols-5">
