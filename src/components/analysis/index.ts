@@ -9,5 +9,4 @@ export { MetricCard } from "./MetricCard";
 export { RecommendationsCard } from "./RecommendationsCard";
 export { AnalysisSummary } from "./AnalysisSummary";
 export { GapsCard } from "./GapsCard";
-export { MOCK_ANALYSIS } from "./mock";
-export type { AnalysisResult, SkillItem, SkillStatus } from "./mock";
+export type { AnalysisResult, SkillItem, SkillStatus } from "./analysis-types";

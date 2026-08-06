@@ -10,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { MOCK_RESUMES } from "@/components/resumes/mock";
+import { useResumes } from "@/hooks/useResumes";
 import type { Resume } from "@/components/resumes/types";
 
 interface SavedResumeDialogProps {
@@ -21,9 +21,10 @@ interface SavedResumeDialogProps {
 
 export function SavedResumeDialog({ open, onOpenChange, onSelect }: SavedResumeDialogProps) {
   const [query, setQuery] = useState("");
+  const { data: resumes, isLoading } = useResumes(open);
   const q = query.toLowerCase();
-  const list = MOCK_RESUMES.filter((r) =>
-    (r.name + " " + r.role + " " + r.area).toLowerCase().includes(q),
+  const list = (resumes ?? []).filter((r) =>
+    (r.name + " " + r.role + " " + (r.company ?? "")).toLowerCase().includes(q),
   );
 
   return (
@@ -47,7 +48,11 @@ export function SavedResumeDialog({ open, onOpenChange, onSelect }: SavedResumeD
         </div>
 
         <div className="max-h-[360px] space-y-2 overflow-y-auto pr-1">
-          {list.length === 0 ? (
+          {isLoading ? (
+            <p className="py-8 text-center text-sm text-muted-foreground">
+              Carregando currículos...
+            </p>
+          ) : list.length === 0 ? (
             <p className="py-8 text-center text-sm text-muted-foreground">
               Nenhum currículo encontrado.
             </p>

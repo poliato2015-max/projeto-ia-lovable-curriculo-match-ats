@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { Link2, FileText, UploadCloud, ArrowRight } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
@@ -15,10 +16,11 @@ interface StepVagaProps {
 }
 
 export function StepVaga({ data, onChange, onNext }: StepVagaProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const hasSource =
     (data.source === "url" && data.url.trim().length > 0) ||
     (data.source === "description" && data.description.trim().length > 0) ||
-    (data.source === "upload" && !!data.fileName);
+    (data.source === "upload" && data.description.trim().length > 0);
 
   const canContinue =
     data.title.trim().length > 0 && data.company.trim().length > 0 && hasSource;
@@ -104,13 +106,30 @@ export function StepVaga({ data, onChange, onNext }: StepVagaProps) {
           </TabsContent>
 
           <TabsContent value="upload" className="mt-4">
-            <UploadPlaceholder
-              accepted={["PDF", "DOCX", "TXT"]}
-              onSelect={() => {
-                const mockName = "vaga-descricao.pdf";
-                onChange({ ...data, fileName: mockName });
-                toast("Arquivo anexado (mock)", { description: mockName });
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".txt,.md,.pdf,.docx"
+              className="hidden"
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                e.target.value = "";
+                if (!file) return;
+                const name = file.name.toLowerCase();
+                if (name.endsWith(".txt") || name.endsWith(".md")) {
+                  const text = await file.text();
+                  onChange({ ...data, fileName: file.name, description: text });
+                  toast.success("Arquivo anexado", { description: file.name });
+                  return;
+                }
+                toast.error("Não conseguimos ler este formato automaticamente.", {
+                  description: "Use a aba Descrição e cole o texto da vaga.",
+                });
               }}
+            />
+            <UploadPlaceholder
+              accepted={["TXT", "Markdown"]}
+              onSelect={() => fileInputRef.current?.click()}
             />
             {data.fileName && (
               <p className="mt-3 text-xs text-muted-foreground">

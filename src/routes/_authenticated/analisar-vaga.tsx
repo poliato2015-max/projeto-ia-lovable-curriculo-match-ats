@@ -1,11 +1,13 @@
 import { useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
+import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import { PageContainer } from "@/components/common/PageContainer";
 import { PageTitle } from "@/components/common/PageTitle";
 import { ContentCard } from "@/components/common/ContentCard";
-import { AnalysisLoading, MOCK_ANALYSIS, type AnalysisResult } from "@/components/analysis";
+import { AnalysisLoading, type AnalysisResult } from "@/components/analysis";
 import { Stepper } from "@/components/analysis/wizard/Stepper";
 import { StepVaga } from "@/components/analysis/wizard/StepVaga";
 import { StepCurriculo } from "@/components/analysis/wizard/StepCurriculo";
@@ -14,6 +16,7 @@ import { StepResultado } from "@/components/analysis/wizard/StepResultado";
 import { StepCurriculoATS } from "@/components/analysis/wizard/StepCurriculoATS";
 import type { WizardData } from "@/components/analysis/wizard/types";
 import { useAnalysisMutations } from "@/hooks/useAnalyses";
+import { runAnalysis as runAnalysisFn } from "@/lib/analysis.functions";
 
 export const Route = createFileRoute("/_authenticated/analisar-vaga")({
   head: () => ({
@@ -43,6 +46,14 @@ const INITIAL_DATA: WizardData = {
   objective: { goals: ["maximize-ats"], instructions: "" },
 };
 
+function resumeTitleOf(wizard: WizardData): string | null {
+  return (
+    wizard.resume.savedResume?.name ??
+    wizard.resume.fileName ??
+    (wizard.resume.source === "paste" ? "Currículo colado" : null)
+  );
+}
+
 function AnalisarVagaPage() {
   const [step, setStep] = useState(1);
   const [data, setData] = useState<WizardData>(INITIAL_DATA);
@@ -51,40 +62,49 @@ function AnalisarVagaPage() {
   const [analyzedAt, setAnalyzedAt] = useState<Date>(new Date());
   const { saveMutation } = useAnalysisMutations();
   const savedIdRef = useRef<string | null>(null);
+  const queryClient = useQueryClient();
+  const analyze = useServerFn(runAnalysisFn);
 
-  const persist = (analysis: AnalysisResult, wizard: WizardData) => {
-    saveMutation.mutate(
-      {
-        jobTitle: wizard.job.title,
-        company: wizard.job.company,
-        jobUrl: wizard.job.url,
-        jobDescription: wizard.job.description,
-        resumeId: wizard.resume.savedResume?.id ?? null,
-        resumeTitle:
-          wizard.resume.savedResume?.name ??
-          wizard.resume.fileName ??
-          (wizard.resume.source === "paste" ? "Currículo colado" : null),
-        result: analysis,
-      },
-      {
-        onSuccess: (id) => {
-          savedIdRef.current = id;
-        },
-      },
-    );
-  };
-
-  const runAnalysis = () => {
+  const runAnalysis = async () => {
     setIsAnalyzing(true);
     setResult(null);
     setStep(4);
     savedIdRef.current = null;
-    window.setTimeout(() => {
-      setResult(MOCK_ANALYSIS);
-      setAnalyzedAt(new Date());
+
+    try {
+      const output = await analyze({
+        data: {
+          jobTitle: data.job.title,
+          company: data.job.company,
+          jobUrl: data.job.url,
+          jobDescription: data.job.description,
+          resumeText: data.resume.content,
+          resumeId: data.resume.savedResume?.id ?? null,
+          resumeTitle: resumeTitleOf(data),
+          resumeType: data.resume.savedResume?.kind ?? null,
+          objectives: data.objective.goals,
+          instructions: data.objective.instructions,
+        },
+      });
+
+      setResult(output.result);
+      setAnalyzedAt(new Date(output.createdAt));
+      savedIdRef.current = output.id;
+
+      if (output.saved) {
+        queryClient.invalidateQueries({ queryKey: ["analyses"] });
+      } else {
+        toast.error("Não foi possível salvar esta análise no seu histórico.", {
+          description: "Use o botão \"Salvar análise\" para tentar novamente.",
+        });
+      }
+    } catch (error) {
+      if (import.meta.env.DEV) console.error("[analisar-vaga]", error);
+      setStep(3);
+      toast.error(friendlyError(error));
+    } finally {
       setIsAnalyzing(false);
-      persist(MOCK_ANALYSIS, data);
-    }, 2000);
+    }
   };
 
   const handleSave = () => {
@@ -100,10 +120,8 @@ function AnalisarVagaPage() {
         jobUrl: data.job.url,
         jobDescription: data.job.description,
         resumeId: data.resume.savedResume?.id ?? null,
-        resumeTitle:
-          data.resume.savedResume?.name ??
-          data.resume.fileName ??
-          (data.resume.source === "paste" ? "Currículo colado" : null),
+        resumeTitle: resumeTitleOf(data),
+        resumeType: data.resume.savedResume?.kind ?? null,
         result,
       },
       {
@@ -111,8 +129,8 @@ function AnalisarVagaPage() {
           savedIdRef.current = id;
           toast.success("Análise salva no seu histórico.");
         },
-        onError: (error) =>
-          toast.error(error instanceof Error ? error.message : "Erro ao salvar análise."),
+        onError: () =>
+          toast.error("Não foi possível salvar esta análise no seu histórico."),
       },
     );
   };
@@ -176,9 +194,7 @@ function AnalisarVagaPage() {
               jobTitle={data.job.title}
               company={data.job.company}
               analyzedAt={analyzedAt}
-              resumeTitle={
-                data.resume.savedResume?.name ?? data.resume.fileName ?? null
-              }
+              resumeTitle={resumeTitleOf(data)}
               onSave={handleSave}
               saving={saveMutation.isPending}
               onReset={reset}
@@ -197,4 +213,14 @@ function AnalisarVagaPage() {
       </ContentCard>
     </PageContainer>
   );
+}
+
+function friendlyError(error: unknown): string {
+  const message = error instanceof Error ? error.message : "";
+  if (message.includes("AI_RATE_LIMIT"))
+    return "Muitas análises em sequência. Aguarde alguns instantes e tente novamente.";
+  if (message.includes("AI_CREDITS"))
+    return "Os créditos de IA acabaram. Recarregue para continuar analisando.";
+  if (message.includes("currículo")) return message;
+  return "Não foi possível concluir esta análise. Tente novamente.";
 }

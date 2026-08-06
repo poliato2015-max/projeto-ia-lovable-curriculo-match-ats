@@ -8,7 +8,7 @@ import { MetricCard } from "../MetricCard";
 import { RecommendationsCard } from "../RecommendationsCard";
 import { AnalysisSummary } from "../AnalysisSummary";
 import { GapsCard } from "../GapsCard";
-import type { AnalysisResult } from "../mock";
+import type { AnalysisResult } from "../analysis-types";
 
 interface StepResultadoProps {
   result: AnalysisResult;
