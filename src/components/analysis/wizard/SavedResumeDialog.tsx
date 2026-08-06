@@ -48,7 +48,11 @@ export function SavedResumeDialog({ open, onOpenChange, onSelect }: SavedResumeD
         </div>
 
         <div className="max-h-[360px] space-y-2 overflow-y-auto pr-1">
-          {list.length === 0 ? (
+          {isLoading ? (
+            <p className="py-8 text-center text-sm text-muted-foreground">
+              Carregando currículos...
+            </p>
+          ) : list.length === 0 ? (
             <p className="py-8 text-center text-sm text-muted-foreground">
               Nenhum currículo encontrado.
             </p>
