@@ -162,7 +162,7 @@ export async function analyzeWithAI(input: AnalyzeInput): Promise<AnalysisResult
 
   return {
     score,
-    scoreLabel: `${getScoreTier(score).label} compatibilidade com esta vaga.`,
+    scoreLabel: `${getScoreTier(score).label} — ${score}% de compatibilidade com esta vaga.`,
     hardSkills: sanitizeSkills(parsed["hardSkills"]),
     softSkills: sanitizeSkills(parsed["softSkills"]),
     keywords: {
