@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { UploadCloud, ClipboardPaste, FolderOpen, ArrowRight, ArrowLeft, FileCheck2 } from "lucide-react";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -18,9 +18,10 @@ interface StepCurriculoProps {
 
 export function StepCurriculo({ data, onChange, onNext, onBack }: StepCurriculoProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const canContinue =
-    (data.source === "upload" && !!data.fileName) ||
+    (data.source === "upload" && data.content.trim().length > 0) ||
     (data.source === "paste" && data.content.trim().length > 0) ||
     (data.source === "saved" && !!data.savedResume);
 
