@@ -1,7 +1,7 @@
 import { Check, AlertTriangle, X } from "lucide-react";
 import { ContentCard } from "@/components/common/ContentCard";
 import { cn } from "@/lib/utils";
-import type { SkillItem, SkillStatus } from "./mock";
+import type { SkillItem, SkillStatus } from "./analysis-types";
 
 const CONFIG: Record<
   SkillStatus,

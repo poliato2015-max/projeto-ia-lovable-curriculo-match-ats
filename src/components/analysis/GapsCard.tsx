@@ -1,7 +1,7 @@
 import { AlertTriangle } from "lucide-react";
 import { ContentCard } from "@/components/common/ContentCard";
 import { cn } from "@/lib/utils";
-import type { SkillItem } from "./mock";
+import type { SkillItem } from "./analysis-types";
 
 interface GapsCardProps {
   skills: SkillItem[];

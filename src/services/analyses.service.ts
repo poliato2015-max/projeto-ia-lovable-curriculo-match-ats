@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabase";
-import type { AnalysisResult } from "@/components/analysis/mock";
+import type { AnalysisResult } from "@/components/analysis/analysis-types";
 
 export interface AnalysisRecord {
   id: string;

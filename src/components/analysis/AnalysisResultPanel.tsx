@@ -6,7 +6,7 @@ import { KeywordsCard } from "./KeywordsCard";
 import { MetricCard } from "./MetricCard";
 import { RecommendationsCard } from "./RecommendationsCard";
 import { AnalysisSummary } from "./AnalysisSummary";
-import type { AnalysisResult } from "./mock";
+import type { AnalysisResult } from "./analysis-types";
 
 interface AnalysisResultPanelProps {
   result: AnalysisResult;

@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { ContentCard } from "@/components/common/ContentCard";
-import type { AnalysisResult } from "../mock";
+import type { AnalysisResult } from "../analysis-types";
 
 interface StepCurriculoATSProps {
   result: AnalysisResult;
