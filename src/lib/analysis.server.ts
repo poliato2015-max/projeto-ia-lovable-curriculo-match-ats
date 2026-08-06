@@ -71,6 +71,8 @@ function buildPrompt(input: AnalyzeInput): string {
   return [
     "Analise a compatibilidade (ATS) entre o currículo e a vaga abaixo.",
     "Responda sempre em português do Brasil, de forma objetiva e acionável.",
+    "'score' e 'experienceMatch' são percentuais inteiros de 0 a 100 (ex.: 78).",
+    "Liste de 5 a 8 hard skills e 3 a 5 soft skills exigidas pela vaga, marcando o status em relação ao currículo.",
     "",
     `# Vaga\nTítulo: ${input.jobTitle}\nEmpresa: ${input.company || "não informada"}`,
     input.jobUrl ? `Link: ${input.jobUrl}` : "",
