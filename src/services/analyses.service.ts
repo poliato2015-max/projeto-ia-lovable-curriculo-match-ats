@@ -113,6 +113,7 @@ export interface SaveAnalysisInput {
   jobDescription?: string;
   resumeId?: string | null;
   resumeTitle?: string | null;
+  resumeType?: "original" | "ats" | null;
   result: AnalysisResult;
 }
 
@@ -131,6 +132,7 @@ export async function saveAnalysis(input: SaveAnalysisInput): Promise<string> {
       job_description: input.jobDescription || null,
       resume_id: input.resumeId ?? null,
       resume_title: input.resumeTitle ?? null,
+      resume_type: input.resumeType ?? null,
       match_score: input.result.score,
       status: "completed",
     })
@@ -143,11 +145,13 @@ export async function saveAnalysis(input: SaveAnalysisInput): Promise<string> {
     analysis_id: data.id,
     summary: input.result.summary,
     recommendations: input.result.recommendations,
-    keywords_found: [],
-    keywords_missing: [],
-    strengths: [],
-    weaknesses: [],
-    next_steps: [],
+    keywords_found: input.result.keywordsFound ?? [],
+    keywords_missing: input.result.keywordsMissing ?? [],
+    strengths: input.result.strengths ?? [],
+    weaknesses: [...input.result.hardSkills, ...input.result.softSkills]
+      .filter((s) => s.status !== "match")
+      .map((s) => s.name),
+    next_steps: input.result.nextSteps ?? [],
     payload: JSON.parse(JSON.stringify(input.result)),
   });
 
