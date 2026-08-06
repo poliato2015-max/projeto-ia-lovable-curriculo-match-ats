@@ -50,13 +50,29 @@ export function StepCurriculo({ data, onChange, onNext, onBack }: StepCurriculoP
         </TabsList>
 
         <TabsContent value="upload" className="mt-4">
-          <UploadPlaceholder
-            onSelect={() => {
-              const mockName = "curriculo.pdf";
-              onChange({ ...data, fileName: mockName });
-              toast("Currículo anexado (mock)", { description: mockName });
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".txt,.md,.pdf,.docx"
+            className="hidden"
+            onChange={async (e) => {
+              const file = e.target.files?.[0];
+              e.target.value = "";
+              if (!file) return;
+              const name = file.name.toLowerCase();
+              if (name.endsWith(".txt") || name.endsWith(".md")) {
+                const text = await file.text();
+                onChange({ ...data, fileName: file.name, content: text });
+                toast.success("Currículo anexado", { description: file.name });
+                return;
+              }
+              toast.error("Não conseguimos ler este formato automaticamente.", {
+                description: "Use a aba Colar ou selecione um currículo salvo.",
+              });
             }}
           />
+          <UploadPlaceholder onSelect={() => fileInputRef.current?.click()} />
+
           {data.fileName && (
             <p className="mt-3 text-xs text-muted-foreground">
               Selecionado: <span className="font-medium text-foreground">{data.fileName}</span>
