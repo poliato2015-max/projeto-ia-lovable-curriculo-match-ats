@@ -37,12 +37,13 @@ async function extractPdf(buffer: ArrayBuffer): Promise<string> {
       items.map((item) => (item.str ?? "") + (item.hasEOL ? "\n" : " ")).join(""),
     );
   }
-  await doc.destroy();
   return normalize(pages.join("\n\n"));
 }
 
 async function extractDocx(buffer: ArrayBuffer): Promise<string> {
-  const mammoth = await import("mammoth/mammoth.browser");
+  const mammoth = (await import("mammoth/mammoth.browser.js")) as unknown as {
+    extractRawText: (opts: { arrayBuffer: ArrayBuffer }) => Promise<{ value?: string }>;
+  };
   const result = await mammoth.extractRawText({ arrayBuffer: buffer });
   return normalize(result.value ?? "");
 }
