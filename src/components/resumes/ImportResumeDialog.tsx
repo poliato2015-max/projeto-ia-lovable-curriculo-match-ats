@@ -8,14 +8,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { UploadPlaceholder } from "./UploadPlaceholder";
+import { ACCEPTED_FILE_ACCEPT, validateFile } from "@/lib/file-text";
 
 interface ImportResumeDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onFileSelected?: (file: File) => Promise<void> | void;
 }
-
-const MAX_SIZE = 10 * 1024 * 1024;
 
 /** Modal de importação de currículos: envia o arquivo para o Storage e persiste os metadados. */
 export function ImportResumeDialog({
@@ -29,8 +28,9 @@ export function ImportResumeDialog({
 
   const handleFile = async (file: File) => {
     setError(null);
-    if (file.size > MAX_SIZE) {
-      setError("O arquivo excede o limite de 10 MB.");
+    const invalid = validateFile(file);
+    if (invalid) {
+      setError(invalid);
       return;
     }
     setBusy(true);
@@ -56,7 +56,7 @@ export function ImportResumeDialog({
         <input
           ref={inputRef}
           type="file"
-          accept=".pdf,.docx,.txt,.md"
+          accept={ACCEPTED_FILE_ACCEPT}
           className="hidden"
           onChange={(e) => {
             const file = e.target.files?.[0];
@@ -70,14 +70,17 @@ export function ImportResumeDialog({
             <p className="text-sm font-medium text-foreground">Enviando currículo...</p>
           </div>
         ) : (
-          <UploadPlaceholder onSelect={() => inputRef.current?.click()} />
+          <UploadPlaceholder
+            onSelect={() => inputRef.current?.click()}
+            onDropFile={(file) => void handleFile(file)}
+          />
         )}
 
         {error && (
           <p className="text-center text-xs text-destructive">{error}</p>
         )}
         <p className="text-center text-xs text-muted-foreground">
-          Formatos suportados: PDF ou DOCX • até 10 MB
+          Formatos suportados: PDF, DOCX, TXT ou Markdown • até 10 MB
         </p>
         <p className="text-center text-xs text-muted-foreground">
           Seus dados são processados com segurança e nunca compartilhados.

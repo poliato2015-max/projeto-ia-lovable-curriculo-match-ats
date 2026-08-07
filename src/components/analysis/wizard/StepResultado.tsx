@@ -1,5 +1,4 @@
-import { Briefcase, GraduationCap, Languages, Save, Sparkles, RotateCcw, Building2, CalendarDays, FileText } from "lucide-react";
-import { toast } from "sonner";
+import { Briefcase, GraduationCap, Languages, Sparkles, RotateCcw, Building2, CalendarDays, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ATSScoreCard } from "../ATSScoreCard";
 import { SkillsCard } from "../SkillsCard";
@@ -17,9 +16,6 @@ interface StepResultadoProps {
   analyzedAt: Date;
   onReset: () => void;
   onGenerate?: () => void;
-  /** Ação de salvar a análise no histórico. */
-  onSave?: () => void;
-  saving?: boolean;
   /** Modo leitura, usado ao reabrir uma análise do histórico. */
   readOnly?: boolean;
   resumeTitle?: string | null;
@@ -33,8 +29,6 @@ export function StepResultado({
   analyzedAt,
   onReset,
   onGenerate,
-  onSave,
-  saving,
   readOnly,
   resumeTitle,
   resetLabel,
@@ -80,23 +74,6 @@ export function StepResultado({
           <Button variant="ghost" size="sm" className="gap-2" onClick={onReset}>
             <RotateCcw className="h-4 w-4" /> {resetLabel ?? "Nova análise"}
           </Button>
-          {!readOnly && (
-            <Button
-              variant="outline"
-              size="sm"
-              className="gap-2"
-              disabled={saving}
-              onClick={() =>
-                onSave
-                  ? onSave()
-                  : toast("Análise salva", {
-                      description: "Disponível no seu histórico.",
-                    })
-              }
-            >
-              <Save className="h-4 w-4" /> {saving ? "Salvando..." : "Salvar análise"}
-            </Button>
-          )}
           {onGenerate && (
             <Button size="sm" className="gap-2" onClick={onGenerate}>
               <Sparkles className="h-4 w-4" /> Gerar Currículo ATS

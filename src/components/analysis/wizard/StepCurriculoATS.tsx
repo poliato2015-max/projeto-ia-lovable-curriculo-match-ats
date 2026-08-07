@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import {
   ArrowLeft,
   Copy,
@@ -9,108 +10,154 @@ import {
   Save,
   ShieldCheck,
   Sparkles,
+  Loader2,
+  AlertTriangle,
+  RefreshCw,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { ContentCard } from "@/components/common/ContentCard";
+import { useResumeMutations } from "@/hooks/useResumes";
+import { generateAtsResume } from "@/lib/ats-resume.functions";
 import type { AnalysisResult } from "../analysis-types";
 
 interface StepCurriculoATSProps {
   result: AnalysisResult;
   jobTitle: string;
   company: string;
+  jobDescription?: string;
+  /** Conteúdo do currículo original — única fonte de verdade para a otimização. */
+  resumeText: string;
+  resumeId: string | null;
+  analysisId: string | null;
+  objectives?: string[];
+  instructions?: string;
   onBack: () => void;
 }
 
 const CHECKLIST = [
-  "Sem tabelas",
-  "Sem imagens",
-  "Sem duas colunas",
-  "Palavras-chave presentes",
-  "Boa leitura ATS",
+  "Texto simples, sem tabelas",
+  "Sem imagens ou gráficos",
+  "Coluna única",
+  "Seções padronizadas",
+  "Somente informações do currículo original",
   "Linguagem objetiva",
-  "Resultados mensuráveis",
 ];
 
-const FOUND_KEYWORDS = [
-  "React",
-  "TypeScript",
-  "Node.js",
-  "Liderança",
-  "APIs REST",
-  "Microserviços",
-  "Cloud",
-  "Agile",
-  "CI/CD",
-  "Docker",
-];
-
-function buildResumeText(jobTitle: string, company: string) {
-  return `JOÃO DA SILVA
-São Paulo, SP • joao.silva@email.com • +55 (11) 99999-9999 • linkedin.com/in/joaosilva
-
-RESUMO PROFISSIONAL
-Engenheiro de Software Sênior com mais de 8 anos de experiência entregando produtos digitais escaláveis. Especialista em React, TypeScript e Node.js, com histórico comprovado de liderança técnica em equipes distribuídas e entrega de resultados mensuráveis${company ? ` em contextos similares ao da ${company}` : ""}${jobTitle ? `, com foco na função de ${jobTitle}` : ""}.
-
-COMPETÊNCIAS TÉCNICAS
-• Front-end: React, TypeScript, Next.js, Tailwind CSS
-• Back-end: Node.js, APIs REST, GraphQL, Microserviços
-• Cloud & DevOps: AWS, Docker, CI/CD, Observabilidade
-• Metodologias: Agile, Scrum, Code Review, Mentoria
-
-EXPERIÊNCIA PROFISSIONAL
-
-Tech Lead — Empresa Anterior (2022 — Atual)
-• Liderou equipe de 6 engenheiros na entrega de plataforma SaaS, aumentando a retenção em 28%.
-• Reduziu o tempo de deploy em 45% através de nova pipeline de CI/CD.
-• Definiu padrões de arquitetura front-end adotados por 4 squads.
-
-Engenheiro de Software Pleno — Empresa Anterior (2019 — 2022)
-• Implementou features críticas em produção com base de 1M+ usuários ativos.
-• Reduziu bugs de produção em 30% com cobertura de testes automatizados.
-
-FORMAÇÃO
-Bacharelado em Ciência da Computação — Universidade XYZ (2015 — 2019)
-
-IDIOMAS
-Português (nativo) • Inglês (avançado)
-`;
+function download(content: string, fileName: string, mime: string) {
+  const blob = new Blob([content], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = fileName;
+  link.click();
+  URL.revokeObjectURL(url);
 }
 
-export function StepCurriculoATS({ result, jobTitle, company, onBack }: StepCurriculoATSProps) {
-  const initial = useMemo(() => buildResumeText(jobTitle, company), [jobTitle, company]);
-  const [content, setContent] = useState(initial);
+export function StepCurriculoATS({
+  result,
+  jobTitle,
+  company,
+  jobDescription = "",
+  resumeText,
+  resumeId,
+  analysisId,
+  objectives = [],
+  instructions = "",
+  onBack,
+}: StepCurriculoATSProps) {
+  const [content, setContent] = useState("");
+  const [keywordsUsed, setKeywordsUsed] = useState<string[]>([]);
+  const [omitted, setOmitted] = useState<string[]>([]);
+  const [notes, setNotes] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [editing, setEditing] = useState(false);
-  const [version, setVersion] = useState(1);
+  const [savedVersion, setSavedVersion] = useState<number | null>(null);
+
+  const generate = useServerFn(generateAtsResume);
+  const { saveAtsMutation } = useResumeMutations();
+
+  const run = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const output = await generate({
+        data: {
+          jobTitle,
+          company,
+          jobDescription,
+          resumeText,
+          resumeId,
+          keywordsFound: result.keywordsFound ?? [],
+          keywordsMissing: result.keywordsMissing ?? [],
+          objectives,
+          instructions,
+        },
+      });
+      setContent(output.content);
+      setKeywordsUsed(output.keywordsUsed);
+      setOmitted(output.omittedKeywords);
+      setNotes(output.notes);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "";
+      setError(
+        message.includes("AI_RATE_LIMIT")
+          ? "Muitas gerações em sequência. Aguarde alguns instantes e tente novamente."
+          : message.includes("AI_CREDITS")
+            ? "Os créditos de IA acabaram. Recarregue para continuar."
+            : message.includes("currículo")
+              ? message
+              : "Não foi possível gerar o currículo ATS. Tente novamente.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    void run();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const wordCount = content.trim().split(/\s+/).filter(Boolean).length;
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(content);
-      toast("Currículo copiado", { description: "Conteúdo enviado para a área de transferência." });
+      toast.success("Currículo copiado", {
+        description: "Conteúdo enviado para a área de transferência.",
+      });
     } catch {
-      toast("Não foi possível copiar", { description: "Verifique as permissões do navegador." });
+      toast.error("Não foi possível copiar", {
+        description: "Verifique as permissões do navegador.",
+      });
     }
   };
 
-  const handleEditToggle = () => {
-    if (editing) {
-      setEditing(false);
-      toast("Alterações salvas", { description: "As mudanças foram aplicadas ao currículo." });
-    } else {
-      setEditing(true);
-    }
-  };
+  const baseFileName = `curriculo-ats-${(jobTitle || "vaga")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")}`;
 
-  const handleNewVersion = () => {
-    const next = version + 1;
-    setVersion(next);
-    toast(`Nova versão v${next} criada (mock)`, {
-      description: "A versão anterior foi preservada na biblioteca.",
-    });
+  const handleSave = () => {
+    saveAtsMutation.mutate(
+      { content, jobTitle, company, sourceResumeId: resumeId, analysisId },
+      {
+        onSuccess: ({ version }) => {
+          setSavedVersion(version);
+          toast.success(`Currículo ATS salvo (v${version})`, {
+            description: "Disponível na sua Biblioteca de Currículos.",
+          });
+        },
+        onError: (err) =>
+          toast.error(
+            err instanceof Error ? err.message : "Não foi possível salvar o currículo ATS.",
+          ),
+      },
+    );
   };
 
   return (
@@ -133,26 +180,32 @@ export function StepCurriculoATS({ result, jobTitle, company, onBack }: StepCurr
               Match ATS {result.score}%
             </Badge>
             <Badge variant="secondary" className="border border-border/70 bg-surface/60 text-foreground">
-              Idioma: Português
-            </Badge>
-            <Badge variant="secondary" className="border border-border/70 bg-surface/60 text-foreground">
               {wordCount} palavras
             </Badge>
-            <Badge variant="secondary" className="border border-secondary/30 bg-secondary/10 text-secondary">
-              v{version}
-            </Badge>
+            {savedVersion !== null && (
+              <Badge variant="secondary" className="border border-secondary/30 bg-secondary/10 text-secondary">
+                Salvo • v{savedVersion}
+              </Badge>
+            )}
           </div>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <Button variant="outline" size="sm" className="gap-2" onClick={handleCopy}>
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-2"
+            disabled={!content}
+            onClick={handleCopy}
+          >
             <Copy className="h-4 w-4" /> Copiar
           </Button>
           <Button
             variant="outline"
             size="sm"
             className="gap-2"
-            onClick={() => toast("Exportar PDF (mock)")}
+            disabled={!content}
+            onClick={() => window.print()}
           >
             <FileDown className="h-4 w-4" /> PDF
           </Button>
@@ -160,7 +213,10 @@ export function StepCurriculoATS({ result, jobTitle, company, onBack }: StepCurr
             variant="outline"
             size="sm"
             className="gap-2"
-            onClick={() => toast("Exportar DOCX (mock)")}
+            disabled={!content}
+            onClick={() =>
+              download(content, `${baseFileName}.doc`, "application/msword")
+            }
           >
             <FileText className="h-4 w-4" /> DOCX
           </Button>
@@ -168,13 +224,24 @@ export function StepCurriculoATS({ result, jobTitle, company, onBack }: StepCurr
             variant={editing ? "default" : "outline"}
             size="sm"
             className="gap-2"
-            onClick={handleEditToggle}
+            disabled={!content}
+            onClick={() => setEditing((v) => !v)}
           >
             {editing ? <Check className="h-4 w-4" /> : <Pencil className="h-4 w-4" />}
-            {editing ? "Salvar Alterações" : "Editar"}
+            {editing ? "Concluir edição" : "Editar"}
           </Button>
-          <Button size="sm" className="gap-2" onClick={handleNewVersion}>
-            <Save className="h-4 w-4" /> Salvar Nova Versão
+          <Button
+            size="sm"
+            className="gap-2"
+            disabled={!content || saveAtsMutation.isPending}
+            onClick={handleSave}
+          >
+            {saveAtsMutation.isPending ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Save className="h-4 w-4" />
+            )}
+            {savedVersion !== null ? "Salvar nova versão" : "Salvar na biblioteca"}
           </Button>
         </div>
       </div>
@@ -183,7 +250,26 @@ export function StepCurriculoATS({ result, jobTitle, company, onBack }: StepCurr
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
         {/* Documento */}
         <div className="rounded-xl border border-border/70 bg-surface/40 shadow-sm">
-          {editing ? (
+          {loading ? (
+            <div className="flex min-h-[420px] flex-col items-center justify-center gap-3 p-8 text-center">
+              <Loader2 className="h-7 w-7 animate-spin text-primary" />
+              <p className="text-sm font-medium text-foreground">
+                Otimizando seu currículo para esta vaga...
+              </p>
+              <p className="max-w-sm text-xs text-muted-foreground">
+                A IA reorganiza e reescreve apenas o que já existe no seu currículo — nada é
+                inventado.
+              </p>
+            </div>
+          ) : error ? (
+            <div className="flex min-h-[420px] flex-col items-center justify-center gap-3 p-8 text-center">
+              <AlertTriangle className="h-7 w-7 text-destructive" />
+              <p className="max-w-sm text-sm text-muted-foreground">{error}</p>
+              <Button variant="outline" size="sm" className="gap-2" onClick={() => void run()}>
+                <RefreshCw className="h-4 w-4" /> Tentar novamente
+              </Button>
+            </div>
+          ) : editing ? (
             <Textarea
               value={content}
               onChange={(e) => setContent(e.target.value)}
@@ -210,7 +296,7 @@ export function StepCurriculoATS({ result, jobTitle, company, onBack }: StepCurr
             <ul className="space-y-2">
               {CHECKLIST.map((item) => (
                 <li key={item} className="flex items-center gap-2 text-sm text-foreground">
-                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
                     <Check className="h-3 w-3" />
                   </span>
                   {item}
@@ -219,19 +305,47 @@ export function StepCurriculoATS({ result, jobTitle, company, onBack }: StepCurr
             </ul>
           </ContentCard>
 
-          <ContentCard title="Palavras-chave ATS" description="Termos identificados no documento.">
-            <div className="flex flex-wrap gap-1.5">
-              {FOUND_KEYWORDS.map((k) => (
-                <Badge
-                  key={k}
-                  variant="secondary"
-                  className="border border-primary/20 bg-primary/10 text-primary"
-                >
-                  {k}
-                </Badge>
-              ))}
-            </div>
+          <ContentCard
+            title="Palavras-chave aplicadas"
+            description="Termos reais do seu currículo destacados."
+          >
+            {keywordsUsed.length ? (
+              <div className="flex flex-wrap gap-1.5">
+                {keywordsUsed.map((k) => (
+                  <Badge
+                    key={k}
+                    variant="secondary"
+                    className="border border-primary/20 bg-primary/10 text-primary"
+                  >
+                    {k}
+                  </Badge>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                Nenhuma palavra-chave destacada nesta versão.
+              </p>
+            )}
           </ContentCard>
+
+          {omitted.length > 0 && (
+            <ContentCard
+              title="Não incluídas"
+              description="Exigências da vaga ausentes no seu currículo — não foram inventadas."
+            >
+              <div className="flex flex-wrap gap-1.5">
+                {omitted.map((k) => (
+                  <Badge
+                    key={k}
+                    variant="secondary"
+                    className="border border-border/70 bg-surface/60 text-muted-foreground"
+                  >
+                    {k}
+                  </Badge>
+                ))}
+              </div>
+            </ContentCard>
+          )}
 
           <ContentCard
             title="Observações da IA"
@@ -242,8 +356,8 @@ export function StepCurriculoATS({ result, jobTitle, company, onBack }: StepCurr
             }
           >
             <p className="text-sm leading-relaxed text-muted-foreground">
-              Este currículo apresenta alta compatibilidade com a vaga por combinar as principais palavras-chave
-              exigidas, evidenciar resultados quantitativos e adotar linguagem objetiva e amigável a sistemas ATS.
+              {notes ||
+                "As otimizações usam exclusivamente o conteúdo do seu currículo original."}
             </p>
           </ContentCard>
         </aside>

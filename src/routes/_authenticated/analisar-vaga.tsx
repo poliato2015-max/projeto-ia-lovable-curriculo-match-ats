@@ -15,7 +15,7 @@ import { StepObjetivo } from "@/components/analysis/wizard/StepObjetivo";
 import { StepResultado } from "@/components/analysis/wizard/StepResultado";
 import { StepCurriculoATS } from "@/components/analysis/wizard/StepCurriculoATS";
 import type { WizardData } from "@/components/analysis/wizard/types";
-import { useAnalysisMutations } from "@/hooks/useAnalyses";
+
 import { runAnalysis as runAnalysisFn } from "@/lib/analysis.functions";
 
 export const Route = createFileRoute("/_authenticated/analisar-vaga")({
@@ -60,8 +60,8 @@ function AnalisarVagaPage() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [analyzedAt, setAnalyzedAt] = useState<Date>(new Date());
-  const { saveMutation } = useAnalysisMutations();
   const savedIdRef = useRef<string | null>(null);
+  const [analysisId, setAnalysisId] = useState<string | null>(null);
   const queryClient = useQueryClient();
   const analyze = useServerFn(runAnalysisFn);
 
@@ -70,6 +70,7 @@ function AnalisarVagaPage() {
     setResult(null);
     setStep(4);
     savedIdRef.current = null;
+    setAnalysisId(null);
 
     try {
       const output = await analyze({
@@ -90,13 +91,13 @@ function AnalisarVagaPage() {
       setResult(output.result);
       setAnalyzedAt(new Date(output.createdAt));
       savedIdRef.current = output.id;
+      setAnalysisId(output.id);
 
       if (output.saved) {
         queryClient.invalidateQueries({ queryKey: ["analyses"] });
+        toast.success("Análise salva no seu histórico.");
       } else {
-        toast.error("Não foi possível salvar esta análise no seu histórico.", {
-          description: "Use o botão \"Salvar análise\" para tentar novamente.",
-        });
+        toast.error("Não foi possível salvar esta análise no seu histórico.");
       }
     } catch (error) {
       if (import.meta.env.DEV) console.error("[analisar-vaga]", error);
@@ -107,39 +108,12 @@ function AnalisarVagaPage() {
     }
   };
 
-  const handleSave = () => {
-    if (savedIdRef.current) {
-      toast.success("Esta análise já está salva no seu histórico.");
-      return;
-    }
-    if (!result) return;
-    saveMutation.mutate(
-      {
-        jobTitle: data.job.title,
-        company: data.job.company,
-        jobUrl: data.job.url,
-        jobDescription: data.job.description,
-        resumeId: data.resume.savedResume?.id ?? null,
-        resumeTitle: resumeTitleOf(data),
-        resumeType: data.resume.savedResume?.kind ?? null,
-        result,
-      },
-      {
-        onSuccess: (id) => {
-          savedIdRef.current = id;
-          toast.success("Análise salva no seu histórico.");
-        },
-        onError: () =>
-          toast.error("Não foi possível salvar esta análise no seu histórico."),
-      },
-    );
-  };
-
   const reset = () => {
     setResult(null);
     setIsAnalyzing(false);
     setData(INITIAL_DATA);
     savedIdRef.current = null;
+    setAnalysisId(null);
     setStep(1);
   };
 
@@ -195,8 +169,6 @@ function AnalisarVagaPage() {
               company={data.job.company}
               analyzedAt={analyzedAt}
               resumeTitle={resumeTitleOf(data)}
-              onSave={handleSave}
-              saving={saveMutation.isPending}
               onReset={reset}
               onGenerate={() => setStep(5)}
             />
@@ -207,6 +179,12 @@ function AnalisarVagaPage() {
             result={result}
             jobTitle={data.job.title}
             company={data.job.company}
+            jobDescription={data.job.description}
+            resumeText={data.resume.content}
+            resumeId={data.resume.savedResume?.id ?? null}
+            analysisId={analysisId}
+            objectives={data.objective.goals}
+            instructions={data.objective.instructions}
             onBack={() => setStep(4)}
           />
         )}

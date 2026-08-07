@@ -4,9 +4,11 @@ import {
   deleteResume,
   importResume,
   listResumes,
+  saveAtsResume,
   setDefaultResume,
   updateResume,
   type ImportResumeInput,
+  type SaveAtsResumeInput,
   type UpdateResumeInput,
 } from "@/services/resumes.service";
 import type { Resume } from "@/components/resumes/types";
@@ -47,5 +49,10 @@ export function useResumeMutations() {
     onSuccess: invalidate,
   });
 
-  return { importMutation, updateMutation, deleteMutation, defaultMutation };
+  const saveAtsMutation = useMutation({
+    mutationFn: (input: SaveAtsResumeInput) => saveAtsResume(input),
+    onSuccess: invalidate,
+  });
+
+  return { importMutation, updateMutation, deleteMutation, defaultMutation, saveAtsMutation };
 }

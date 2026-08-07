@@ -1,11 +1,12 @@
-import { useRef } from "react";
-import { Link2, FileText, UploadCloud, ArrowRight } from "lucide-react";
+import { useRef, useState } from "react";
+import { Link2, FileText, UploadCloud, ArrowRight, Loader2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { UploadPlaceholder } from "@/components/resumes/UploadPlaceholder";
+import { ACCEPTED_FILE_ACCEPT, extractFileText, validateFile } from "@/lib/file-text";
 import { toast } from "sonner";
 import type { JobData, JobSource } from "./types";
 
@@ -17,13 +18,34 @@ interface StepVagaProps {
 
 export function StepVaga({ data, onChange, onNext }: StepVagaProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [reading, setReading] = useState(false);
   const hasSource =
     (data.source === "url" && data.url.trim().length > 0) ||
     (data.source === "description" && data.description.trim().length > 0) ||
     (data.source === "upload" && data.description.trim().length > 0);
 
   const canContinue =
-    data.title.trim().length > 0 && data.company.trim().length > 0 && hasSource;
+    !reading && data.title.trim().length > 0 && data.company.trim().length > 0 && hasSource;
+
+  const handleFile = async (file: File) => {
+    const invalid = validateFile(file);
+    if (invalid) {
+      toast.error(invalid);
+      return;
+    }
+    setReading(true);
+    try {
+      const text = await extractFileText(file);
+      onChange({ ...data, fileName: file.name, description: text });
+      toast.success("Arquivo anexado", { description: file.name });
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Não foi possível ler este arquivo.",
+      );
+    } finally {
+      setReading(false);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -109,28 +131,25 @@ export function StepVaga({ data, onChange, onNext }: StepVagaProps) {
             <input
               ref={fileInputRef}
               type="file"
-              accept=".txt,.md,.pdf,.docx"
+              accept={ACCEPTED_FILE_ACCEPT}
               className="hidden"
-              onChange={async (e) => {
+              onChange={(e) => {
                 const file = e.target.files?.[0];
                 e.target.value = "";
-                if (!file) return;
-                const name = file.name.toLowerCase();
-                if (name.endsWith(".txt") || name.endsWith(".md")) {
-                  const text = await file.text();
-                  onChange({ ...data, fileName: file.name, description: text });
-                  toast.success("Arquivo anexado", { description: file.name });
-                  return;
-                }
-                toast.error("Não conseguimos ler este formato automaticamente.", {
-                  description: "Use a aba Descrição e cole o texto da vaga.",
-                });
+                if (file) void handleFile(file);
               }}
             />
-            <UploadPlaceholder
-              accepted={["TXT", "Markdown"]}
-              onSelect={() => fileInputRef.current?.click()}
-            />
+            {reading ? (
+              <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-border bg-surface/50 px-6 py-10 text-center">
+                <Loader2 className="mb-3 h-6 w-6 animate-spin text-primary" />
+                <p className="text-sm font-medium text-foreground">Lendo o arquivo da vaga...</p>
+              </div>
+            ) : (
+              <UploadPlaceholder
+                onSelect={() => fileInputRef.current?.click()}
+                onDropFile={(file) => void handleFile(file)}
+              />
+            )}
             {data.fileName && (
               <p className="mt-3 text-xs text-muted-foreground">
                 Selecionado: <span className="font-medium text-foreground">{data.fileName}</span>
