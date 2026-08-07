@@ -1,11 +1,12 @@
-import { useRef } from "react";
-import { Link2, FileText, UploadCloud, ArrowRight } from "lucide-react";
+import { useRef, useState } from "react";
+import { Link2, FileText, UploadCloud, ArrowRight, Loader2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { UploadPlaceholder } from "@/components/resumes/UploadPlaceholder";
+import { ACCEPTED_FILE_ACCEPT, extractFileText, validateFile } from "@/lib/file-text";
 import { toast } from "sonner";
 import type { JobData, JobSource } from "./types";
 
@@ -17,13 +18,34 @@ interface StepVagaProps {
 
 export function StepVaga({ data, onChange, onNext }: StepVagaProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [reading, setReading] = useState(false);
   const hasSource =
     (data.source === "url" && data.url.trim().length > 0) ||
     (data.source === "description" && data.description.trim().length > 0) ||
     (data.source === "upload" && data.description.trim().length > 0);
 
   const canContinue =
-    data.title.trim().length > 0 && data.company.trim().length > 0 && hasSource;
+    !reading && data.title.trim().length > 0 && data.company.trim().length > 0 && hasSource;
+
+  const handleFile = async (file: File) => {
+    const invalid = validateFile(file);
+    if (invalid) {
+      toast.error(invalid);
+      return;
+    }
+    setReading(true);
+    try {
+      const text = await extractFileText(file);
+      onChange({ ...data, fileName: file.name, description: text });
+      toast.success("Arquivo anexado", { description: file.name });
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Não foi possível ler este arquivo.",
+      );
+    } finally {
+      setReading(false);
+    }
+  };
 
   return (
     <div className="space-y-6">
