@@ -15,7 +15,7 @@ import { StepObjetivo } from "@/components/analysis/wizard/StepObjetivo";
 import { StepResultado } from "@/components/analysis/wizard/StepResultado";
 import { StepCurriculoATS } from "@/components/analysis/wizard/StepCurriculoATS";
 import type { WizardData } from "@/components/analysis/wizard/types";
-import { useAnalysisMutations } from "@/hooks/useAnalyses";
+
 import { runAnalysis as runAnalysisFn } from "@/lib/analysis.functions";
 
 export const Route = createFileRoute("/_authenticated/analisar-vaga")({

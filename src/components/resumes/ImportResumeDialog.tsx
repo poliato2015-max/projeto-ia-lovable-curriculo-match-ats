@@ -56,7 +56,7 @@ export function ImportResumeDialog({
         <input
           ref={inputRef}
           type="file"
-          accept=".pdf,.docx,.txt,.md"
+          accept={ACCEPTED_FILE_ACCEPT}
           className="hidden"
           onChange={(e) => {
             const file = e.target.files?.[0];
@@ -70,14 +70,17 @@ export function ImportResumeDialog({
             <p className="text-sm font-medium text-foreground">Enviando currículo...</p>
           </div>
         ) : (
-          <UploadPlaceholder onSelect={() => inputRef.current?.click()} />
+          <UploadPlaceholder
+            onSelect={() => inputRef.current?.click()}
+            onDropFile={(file) => void handleFile(file)}
+          />
         )}
 
         {error && (
           <p className="text-center text-xs text-destructive">{error}</p>
         )}
         <p className="text-center text-xs text-muted-foreground">
-          Formatos suportados: PDF ou DOCX • até 10 MB
+          Formatos suportados: PDF, DOCX, TXT ou Markdown • até 10 MB
         </p>
         <p className="text-center text-xs text-muted-foreground">
           Seus dados são processados com segurança e nunca compartilhados.
