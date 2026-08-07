@@ -56,16 +56,38 @@ export async function listResumes(): Promise<Resume[]> {
 }
 
 async function extractText(file: File): Promise<string | null> {
-  const name = file.name.toLowerCase();
-  if (name.endsWith(".txt") || name.endsWith(".md")) {
-    try {
-      return await file.text();
-    } catch {
-      return null;
-    }
+  try {
+    const text = await extractFileText(file);
+    return text || null;
+  } catch {
+    return null;
   }
-  return null;
 }
+
+/**
+ * Garante que temos o texto do currículo: usa o `raw_text` persistido e,
+ * quando ausente, baixa o arquivo do Storage, extrai o conteúdo e atualiza o registro.
+ */
+export async function ensureResumeText(resume: Resume): Promise<string> {
+  if (resume.rawText && resume.rawText.trim()) return resume.rawText;
+  if (!resume.filePath) {
+    throw new Error(
+      "Este currículo não possui conteúdo legível. Reimporte o arquivo ou cole o texto.",
+    );
+  }
+
+  const { data, error } = await supabase.storage.from(RESUMES_BUCKET).download(resume.filePath);
+  if (error || !data) throw new Error("Não foi possível abrir o arquivo deste currículo.");
+
+  const text = await extractFileText(data, resume.fileName ?? resume.filePath);
+  if (!text.trim()) {
+    throw new Error("Não conseguimos extrair o texto deste currículo. Cole o conteúdo manualmente.");
+  }
+
+  await supabase.from("resumes").update({ raw_text: text }).eq("id", resume.id);
+  return text;
+}
+
 
 export interface ImportResumeInput {
   file: File;
