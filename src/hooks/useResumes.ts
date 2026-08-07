@@ -4,9 +4,11 @@ import {
   deleteResume,
   importResume,
   listResumes,
+  saveAtsResume,
   setDefaultResume,
   updateResume,
   type ImportResumeInput,
+  type SaveAtsResumeInput,
   type UpdateResumeInput,
 } from "@/services/resumes.service";
 import type { Resume } from "@/components/resumes/types";
