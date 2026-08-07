@@ -29,8 +29,6 @@ export function StepResultado({
   analyzedAt,
   onReset,
   onGenerate,
-  onSave,
-  saving,
   readOnly,
   resumeTitle,
   resetLabel,
