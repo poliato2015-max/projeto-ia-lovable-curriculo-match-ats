@@ -167,3 +167,73 @@ export async function deleteResume(resume: Pick<Resume, "id" | "filePath">): Pro
   const { error } = await supabase.from("resumes").delete().eq("id", resume.id);
   if (error) throw new Error("Não foi possível excluir o currículo.");
 }
+
+export interface SaveAtsResumeInput {
+  content: string;
+  jobTitle: string;
+  company: string;
+  /** Currículo original que originou esta versão ATS. */
+  sourceResumeId: string | null;
+  /** Análise que originou esta versão ATS. */
+  analysisId: string | null;
+}
+
+export interface SaveAtsResumeOutput {
+  resume: Resume;
+  version: number;
+}
+
+/**
+ * Persiste o currículo ATS gerado: cria o registro na Biblioteca (tipo "ats")
+ * e a versão correspondente em `ats_resumes`, vinculada ao currículo original
+ * e à análise que a originou.
+ */
+export async function saveAtsResume(input: SaveAtsResumeInput): Promise<SaveAtsResumeOutput> {
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+  if (userError || !userData.user) throw new Error("Sessão expirada. Entre novamente.");
+  const userId = userData.user.id;
+
+  const content = input.content.trim();
+  if (!content) throw new Error("O currículo ATS está vazio.");
+
+  const title = `Currículo ATS — ${input.jobTitle || "Vaga"}${
+    input.company ? ` (${input.company})` : ""
+  }`;
+
+  const { data: created, error } = await supabase
+    .from("resumes")
+    .insert({
+      user_id: userId,
+      title,
+      position: input.jobTitle || null,
+      company: input.company || null,
+      type: "ats",
+      raw_text: content,
+    })
+    .select("*")
+    .single();
+
+  if (error || !created) throw new Error("Não foi possível salvar o currículo ATS.");
+
+  const resume = mapRowToResume(created as ResumeRow);
+
+  let version = 1;
+  const countQuery = supabase
+    .from("ats_resumes")
+    .select("id", { count: "exact", head: true });
+  const { count } = input.analysisId
+    ? await countQuery.eq("analysis_id", input.analysisId)
+    : input.sourceResumeId
+      ? await countQuery.eq("resume_id", input.sourceResumeId)
+      : { count: 0 };
+  version = (count ?? 0) + 1;
+
+  await supabase.from("ats_resumes").insert({
+    analysis_id: input.analysisId,
+    resume_id: input.sourceResumeId ?? resume.id,
+    content,
+    version,
+  });
+
+  return { resume, version };
+}
