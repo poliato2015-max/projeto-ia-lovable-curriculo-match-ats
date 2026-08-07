@@ -1,5 +1,4 @@
-import { Briefcase, GraduationCap, Languages, Save, Sparkles, RotateCcw, Building2, CalendarDays, FileText } from "lucide-react";
-import { toast } from "sonner";
+import { Briefcase, GraduationCap, Languages, Sparkles, RotateCcw, Building2, CalendarDays, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ATSScoreCard } from "../ATSScoreCard";
 import { SkillsCard } from "../SkillsCard";
@@ -17,9 +16,6 @@ interface StepResultadoProps {
   analyzedAt: Date;
   onReset: () => void;
   onGenerate?: () => void;
-  /** Ação de salvar a análise no histórico. */
-  onSave?: () => void;
-  saving?: boolean;
   /** Modo leitura, usado ao reabrir uma análise do histórico. */
   readOnly?: boolean;
   resumeTitle?: string | null;
