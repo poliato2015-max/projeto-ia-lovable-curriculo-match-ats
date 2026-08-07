@@ -16,8 +16,6 @@ interface ImportResumeDialogProps {
   onFileSelected?: (file: File) => Promise<void> | void;
 }
 
-const MAX_SIZE = 10 * 1024 * 1024;
-
 /** Modal de importação de currículos: envia o arquivo para o Storage e persiste os metadados. */
 export function ImportResumeDialog({
   open,
@@ -30,8 +28,9 @@ export function ImportResumeDialog({
 
   const handleFile = async (file: File) => {
     setError(null);
-    if (file.size > MAX_SIZE) {
-      setError("O arquivo excede o limite de 10 MB.");
+    const invalid = validateFile(file);
+    if (invalid) {
+      setError(invalid);
       return;
     }
     setBusy(true);
