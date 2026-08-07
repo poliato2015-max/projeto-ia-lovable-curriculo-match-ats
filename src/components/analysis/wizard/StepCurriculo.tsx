@@ -1,5 +1,14 @@
 import { useRef, useState } from "react";
-import { UploadCloud, ClipboardPaste, FolderOpen, ArrowRight, ArrowLeft, FileCheck2 } from "lucide-react";
+import {
+  UploadCloud,
+  ClipboardPaste,
+  FolderOpen,
+  ArrowRight,
+  ArrowLeft,
+  FileCheck2,
+  Loader2,
+  Trash2,
+} from "lucide-react";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
@@ -7,6 +16,10 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { UploadPlaceholder } from "@/components/resumes/UploadPlaceholder";
 import { SavedResumeDialog } from "./SavedResumeDialog";
+import { ACCEPTED_FILE_ACCEPT, extractFileText, validateFile } from "@/lib/file-text";
+import { ensureResumeText } from "@/services/resumes.service";
+import { useResumeMutations } from "@/hooks/useResumes";
+import type { Resume } from "@/components/resumes/types";
 import type { ResumeData, ResumeSource } from "./types";
 
 interface StepCurriculoProps {
@@ -18,12 +31,72 @@ interface StepCurriculoProps {
 
 export function StepCurriculo({ data, onChange, onNext, onBack }: StepCurriculoProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [busy, setBusy] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { deleteMutation } = useResumeMutations();
 
   const canContinue =
-    (data.source === "upload" && data.content.trim().length > 0) ||
-    (data.source === "paste" && data.content.trim().length > 0) ||
-    (data.source === "saved" && !!data.savedResume);
+    !busy &&
+    ((data.source === "upload" && data.content.trim().length > 0) ||
+      (data.source === "paste" && data.content.trim().length > 0) ||
+      (data.source === "saved" && !!data.savedResume && data.content.trim().length > 0));
+
+  const handleFile = async (file: File) => {
+    const invalid = validateFile(file);
+    if (invalid) {
+      toast.error(invalid);
+      return;
+    }
+    setBusy(true);
+    try {
+      const text = await extractFileText(file);
+      onChange({ ...data, fileName: file.name, content: text });
+      toast.success("Currículo anexado", { description: file.name });
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Não foi possível ler este arquivo.",
+      );
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const handleSelectSaved = async (resume: Resume) => {
+    setBusy(true);
+    try {
+      const text = await ensureResumeText(resume);
+      onChange({
+        ...data,
+        savedResume: { ...resume, rawText: text },
+        content: text,
+        fileName: resume.fileName ?? resume.name,
+      });
+      toast.success("Currículo carregado", { description: resume.name });
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Não foi possível carregar este currículo.",
+      );
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const handleDeleteSaved = async () => {
+    const resume = data.savedResume;
+    if (!resume) return;
+    try {
+      await deleteMutation.mutateAsync({ id: resume.id, filePath: resume.filePath });
+      const next = { ...data, content: "" };
+      delete next.savedResume;
+      delete next.fileName;
+      onChange(next);
+      toast.success("Currículo excluído da sua biblioteca.");
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Não foi possível excluir o currículo.",
+      );
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -54,25 +127,25 @@ export function StepCurriculo({ data, onChange, onNext, onBack }: StepCurriculoP
           <input
             ref={fileInputRef}
             type="file"
-            accept=".txt,.md,.pdf,.docx"
+            accept={ACCEPTED_FILE_ACCEPT}
             className="hidden"
-            onChange={async (e) => {
+            onChange={(e) => {
               const file = e.target.files?.[0];
               e.target.value = "";
-              if (!file) return;
-              const name = file.name.toLowerCase();
-              if (name.endsWith(".txt") || name.endsWith(".md")) {
-                const text = await file.text();
-                onChange({ ...data, fileName: file.name, content: text });
-                toast.success("Currículo anexado", { description: file.name });
-                return;
-              }
-              toast.error("Não conseguimos ler este formato automaticamente.", {
-                description: "Use a aba Colar ou selecione um currículo salvo.",
-              });
+              if (file) void handleFile(file);
             }}
           />
-          <UploadPlaceholder onSelect={() => fileInputRef.current?.click()} />
+          {busy ? (
+            <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-border bg-surface/50 px-6 py-10 text-center">
+              <Loader2 className="mb-3 h-6 w-6 animate-spin text-primary" />
+              <p className="text-sm font-medium text-foreground">Lendo o currículo...</p>
+            </div>
+          ) : (
+            <UploadPlaceholder
+              onSelect={() => fileInputRef.current?.click()}
+              onDropFile={(file) => void handleFile(file)}
+            />
+          )}
 
           {data.fileName && (
             <p className="mt-3 text-xs text-muted-foreground">
@@ -96,7 +169,11 @@ export function StepCurriculo({ data, onChange, onNext, onBack }: StepCurriculoP
           {data.savedResume ? (
             <div className="flex items-center gap-3 rounded-lg border border-primary/30 bg-primary/5 px-4 py-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                <FileCheck2 className="h-5 w-5" />
+                {busy ? (
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                ) : (
+                  <FileCheck2 className="h-5 w-5" />
+                )}
               </div>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-semibold text-foreground">
@@ -108,6 +185,15 @@ export function StepCurriculo({ data, onChange, onNext, onBack }: StepCurriculoP
               </div>
               <Button variant="ghost" size="sm" onClick={() => setDialogOpen(true)}>
                 Trocar
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="gap-1.5 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                disabled={deleteMutation.isPending}
+                onClick={() => void handleDeleteSaved()}
+              >
+                <Trash2 className="h-4 w-4" /> Excluir
               </Button>
             </div>
           ) : (
@@ -131,7 +217,7 @@ export function StepCurriculo({ data, onChange, onNext, onBack }: StepCurriculoP
           <SavedResumeDialog
             open={dialogOpen}
             onOpenChange={setDialogOpen}
-            onSelect={(r) => onChange({ ...data, savedResume: r })}
+            onSelect={(r) => void handleSelectSaved(r)}
           />
         </TabsContent>
       </Tabs>
