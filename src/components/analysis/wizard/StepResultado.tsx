@@ -80,23 +80,6 @@ export function StepResultado({
           <Button variant="ghost" size="sm" className="gap-2" onClick={onReset}>
             <RotateCcw className="h-4 w-4" /> {resetLabel ?? "Nova análise"}
           </Button>
-          {!readOnly && (
-            <Button
-              variant="outline"
-              size="sm"
-              className="gap-2"
-              disabled={saving}
-              onClick={() =>
-                onSave
-                  ? onSave()
-                  : toast("Análise salva", {
-                      description: "Disponível no seu histórico.",
-                    })
-              }
-            >
-              <Save className="h-4 w-4" /> {saving ? "Salvando..." : "Salvar análise"}
-            </Button>
-          )}
           {onGenerate && (
             <Button size="sm" className="gap-2" onClick={onGenerate}>
               <Sparkles className="h-4 w-4" /> Gerar Currículo ATS
