@@ -49,5 +49,10 @@ export function useResumeMutations() {
     onSuccess: invalidate,
   });
 
-  return { importMutation, updateMutation, deleteMutation, defaultMutation };
+  const saveAtsMutation = useMutation({
+    mutationFn: (input: SaveAtsResumeInput) => saveAtsResume(input),
+    onSuccess: invalidate,
+  });
+
+  return { importMutation, updateMutation, deleteMutation, defaultMutation, saveAtsMutation };
 }
