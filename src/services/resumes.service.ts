@@ -1,4 +1,5 @@
 import { supabase } from "@/lib/supabase";
+import { extractFileText } from "@/lib/file-text";
 import type { Resume, ResumeKind } from "@/components/resumes/types";
 
 const RESUMES_BUCKET = "resumes";
