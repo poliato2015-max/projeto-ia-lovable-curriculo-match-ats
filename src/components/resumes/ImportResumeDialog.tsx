@@ -8,6 +8,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { UploadPlaceholder } from "./UploadPlaceholder";
+import { ACCEPTED_FILE_ACCEPT, validateFile } from "@/lib/file-text";
 
 interface ImportResumeDialogProps {
   open: boolean;
