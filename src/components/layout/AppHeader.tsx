@@ -1,10 +1,10 @@
-import { Bell, LogOut, Search } from "lucide-react";
+import { LogOut, Search } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
+
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -54,15 +54,6 @@ export function AppHeader() {
 
       <div className="ml-auto flex items-center gap-1.5">
         <ThemeToggle />
-        <Button
-          variant="ghost"
-          size="icon"
-          aria-label="Notificações"
-          className="relative"
-        >
-          <Bell className="h-4 w-4" />
-          <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-secondary" />
-        </Button>
         <Separator orientation="vertical" className="mx-1 h-6" />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
