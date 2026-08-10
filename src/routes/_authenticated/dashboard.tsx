@@ -1,21 +1,22 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import {
-  FileText,
-  Search,
-  FileCheck2,
-  TrendingUp,
-  Sparkles,
+  AlertTriangle,
   ArrowRight,
-  Radar,
-  Clock,
+  BarChart3,
+  CalendarDays,
+  CheckCircle2,
+  Compass,
+  FileText,
+  History,
+  Search,
   Target,
-  Award,
+  TrendingUp,
 } from "lucide-react";
 import {
-  Area,
-  AreaChart,
   CartesianGrid,
+  Line,
+  LineChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -23,12 +24,16 @@ import {
 } from "recharts";
 
 import { PageContainer } from "@/components/common/PageContainer";
+import { PageTitle } from "@/components/common/PageTitle";
 import { StatsCard } from "@/components/common/StatsCard";
 import { ContentCard } from "@/components/common/ContentCard";
-import { SectionTitle } from "@/components/common/SectionTitle";
+import { EmptyState } from "@/components/common/EmptyState";
+import { LoadingState } from "@/components/common/LoadingState";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { useDashboard } from "@/hooks/useDashboard";
+import type { DashboardData } from "@/services/dashboard.service";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
@@ -37,277 +42,321 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
       {
         name: "description",
         content:
-          "Visualize suas estatísticas de currículos, vagas analisadas e score ATS em um só lugar.",
+          "Acompanhe o desempenho das suas análises de vagas, evolução do match ATS e pontos de melhoria.",
       },
+      { property: "og:title", content: "Dashboard — RadarCV AI" },
+      {
+        property: "og:description",
+        content: "Acompanhe seu desempenho nas análises e identifique onde pode melhorar.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: DashboardPage,
 });
 
-const chartData = [
-  { name: "Seg", score: 62 },
-  { name: "Ter", score: 68 },
-  { name: "Qua", score: 71 },
-  { name: "Qui", score: 74 },
-  { name: "Sex", score: 79 },
-  { name: "Sáb", score: 82 },
-  { name: "Dom", score: 86 },
-];
-
-const recentActivities = [
-  {
-    icon: FileCheck2,
-    title: "Currículo ATS gerado",
-    subtitle: "Product Manager Sênior · Nubank",
-    time: "há 2h",
-    tag: "ATS",
-  },
-  {
-    icon: Search,
-    title: "Vaga analisada",
-    subtitle: "Frontend Engineer · Stripe",
-    time: "há 5h",
-    tag: "Análise",
-  },
-  {
-    icon: FileText,
-    title: "Currículo atualizado",
-    subtitle: "Versão 3 · Design System",
-    time: "ontem",
-    tag: "Edição",
-  },
-  {
-    icon: Sparkles,
-    title: "IA Coach sugeriu melhorias",
-    subtitle: "12 sugestões aplicadas",
-    time: "ontem",
-    tag: "Coach",
-  },
-];
+function formatDate(iso: string) {
+  return new Date(iso).toLocaleDateString("pt-BR", { day: "2-digit", month: "short" });
+}
 
 function DashboardPage() {
+  const { data, isLoading, isError } = useDashboard();
+
+  const newAnalysisButton = (
+    <Button asChild size="sm" className="gap-1.5">
+      <Link to="/analisar-vaga">
+        Nova análise
+        <ArrowRight className="h-4 w-4" />
+      </Link>
+    </Button>
+  );
+
   return (
     <PageContainer>
-      {/* Hero */}
-      <motion.section
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
-        className="relative overflow-hidden rounded-2xl border border-border bg-gradient-to-br from-primary/10 via-background to-secondary/10 p-6 md:p-8"
-      >
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-primary/20 blur-3xl"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -bottom-16 -left-16 h-64 w-64 rounded-full bg-secondary/20 blur-3xl"
-        />
-        <div className="relative grid grid-cols-[minmax(0,1fr)_auto] items-center gap-6">
-          <div className="min-w-0">
-            <Badge className="mb-3 border-primary/20 bg-primary/10 text-primary hover:bg-primary/10">
-              <Radar className="mr-1 h-3 w-3" />
-              Foundation Sprint
-            </Badge>
-            <h1 className="text-2xl font-bold tracking-tight text-foreground md:text-4xl">
-              Bem-vindo ao RadarCV AI
-            </h1>
-            <p className="mt-2 max-w-xl text-sm text-muted-foreground md:text-base">
-              Otimize seus currículos, analise vagas e destaque-se no processo seletivo
-              com inteligência artificial de ponta.
-            </p>
-            <div className="mt-5 flex flex-wrap gap-2">
-              <Button size="sm" className="gap-1.5">
-                Analisar vaga
-                <ArrowRight className="h-4 w-4" />
-              </Button>
-              <Button size="sm" variant="outline">
-                Novo currículo
-              </Button>
-            </div>
-          </div>
-          <div className="hidden shrink-0 md:block">
-            <div className="flex h-24 w-24 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-secondary text-primary-foreground shadow-xl">
-              <Radar className="h-10 w-10" />
-            </div>
-          </div>
-        </div>
-      </motion.section>
+      <PageTitle
+        title="Dashboard"
+        description="Acompanhe seu desempenho nas análises e identifique onde pode melhorar."
+        actions={newAnalysisButton}
+      />
 
-      {/* Stats */}
-      <section className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {isLoading && <LoadingState label="Carregando seus indicadores..." />}
+
+      {isError && !isLoading && (
+        <EmptyState
+          icon={AlertTriangle}
+          title="Não foi possível carregar seus indicadores"
+          description="Tente novamente em alguns instantes."
+        />
+      )}
+
+      {data && !isLoading && (data.total === 0 ? <NoAnalyses /> : <DashboardContent data={data} />)}
+    </PageContainer>
+  );
+}
+
+function NoAnalyses() {
+  return (
+    <EmptyState
+      icon={BarChart3}
+      title="Você ainda não realizou nenhuma análise."
+      description="Faça sua primeira análise para começar a acompanhar seu desempenho."
+      action={
+        <Button asChild className="gap-1.5">
+          <Link to="/analisar-vaga">
+            Nova análise
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </Button>
+      }
+    />
+  );
+}
+
+function DashboardContent({ data }: { data: DashboardData }) {
+  const chartData = data.timeline.map((point) => ({
+    ...point,
+    label: formatDate(point.createdAt),
+  }));
+
+  const distributionRows = [
+    { label: "Alta compatibilidade", hint: "80% a 100%", value: data.distribution.high },
+    { label: "Boa compatibilidade", hint: "60% a 79%", value: data.distribution.good },
+    { label: "Baixa compatibilidade", hint: "0% a 59%", value: data.distribution.low },
+  ];
+  const distributionTotal = distributionRows.reduce((sum, row) => sum + row.value, 0) || 1;
+
+  return (
+    <>
+      <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatsCard
           index={0}
-          label="Currículos"
-          value={12}
-          icon={FileText}
-          delta={{ value: "+3", positive: true }}
-          hint="Nos últimos 30 dias"
+          label="Match médio"
+          value={data.averageScore !== null ? `${data.averageScore}%` : "—"}
+          icon={Target}
+          hint="Média das suas análises"
         />
         <StatsCard
           index={1}
-          label="Vagas analisadas"
-          value={38}
-          icon={Search}
-          delta={{ value: "+18%", positive: true }}
-          hint="vs. mês anterior"
+          label="Melhor match"
+          value={data.bestScore !== null ? `${data.bestScore}%` : "—"}
+          icon={TrendingUp}
+          hint="Sua melhor compatibilidade"
         />
         <StatsCard
           index={2}
-          label="Score médio ATS"
-          value="86"
-          icon={Target}
-          delta={{ value: "+4 pts", positive: true }}
-          hint="Compatibilidade média"
+          label="Análises realizadas"
+          value={data.total}
+          icon={Search}
+          hint="Total no seu histórico"
         />
         <StatsCard
           index={3}
-          label="Currículos ATS"
-          value={24}
-          icon={FileCheck2}
-          delta={{ value: "+6", positive: true }}
-          hint="Gerados este mês"
+          label="Este mês"
+          value={data.thisMonth}
+          icon={CalendarDays}
+          hint="Análises no mês atual"
         />
       </section>
 
-      {/* Chart + activities */}
       <section className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-3">
         <ContentCard
           className="lg:col-span-2"
-          title="Evolução do score ATS"
-          description="Média semanal de compatibilidade"
-          action={
-            <Badge variant="outline" className="gap-1 text-xs">
-              <TrendingUp className="h-3 w-3" />
-              +24 pts
-            </Badge>
-          }
+          title="Evolução do seu Match ATS"
+          description="Cada ponto representa uma análise realizada"
         >
-          <div className="h-64 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={chartData} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
-                <defs>
-                  <linearGradient id="scoreGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="var(--color-primary)" stopOpacity={0.35} />
-                    <stop offset="100%" stopColor="var(--color-primary)" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--color-border)" vertical={false} />
-                <XAxis
-                  dataKey="name"
-                  stroke="var(--color-muted-foreground)"
-                  tickLine={false}
-                  axisLine={false}
-                  fontSize={12}
-                />
-                <YAxis
-                  stroke="var(--color-muted-foreground)"
-                  tickLine={false}
-                  axisLine={false}
-                  fontSize={12}
-                  domain={[40, 100]}
-                />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "var(--color-popover)",
-                    borderColor: "var(--color-border)",
-                    borderRadius: 8,
-                    fontSize: 12,
-                  }}
-                  labelStyle={{ color: "var(--color-foreground)" }}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="score"
-                  stroke="var(--color-primary)"
-                  strokeWidth={2.5}
-                  fill="url(#scoreGradient)"
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
+          {chartData.length === 0 ? (
+            <p className="py-8 text-center text-sm text-muted-foreground">
+              Ainda não há análises com pontuação para exibir a evolução.
+            </p>
+          ) : (
+            <div className="h-64 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={chartData} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    stroke="var(--color-border)"
+                    vertical={false}
+                  />
+                  <XAxis
+                    dataKey="label"
+                    stroke="var(--color-muted-foreground)"
+                    tickLine={false}
+                    axisLine={false}
+                    fontSize={12}
+                  />
+                  <YAxis
+                    stroke="var(--color-muted-foreground)"
+                    tickLine={false}
+                    axisLine={false}
+                    fontSize={12}
+                    domain={[0, 100]}
+                  />
+                  <Tooltip
+                    content={({ active, payload }) => {
+                      if (!active || !payload?.length) return null;
+                      const point = payload[0]?.payload as (typeof chartData)[number];
+                      return (
+                        <div className="rounded-lg border border-border bg-popover p-3 text-xs shadow-md">
+                          <p className="font-semibold text-foreground">{point.score}% de match</p>
+                          <p className="mt-1 text-muted-foreground">{point.jobTitle}</p>
+                          {point.company && (
+                            <p className="text-muted-foreground">{point.company}</p>
+                          )}
+                          <p className="mt-1 text-muted-foreground">
+                            {new Date(point.createdAt).toLocaleDateString("pt-BR")}
+                          </p>
+                        </div>
+                      );
+                    }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="score"
+                    stroke="var(--color-primary)"
+                    strokeWidth={2.5}
+                    dot={{ r: 3 }}
+                    activeDot={{ r: 5 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          )}
         </ContentCard>
 
         <ContentCard
-          title="Metas do mês"
-          description="Progresso das suas metas"
+          title="Compatibilidade das suas análises"
+          description="Distribuição por faixa de match"
         >
           <div className="space-y-5">
-            <div>
-              <div className="mb-1.5 flex items-center justify-between text-sm">
-                <span className="flex items-center gap-1.5 text-foreground">
-                  <Award className="h-3.5 w-3.5 text-primary" />
-                  Score ATS 90+
-                </span>
-                <span className="text-muted-foreground">86 / 90</span>
+            {distributionRows.map((row) => (
+              <div key={row.label}>
+                <div className="mb-1.5 flex items-center justify-between text-sm">
+                  <span className="min-w-0 truncate text-foreground">{row.label}</span>
+                  <span className="shrink-0 text-muted-foreground">
+                    {row.value} {row.value === 1 ? "análise" : "análises"}
+                  </span>
+                </div>
+                <Progress value={(row.value / distributionTotal) * 100} />
+                <p className="mt-1 text-xs text-muted-foreground">{row.hint}</p>
               </div>
-              <Progress value={95} />
-            </div>
-            <div>
-              <div className="mb-1.5 flex items-center justify-between text-sm">
-                <span className="flex items-center gap-1.5 text-foreground">
-                  <Search className="h-3.5 w-3.5 text-primary" />
-                  Vagas analisadas
-                </span>
-                <span className="text-muted-foreground">38 / 50</span>
-              </div>
-              <Progress value={76} />
-            </div>
-            <div>
-              <div className="mb-1.5 flex items-center justify-between text-sm">
-                <span className="flex items-center gap-1.5 text-foreground">
-                  <FileCheck2 className="h-3.5 w-3.5 text-primary" />
-                  Currículos ATS
-                </span>
-                <span className="text-muted-foreground">24 / 30</span>
-              </div>
-              <Progress value={80} />
-            </div>
+            ))}
           </div>
         </ContentCard>
       </section>
 
-      {/* Recent activities */}
-      <section className="mt-8">
-        <SectionTitle
-          title="Atividade recente"
-          description="Suas últimas ações na plataforma"
-          action={
-            <Button variant="ghost" size="sm" className="gap-1 text-xs">
-              Ver tudo
-              <ArrowRight className="h-3 w-3" />
-            </Button>
-          }
+      <section className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <FrequencyCard
+          title="Principais pontos de atenção"
+          description="Itens que mais se repetem nas suas análises"
+          icon={AlertTriangle}
+          tone="warning"
+          items={data.attentionPoints}
+          emptyMessage="Ainda não há dados suficientes para identificar padrões de atenção."
         />
-        <ContentCard bodyClassName="p-0">
-          <ul className="divide-y divide-border">
-            {recentActivities.map((a, i) => (
-              <motion.li
-                key={i}
-                initial={{ opacity: 0, x: -6 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, delay: i * 0.04 }}
-                className="flex items-center gap-4 px-5 py-4 transition-colors hover:bg-muted/40"
-              >
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                  <a.icon className="h-4 w-4" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium text-foreground">{a.title}</p>
-                  <p className="truncate text-xs text-muted-foreground">{a.subtitle}</p>
-                </div>
-                <Badge variant="outline" className="hidden text-[10px] sm:inline-flex">
-                  {a.tag}
-                </Badge>
-                <span className="hidden shrink-0 items-center gap-1 text-xs text-muted-foreground sm:flex">
-                  <Clock className="h-3 w-3" />
-                  {a.time}
-                </span>
-              </motion.li>
-            ))}
-          </ul>
+        <FrequencyCard
+          title="Seus principais pontos fortes"
+          description="O que mais se destaca nos seus resultados"
+          icon={CheckCircle2}
+          tone="positive"
+          items={data.strengths}
+          emptyMessage="Ainda não há dados suficientes para identificar seus principais pontos fortes."
+        />
+      </section>
+
+      <section className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-3">
+        <ContentCard
+          className="lg:col-span-2"
+          title="Próximo passo"
+          description="Orientação baseada nas suas análises"
+        >
+          {data.nextSteps.length === 0 ? (
+            <p className="text-sm text-muted-foreground">
+              Continue realizando análises para que o RadarCV consiga identificar padrões e sugerir
+              próximos passos.
+            </p>
+          ) : (
+            <ul className="space-y-3">
+              {data.nextSteps.map((step, index) => (
+                <motion.li
+                  key={step}
+                  initial={{ opacity: 0, x: -6 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.05 }}
+                  className="flex gap-3 text-sm text-foreground"
+                >
+                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
+                    {index + 1}
+                  </span>
+                  <span className="min-w-0">{step}</span>
+                </motion.li>
+              ))}
+            </ul>
+          )}
+        </ContentCard>
+
+        <ContentCard title="Atalhos" description="Continue de onde parou">
+          <div className="flex flex-col gap-2">
+            <Button asChild variant="outline" className="justify-start gap-2">
+              <Link to="/analisar-vaga">
+                <Compass className="h-4 w-4" /> Analisar vaga
+              </Link>
+            </Button>
+            <Button asChild variant="outline" className="justify-start gap-2">
+              <Link to="/historico">
+                <History className="h-4 w-4" /> Histórico de análises
+              </Link>
+            </Button>
+            <Button asChild variant="outline" className="justify-start gap-2">
+              <Link to="/curriculos">
+                <FileText className="h-4 w-4" /> Biblioteca de currículos
+              </Link>
+            </Button>
+          </div>
         </ContentCard>
       </section>
-    </PageContainer>
+    </>
+  );
+}
+
+function FrequencyCard({
+  title,
+  description,
+  icon: Icon,
+  tone,
+  items,
+  emptyMessage,
+}: {
+  title: string;
+  description: string;
+  icon: typeof AlertTriangle;
+  tone: "warning" | "positive";
+  items: { label: string; count: number }[];
+  emptyMessage: string;
+}) {
+  return (
+    <ContentCard title={title} description={description}>
+      {items.length === 0 ? (
+        <p className="text-sm text-muted-foreground">{emptyMessage}</p>
+      ) : (
+        <ul className="space-y-2.5">
+          {items.map((item) => (
+            <li key={item.label} className="flex items-center gap-3">
+              <Icon
+                className={
+                  tone === "warning"
+                    ? "h-4 w-4 shrink-0 text-destructive"
+                    : "h-4 w-4 shrink-0 text-primary"
+                }
+              />
+              <span className="min-w-0 flex-1 truncate text-sm text-foreground">{item.label}</span>
+              <Badge variant="outline" className="shrink-0 text-[10px]">
+                {item.count}x
+              </Badge>
+            </li>
+          ))}
+        </ul>
+      )}
+    </ContentCard>
   );
 }
