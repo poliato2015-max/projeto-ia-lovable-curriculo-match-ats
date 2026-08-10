@@ -80,7 +80,7 @@ function DashboardPage() {
         actions={newAnalysisButton}
       />
 
-      {isLoading && <LoadingState label="Carregando seus indicadores..." />}
+      {isLoading && <LoadingState rows={4} />}
 
       {isError && !isLoading && (
         <EmptyState
