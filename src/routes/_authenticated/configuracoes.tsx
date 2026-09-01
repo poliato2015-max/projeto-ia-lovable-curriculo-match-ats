@@ -54,7 +54,8 @@ function SettingsPage() {
     (user?.user_metadata?.["full_name"] as string | undefined) ??
     (user?.user_metadata?.["name"] as string | undefined) ??
     "";
-  const defaultResume = resumes?.find((resume) => resume.favorite);
+  const originalResumes = resumes?.filter((resume) => resume.kind === "original");
+  const defaultResume = originalResumes?.find((resume) => resume.favorite);
 
   const handleSelectDefault = async (id: string) => {
     try {
