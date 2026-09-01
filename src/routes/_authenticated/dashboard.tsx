@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import {
@@ -6,9 +7,6 @@ import {
   BarChart3,
   CalendarDays,
   CheckCircle2,
-  Compass,
-  FileText,
-  History,
   Search,
   Target,
   TrendingUp,
