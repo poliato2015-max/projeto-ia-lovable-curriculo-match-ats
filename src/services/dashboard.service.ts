@@ -59,7 +59,7 @@ function toStrings(value: unknown): string[] {
     .filter(Boolean);
 }
 
-function rank(values: string[], limit = 6): FrequencyItem[] {
+function rank(values: string[], limit = 5): FrequencyItem[] {
   const counts = new Map<string, { label: string; count: number }>();
   for (const value of values) {
     const key = value.toLowerCase();

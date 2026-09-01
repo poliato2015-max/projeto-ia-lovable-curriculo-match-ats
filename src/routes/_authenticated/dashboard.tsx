@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import {
@@ -6,9 +7,6 @@ import {
   BarChart3,
   CalendarDays,
   CheckCircle2,
-  Compass,
-  FileText,
-  History,
   Search,
   Target,
   TrendingUp,
@@ -32,6 +30,7 @@ import { LoadingState } from "@/components/common/LoadingState";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useDashboard } from "@/hooks/useDashboard";
 import type { DashboardData } from "@/services/dashboard.service";
 
@@ -113,11 +112,88 @@ function NoAnalyses() {
   );
 }
 
-function DashboardContent({ data }: { data: DashboardData }) {
-  const chartData = data.timeline.map((point) => ({
-    ...point,
-    label: formatDate(point.createdAt),
+type PeriodValue = 7 | 30 | 90 | "all";
+
+const PERIODS: { value: PeriodValue; label: string }[] = [
+  { value: 7, label: "7 dias" },
+  { value: 30, label: "30 dias" },
+  { value: 90, label: "90 dias" },
+  { value: "all", label: "Tudo" },
+];
+
+interface ChartPoint {
+  label: string;
+  score: number;
+  createdAt: string;
+  jobTitle: string;
+  company: string | null;
+  count: number;
+}
+
+/** Limite acima do qual os pontos passam a ser agrupados por dia. */
+const GROUPING_THRESHOLD = 20;
+
+function buildChartData(
+  timeline: DashboardData["timeline"],
+  period: PeriodValue,
+): ChartPoint[] {
+  const filtered =
+    period === "all"
+      ? timeline
+      : timeline.filter(
+          (point) =>
+            new Date(point.createdAt).getTime() >= Date.now() - period * 24 * 60 * 60 * 1000,
+        );
+
+  const sorted = [...filtered].sort(
+    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+  );
+
+  if (sorted.length <= GROUPING_THRESHOLD) {
+    return sorted.map((point) => ({
+      label: formatDate(point.createdAt),
+      score: point.score,
+      createdAt: point.createdAt,
+      jobTitle: point.jobTitle,
+      company: point.company,
+      count: 1,
+    }));
+  }
+
+  const byDay = new Map<string, { total: number; count: number; point: ChartPoint }>();
+  for (const point of sorted) {
+    const key = new Date(point.createdAt).toISOString().slice(0, 10);
+    const existing = byDay.get(key);
+    if (existing) {
+      existing.total += point.score;
+      existing.count += 1;
+    } else {
+      byDay.set(key, {
+        total: point.score,
+        count: 1,
+        point: {
+          label: formatDate(point.createdAt),
+          score: point.score,
+          createdAt: point.createdAt,
+          jobTitle: point.jobTitle,
+          company: point.company,
+          count: 1,
+        },
+      });
+    }
+  }
+
+  return [...byDay.values()].map((entry) => ({
+    ...entry.point,
+    score: Math.round(entry.total / entry.count),
+    count: entry.count,
   }));
+}
+
+function DashboardContent({ data }: { data: DashboardData }) {
+  const [period, setPeriod] = useState<PeriodValue>(30);
+  const chartData = useMemo(() => buildChartData(data.timeline, period), [data.timeline, period]);
+
 
   const distributionRows = [
     { label: "Alta compatibilidade", hint: "80% a 100%", value: data.distribution.high },
@@ -162,12 +238,27 @@ function DashboardContent({ data }: { data: DashboardData }) {
       <section className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-3">
         <ContentCard
           className="lg:col-span-2"
-          title="Evolução do seu Match ATS"
-          description="Cada ponto representa uma análise realizada"
+          title="Histórico do seu Match ATS"
+          description="Variação cronológica dos resultados das suas análises"
+          action={
+            <div className="flex flex-wrap gap-1">
+              {PERIODS.map((option) => (
+                <Button
+                  key={option.value}
+                  size="sm"
+                  variant={period === option.value ? "secondary" : "ghost"}
+                  className="h-7 px-2 text-xs"
+                  onClick={() => setPeriod(option.value)}
+                >
+                  {option.label}
+                </Button>
+              ))}
+            </div>
+          }
         >
           {chartData.length === 0 ? (
             <p className="py-8 text-center text-sm text-muted-foreground">
-              Ainda não há análises com pontuação para exibir a evolução.
+              Nenhuma análise com pontuação neste período.
             </p>
           ) : (
             <div className="h-64 w-full">
@@ -195,17 +286,27 @@ function DashboardContent({ data }: { data: DashboardData }) {
                   <Tooltip
                     content={({ active, payload }) => {
                       if (!active || !payload?.length) return null;
-                      const point = payload[0]?.payload as (typeof chartData)[number];
+                      const point = payload[0]?.payload as ChartPoint;
                       return (
-                        <div className="rounded-lg border border-border bg-popover p-3 text-xs shadow-md">
-                          <p className="font-semibold text-foreground">{point.score}% de match</p>
-                          <p className="mt-1 text-muted-foreground">{point.jobTitle}</p>
-                          {point.company && (
-                            <p className="text-muted-foreground">{point.company}</p>
-                          )}
+                        <div className="max-w-56 rounded-lg border border-border bg-popover p-3 text-xs shadow-md">
+                          <p className="font-semibold text-foreground">
+                            {point.score}% {point.count > 1 ? "de match médio" : "de match"}
+                          </p>
                           <p className="mt-1 text-muted-foreground">
                             {new Date(point.createdAt).toLocaleDateString("pt-BR")}
                           </p>
+                          {point.count > 1 ? (
+                            <p className="text-muted-foreground">
+                              {point.count} análises neste dia
+                            </p>
+                          ) : (
+                            <>
+                              <p className="text-muted-foreground">{point.jobTitle}</p>
+                              {point.company && (
+                                <p className="text-muted-foreground">{point.company}</p>
+                              )}
+                            </>
+                          )}
                         </div>
                       );
                     }}
@@ -252,7 +353,7 @@ function DashboardContent({ data }: { data: DashboardData }) {
           icon={AlertTriangle}
           tone="warning"
           items={data.attentionPoints}
-          emptyMessage="Ainda não há dados suficientes para identificar padrões de atenção."
+          emptyMessage="Ainda não há dados suficientes para identificar seus principais pontos de atenção."
         />
         <FrequencyCard
           title="Seus principais pontos fortes"
@@ -264,9 +365,8 @@ function DashboardContent({ data }: { data: DashboardData }) {
         />
       </section>
 
-      <section className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-3">
+      <section className="mt-6">
         <ContentCard
-          className="lg:col-span-2"
           title="Próximo passo"
           description="Orientação baseada nas suas análises"
         >
@@ -294,26 +394,6 @@ function DashboardContent({ data }: { data: DashboardData }) {
             </ul>
           )}
         </ContentCard>
-
-        <ContentCard title="Atalhos" description="Continue de onde parou">
-          <div className="flex flex-col gap-2">
-            <Button asChild variant="outline" className="justify-start gap-2">
-              <Link to="/analisar-vaga">
-                <Compass className="h-4 w-4" /> Analisar vaga
-              </Link>
-            </Button>
-            <Button asChild variant="outline" className="justify-start gap-2">
-              <Link to="/historico">
-                <History className="h-4 w-4" /> Histórico de análises
-              </Link>
-            </Button>
-            <Button asChild variant="outline" className="justify-start gap-2">
-              <Link to="/curriculos">
-                <FileText className="h-4 w-4" /> Biblioteca de currículos
-              </Link>
-            </Button>
-          </div>
-        </ContentCard>
       </section>
     </>
   );
@@ -340,7 +420,7 @@ function FrequencyCard({
         <p className="text-sm text-muted-foreground">{emptyMessage}</p>
       ) : (
         <ul className="space-y-2.5">
-          {items.map((item) => (
+          {items.slice(0, 5).map((item) => (
             <li key={item.label} className="flex items-center gap-3">
               <Icon
                 className={
@@ -349,7 +429,7 @@ function FrequencyCard({
                     : "h-4 w-4 shrink-0 text-primary"
                 }
               />
-              <span className="min-w-0 flex-1 truncate text-sm text-foreground">{item.label}</span>
+              <FrequencyLabel label={item.label} />
               <Badge variant="outline" className="shrink-0 text-[10px]">
                 {item.count}x
               </Badge>
@@ -358,5 +438,35 @@ function FrequencyCard({
         </ul>
       )}
     </ContentCard>
+  );
+}
+
+/** Rótulo compacto: trunca visualmente e revela o texto completo em hover ou toque. */
+function FrequencyLabel({ label }: { label: string }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <button
+          type="button"
+          className="min-w-0 flex-1 truncate text-left text-sm text-foreground"
+          onMouseEnter={() => setOpen(true)}
+          onMouseLeave={() => setOpen(false)}
+          onClick={() => setOpen((value) => !value)}
+        >
+          {label}
+        </button>
+      </PopoverTrigger>
+      <PopoverContent
+        side="top"
+        align="start"
+        collisionPadding={12}
+        className="max-w-xs text-sm leading-relaxed break-words"
+        onOpenAutoFocus={(event) => event.preventDefault()}
+      >
+        {label}
+      </PopoverContent>
+    </Popover>
   );
 }
