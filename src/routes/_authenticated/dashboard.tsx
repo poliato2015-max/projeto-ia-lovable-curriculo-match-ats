@@ -30,6 +30,7 @@ import { LoadingState } from "@/components/common/LoadingState";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useDashboard } from "@/hooks/useDashboard";
 import type { DashboardData } from "@/services/dashboard.service";
 
@@ -437,5 +438,35 @@ function FrequencyCard({
         </ul>
       )}
     </ContentCard>
+  );
+}
+
+/** Rótulo compacto: trunca visualmente e revela o texto completo em hover ou toque. */
+function FrequencyLabel({ label }: { label: string }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <button
+          type="button"
+          className="min-w-0 flex-1 truncate text-left text-sm text-foreground"
+          onMouseEnter={() => setOpen(true)}
+          onMouseLeave={() => setOpen(false)}
+          onClick={() => setOpen((value) => !value)}
+        >
+          {label}
+        </button>
+      </PopoverTrigger>
+      <PopoverContent
+        side="top"
+        align="start"
+        collisionPadding={12}
+        className="max-w-xs text-sm leading-relaxed break-words"
+        onOpenAutoFocus={(event) => event.preventDefault()}
+      >
+        {label}
+      </PopoverContent>
+    </Popover>
   );
 }
