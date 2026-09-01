@@ -352,7 +352,7 @@ function DashboardContent({ data }: { data: DashboardData }) {
           icon={AlertTriangle}
           tone="warning"
           items={data.attentionPoints}
-          emptyMessage="Ainda não há dados suficientes para identificar padrões de atenção."
+          emptyMessage="Ainda não há dados suficientes para identificar seus principais pontos de atenção."
         />
         <FrequencyCard
           title="Seus principais pontos fortes"
@@ -364,9 +364,8 @@ function DashboardContent({ data }: { data: DashboardData }) {
         />
       </section>
 
-      <section className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-3">
+      <section className="mt-6">
         <ContentCard
-          className="lg:col-span-2"
           title="Próximo passo"
           description="Orientação baseada nas suas análises"
         >
@@ -393,26 +392,6 @@ function DashboardContent({ data }: { data: DashboardData }) {
               ))}
             </ul>
           )}
-        </ContentCard>
-
-        <ContentCard title="Atalhos" description="Continue de onde parou">
-          <div className="flex flex-col gap-2">
-            <Button asChild variant="outline" className="justify-start gap-2">
-              <Link to="/analisar-vaga">
-                <Compass className="h-4 w-4" /> Analisar vaga
-              </Link>
-            </Button>
-            <Button asChild variant="outline" className="justify-start gap-2">
-              <Link to="/historico">
-                <History className="h-4 w-4" /> Histórico de análises
-              </Link>
-            </Button>
-            <Button asChild variant="outline" className="justify-start gap-2">
-              <Link to="/curriculos">
-                <FileText className="h-4 w-4" /> Biblioteca de currículos
-              </Link>
-            </Button>
-          </div>
         </ContentCard>
       </section>
     </>
