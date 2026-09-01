@@ -111,14 +111,15 @@ function SettingsPage() {
 
         <ContentCard
           title="Currículo padrão"
-          description="Escolha qual currículo será usado como referência"
+          description="Escolha qual currículo original será usado como referência"
         >
           {isLoading ? (
             <LoadingState rows={2} />
-          ) : !resumes || resumes.length === 0 ? (
+          ) : !originalResumes || originalResumes.length === 0 ? (
             <div className="space-y-3">
               <p className="text-sm text-muted-foreground">
-                Você ainda não possui currículos cadastrados.
+                Você ainda não possui currículos originais cadastrados. Apenas currículos
+                importados podem ser definidos como padrão.
               </p>
               <Button asChild variant="outline" className="gap-2">
                 <Link to="/curriculos">
@@ -137,10 +138,9 @@ function SettingsPage() {
                   <SelectValue placeholder="Selecione um currículo" />
                 </SelectTrigger>
                 <SelectContent>
-                  {resumes.map((resume) => (
+                  {originalResumes.map((resume) => (
                     <SelectItem key={resume.id} value={resume.id}>
                       {resume.name}
-                      {resume.kind === "ats" ? " · ATS" : ""}
                     </SelectItem>
                   ))}
                 </SelectContent>
