@@ -419,7 +419,7 @@ function FrequencyCard({
         <p className="text-sm text-muted-foreground">{emptyMessage}</p>
       ) : (
         <ul className="space-y-2.5">
-          {items.map((item) => (
+          {items.slice(0, 5).map((item) => (
             <li key={item.label} className="flex items-center gap-3">
               <Icon
                 className={
@@ -428,7 +428,7 @@ function FrequencyCard({
                     : "h-4 w-4 shrink-0 text-primary"
                 }
               />
-              <span className="min-w-0 flex-1 truncate text-sm text-foreground">{item.label}</span>
+              <FrequencyLabel label={item.label} />
               <Badge variant="outline" className="shrink-0 text-[10px]">
                 {item.count}x
               </Badge>
