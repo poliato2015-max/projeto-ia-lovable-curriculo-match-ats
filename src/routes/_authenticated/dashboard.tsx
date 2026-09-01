@@ -111,11 +111,88 @@ function NoAnalyses() {
   );
 }
 
-function DashboardContent({ data }: { data: DashboardData }) {
-  const chartData = data.timeline.map((point) => ({
-    ...point,
-    label: formatDate(point.createdAt),
+type PeriodValue = 7 | 30 | 90 | "all";
+
+const PERIODS: { value: PeriodValue; label: string }[] = [
+  { value: 7, label: "7 dias" },
+  { value: 30, label: "30 dias" },
+  { value: 90, label: "90 dias" },
+  { value: "all", label: "Tudo" },
+];
+
+interface ChartPoint {
+  label: string;
+  score: number;
+  createdAt: string;
+  jobTitle: string;
+  company: string | null;
+  count: number;
+}
+
+/** Limite acima do qual os pontos passam a ser agrupados por dia. */
+const GROUPING_THRESHOLD = 20;
+
+function buildChartData(
+  timeline: DashboardData["timeline"],
+  period: PeriodValue,
+): ChartPoint[] {
+  const filtered =
+    period === "all"
+      ? timeline
+      : timeline.filter(
+          (point) =>
+            new Date(point.createdAt).getTime() >= Date.now() - period * 24 * 60 * 60 * 1000,
+        );
+
+  const sorted = [...filtered].sort(
+    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+  );
+
+  if (sorted.length <= GROUPING_THRESHOLD) {
+    return sorted.map((point) => ({
+      label: formatDate(point.createdAt),
+      score: point.score,
+      createdAt: point.createdAt,
+      jobTitle: point.jobTitle,
+      company: point.company,
+      count: 1,
+    }));
+  }
+
+  const byDay = new Map<string, { total: number; count: number; point: ChartPoint }>();
+  for (const point of sorted) {
+    const key = new Date(point.createdAt).toISOString().slice(0, 10);
+    const existing = byDay.get(key);
+    if (existing) {
+      existing.total += point.score;
+      existing.count += 1;
+    } else {
+      byDay.set(key, {
+        total: point.score,
+        count: 1,
+        point: {
+          label: formatDate(point.createdAt),
+          score: point.score,
+          createdAt: point.createdAt,
+          jobTitle: point.jobTitle,
+          company: point.company,
+          count: 1,
+        },
+      });
+    }
+  }
+
+  return [...byDay.values()].map((entry) => ({
+    ...entry.point,
+    score: Math.round(entry.total / entry.count),
+    count: entry.count,
   }));
+}
+
+function DashboardContent({ data }: { data: DashboardData }) {
+  const [period, setPeriod] = useState<PeriodValue>(30);
+  const chartData = useMemo(() => buildChartData(data.timeline, period), [data.timeline, period]);
+
 
   const distributionRows = [
     { label: "Alta compatibilidade", hint: "80% a 100%", value: data.distribution.high },
