@@ -160,12 +160,27 @@ function DashboardContent({ data }: { data: DashboardData }) {
       <section className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-3">
         <ContentCard
           className="lg:col-span-2"
-          title="Evolução do seu Match ATS"
-          description="Cada ponto representa uma análise realizada"
+          title="Histórico do seu Match ATS"
+          description="Variação cronológica dos resultados das suas análises"
+          action={
+            <div className="flex flex-wrap gap-1">
+              {PERIODS.map((option) => (
+                <Button
+                  key={option.value}
+                  size="sm"
+                  variant={period === option.value ? "secondary" : "ghost"}
+                  className="h-7 px-2 text-xs"
+                  onClick={() => setPeriod(option.value)}
+                >
+                  {option.label}
+                </Button>
+              ))}
+            </div>
+          }
         >
           {chartData.length === 0 ? (
             <p className="py-8 text-center text-sm text-muted-foreground">
-              Ainda não há análises com pontuação para exibir a evolução.
+              Nenhuma análise com pontuação neste período.
             </p>
           ) : (
             <div className="h-64 w-full">
@@ -193,17 +208,27 @@ function DashboardContent({ data }: { data: DashboardData }) {
                   <Tooltip
                     content={({ active, payload }) => {
                       if (!active || !payload?.length) return null;
-                      const point = payload[0]?.payload as (typeof chartData)[number];
+                      const point = payload[0]?.payload as ChartPoint;
                       return (
-                        <div className="rounded-lg border border-border bg-popover p-3 text-xs shadow-md">
-                          <p className="font-semibold text-foreground">{point.score}% de match</p>
-                          <p className="mt-1 text-muted-foreground">{point.jobTitle}</p>
-                          {point.company && (
-                            <p className="text-muted-foreground">{point.company}</p>
-                          )}
+                        <div className="max-w-56 rounded-lg border border-border bg-popover p-3 text-xs shadow-md">
+                          <p className="font-semibold text-foreground">
+                            {point.score}% {point.count > 1 ? "de match médio" : "de match"}
+                          </p>
                           <p className="mt-1 text-muted-foreground">
                             {new Date(point.createdAt).toLocaleDateString("pt-BR")}
                           </p>
+                          {point.count > 1 ? (
+                            <p className="text-muted-foreground">
+                              {point.count} análises neste dia
+                            </p>
+                          ) : (
+                            <>
+                              <p className="text-muted-foreground">{point.jobTitle}</p>
+                              {point.company && (
+                                <p className="text-muted-foreground">{point.company}</p>
+                              )}
+                            </>
+                          )}
                         </div>
                       );
                     }}
