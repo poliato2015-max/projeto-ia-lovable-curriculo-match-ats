@@ -298,7 +298,7 @@ export function StepCurriculoATS({
             size="sm"
             className="gap-2"
             disabled={!content}
-            onClick={() => setEditing((v) => !v)}
+            onClick={toggleEditing}
           >
             {editing ? <Check className="h-4 w-4" /> : <Pencil className="h-4 w-4" />}
             {editing ? "Concluir edição" : "Editar"}
