@@ -359,24 +359,66 @@ export function StepCurriculoATS({
         <aside className="space-y-4">
           <ContentCard
             title="Checklist ATS"
-            description="Requisitos essenciais atendidos."
+            description={
+              checklistLoading
+                ? "Avaliando esta versão do currículo..."
+                : !checklist
+                  ? "A avaliação aparece assim que o currículo for gerado."
+                  : checklist.every((i) => i.status === "pass")
+                    ? "Requisitos essenciais atendidos."
+                    : "Alguns requisitos precisam de atenção."
+            }
             action={
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
-                <ShieldCheck className="h-4 w-4" />
+              <span
+                className={`flex h-8 w-8 items-center justify-center rounded-lg ${
+                  checklist && checklist.some((i) => i.status === "warn")
+                    ? "bg-amber-500/10 text-amber-600 dark:text-amber-400"
+                    : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                }`}
+              >
+                {checklist && checklist.some((i) => i.status === "warn") ? (
+                  <ShieldAlert className="h-4 w-4" />
+                ) : (
+                  <ShieldCheck className="h-4 w-4" />
+                )}
               </span>
             }
           >
-            <ul className="space-y-2">
-              {CHECKLIST.map((item) => (
-                <li key={item} className="flex items-center gap-2 text-sm text-foreground">
-                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
-                    <Check className="h-3 w-3" />
-                  </span>
-                  {item}
-                </li>
-              ))}
-            </ul>
+            {checklistLoading && !checklist ? (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Loader2 className="h-4 w-4 animate-spin" /> Avaliando requisitos...
+              </div>
+            ) : !checklist ? (
+              <p className="text-sm text-muted-foreground">
+                Nenhuma avaliação disponível para esta versão ainda.
+              </p>
+            ) : (
+              <ul className={`space-y-2 ${checklistLoading ? "opacity-60" : ""}`}>
+                {checklist.map((item) => (
+                  <li key={item.id} className="flex items-start gap-2 text-sm text-foreground">
+                    <span
+                      className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${
+                        item.status === "pass"
+                          ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                          : "bg-amber-500/10 text-amber-600 dark:text-amber-400"
+                      }`}
+                    >
+                      {item.status === "pass" ? (
+                        <Check className="h-3 w-3" />
+                      ) : (
+                        <AlertTriangle className="h-3 w-3" />
+                      )}
+                    </span>
+                    <span className="min-w-0">
+                      <span className="block">{item.label}</span>
+                      <span className="block text-xs text-muted-foreground">{item.detail}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </ContentCard>
+
 
           <ContentCard
             title="Palavras-chave aplicadas"
