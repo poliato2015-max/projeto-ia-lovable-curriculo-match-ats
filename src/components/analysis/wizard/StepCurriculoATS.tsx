@@ -224,7 +224,10 @@ export function StepCurriculoATS({
           toast.success(`Currículo ATS salvo (v${version})`, {
             description: "Disponível na sua Biblioteca de Currículos.",
           });
+          // Revalida o checklist para a versão efetivamente salva.
+          void evaluateChecklist(content, checklist);
         },
+
         onError: (err) =>
           toast.error(
             err instanceof Error ? err.message : "Não foi possível salvar o currículo ATS.",
