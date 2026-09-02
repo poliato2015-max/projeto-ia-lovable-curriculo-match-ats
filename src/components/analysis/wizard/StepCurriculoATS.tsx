@@ -76,13 +76,75 @@ export function StepCurriculoATS({
   const [error, setError] = useState<string | null>(null);
   const [editing, setEditing] = useState(false);
   const [savedVersion, setSavedVersion] = useState<number | null>(null);
+  const [checklist, setChecklist] = useState<ChecklistItem[] | null>(null);
+  const [checklistLoading, setChecklistLoading] = useState(false);
 
   const generate = useServerFn(generateAtsResume);
+  const checkChecklist = useServerFn(evaluateAtsChecklist);
   const { saveAtsMutation } = useResumeMutations();
+
+  /**
+   * Avalia os 6 critérios para a versão atual do currículo: estrutura no cliente,
+   * conteúdo via IA. Compara com o resultado anterior e avisa quando algo mudar.
+   */
+  const evaluateChecklist = async (nextContent: string, previous: ChecklistItem[] | null) => {
+    const text = nextContent.trim();
+    if (!text) return;
+
+    setChecklistLoading(true);
+    const structural = evaluateStructuralChecklist(text);
+
+    let contentItems: ChecklistItem[];
+    try {
+      const output = await checkChecklist({
+        data: { atsContent: text, resumeText, resumeId },
+      });
+      contentItems = [
+        {
+          id: "original-only",
+          label: CHECKLIST_LABELS["original-only"],
+          status: output.originalOnly.status,
+          detail: output.originalOnly.detail,
+        },
+        {
+          id: "objective-language",
+          label: CHECKLIST_LABELS["objective-language"],
+          status: output.objectiveLanguage.status,
+          detail: output.objectiveLanguage.detail,
+        },
+      ];
+    } catch {
+      setChecklist(structural);
+      setChecklistLoading(false);
+      toast.error("Não foi possível avaliar os critérios de conteúdo do checklist ATS.");
+      return;
+    }
+
+    const next = [...structural, ...contentItems];
+    setChecklist(next);
+    setChecklistLoading(false);
+
+    if (previous) {
+      const changes = diffChecklist(previous, next);
+      if (changes.length) {
+        const improved = changes.every((c) => c.to === "pass");
+        const label = (s: "pass" | "warn") => (s === "pass" ? "Atendido" : "Atenção");
+        const description = changes
+          .map((c) => `${c.label}: ${label(c.from)} → ${label(c.to)}`)
+          .join("\n");
+        const title = `Checklist ATS atualizado — sua edição ${
+          improved ? "corrigiu" : "alterou"
+        } ${changes.length} requisito${changes.length > 1 ? "s" : ""} de compatibilidade ATS.`;
+        if (improved) toast.success(title, { description });
+        else toast.warning(title, { description });
+      }
+    }
+  };
 
   const run = async () => {
     setLoading(true);
     setError(null);
+    setChecklist(null);
     try {
       const output = await generate({
         data: {
@@ -101,6 +163,7 @@ export function StepCurriculoATS({
       setKeywordsUsed(output.keywordsUsed);
       setOmitted(output.omittedKeywords);
       setNotes(output.notes);
+      void evaluateChecklist(output.content, null);
     } catch (err) {
       const message = err instanceof Error ? err.message : "";
       setError(
@@ -117,10 +180,20 @@ export function StepCurriculoATS({
     }
   };
 
+  const toggleEditing = () => {
+    if (editing) {
+      setEditing(false);
+      void evaluateChecklist(content, checklist);
+    } else {
+      setEditing(true);
+    }
+  };
+
   useEffect(() => {
     void run();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
 
   const wordCount = content.trim().split(/\s+/).filter(Boolean).length;
 
