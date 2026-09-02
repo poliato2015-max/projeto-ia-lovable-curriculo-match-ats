@@ -9,6 +9,7 @@ import {
   Check,
   Save,
   ShieldCheck,
+  ShieldAlert,
   Sparkles,
   Loader2,
   AlertTriangle,
@@ -21,6 +22,13 @@ import { Badge } from "@/components/ui/badge";
 import { ContentCard } from "@/components/common/ContentCard";
 import { useResumeMutations } from "@/hooks/useResumes";
 import { generateAtsResume } from "@/lib/ats-resume.functions";
+import { evaluateAtsChecklist } from "@/lib/ats-checklist.functions";
+import {
+  CHECKLIST_LABELS,
+  diffChecklist,
+  evaluateStructuralChecklist,
+  type ChecklistItem,
+} from "@/lib/ats-checklist";
 import type { AnalysisResult } from "../analysis-types";
 
 interface StepCurriculoATSProps {
@@ -37,14 +45,6 @@ interface StepCurriculoATSProps {
   onBack: () => void;
 }
 
-const CHECKLIST = [
-  "Texto simples, sem tabelas",
-  "Sem imagens ou gráficos",
-  "Coluna única",
-  "Seções padronizadas",
-  "Somente informações do currículo original",
-  "Linguagem objetiva",
-];
 
 function download(content: string, fileName: string, mime: string) {
   const blob = new Blob([content], { type: mime });
