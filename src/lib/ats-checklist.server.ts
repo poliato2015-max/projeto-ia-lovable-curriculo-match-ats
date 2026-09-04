@@ -48,7 +48,7 @@ const SYSTEM_PROMPT = [
   "",
   "2) originalOnlyPass — o currículo ATS usa somente informações sustentadas pelo original.",
   "Reorganizar, resumir, reescrever, combinar informações existentes e adaptar a apresentação",
-  "NÃO é invenção. É invenção introduzir fatos novos: empresas, cargos, datas, локalizações,",
+  "NÃO é invenção. É invenção introduzir fatos novos: empresas, cargos, datas, localizações,",
   "formações, certificações, cursos, tecnologias, ferramentas, projetos, competências,",
   "métricas, resultados ou responsabilidades sem base no original.",
   "REGRA DE LOCALIZAÇÃO: a localização que aparece junto ao nome do candidato pertence ao",
