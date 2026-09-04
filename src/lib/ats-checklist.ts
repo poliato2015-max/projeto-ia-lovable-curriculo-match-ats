@@ -33,44 +33,73 @@ export const CHECKLIST_LABELS: Record<ChecklistId, string> = {
 const SECTION_KEYWORDS = [
   "resumo",
   "perfil",
+  "sobre mim",
   "objetivo",
   "experi",
+  "historico profissional",
+  "trajetoria",
+  "atuacao profissional",
   "forma",
   "educa",
   "acad",
+  "escolaridade",
   "compet",
   "habilidad",
+  "conhecimento",
   "skills",
   "certifica",
   "curso",
+  "capacita",
+  "treinamento",
   "idioma",
   "language",
   "projeto",
+  "portfolio",
+  "voluntar",
+  "publica",
+  "premio",
+  "contato",
   "summary",
+  "profile",
   "experience",
   "education",
+  "courses",
+  "certifications",
+  "projects",
 ];
 
 function lines(content: string): string[] {
   return content.split(/\r?\n/);
 }
 
-/** Critério 1 — tabelas / estruturas tabulares. */
+/**
+ * Critério 1 — tabela REAL usada para organizar conteúdo.
+ * Divs, grids e HTML de layout não contam como tabela.
+ */
 export function checkPlainText(content: string): ChecklistItem {
   const ls = lines(content);
-  const pipeRows = ls.filter((l) => (l.match(/\|/g)?.length ?? 0) >= 2).length;
-  const separatorRow = ls.some((l) => /^\s*\|?[\s:|-]*-{3,}[\s:|-]*\|/.test(l));
-  const htmlTable = /<\s*(table|tr|td|th)\b/i.test(content);
-  const boxDrawing = /[┌┐└┘├┤┬┴┼─│╔╗╚╝═║]/.test(content);
-  const tabColumns = ls.filter((l) => /\S\t+\S/.test(l)).length >= 2;
 
-  const hasTable = pipeRows >= 2 || separatorRow || htmlTable || boxDrawing || tabColumns;
+  // Markdown/ASCII: exige linha separadora (|---|) OU 3+ linhas com o mesmo número de colunas.
+  const pipeCounts = ls
+    .map((l) => (l.match(/\|/g)?.length ?? 0))
+    .filter((n) => n >= 2);
+  const separatorRow = ls.some((l) => /^\s*\|[\s:|-]*-{3,}[\s:|-]*\|/.test(l));
+  const consistentPipeGrid =
+    pipeCounts.length >= 3 && new Set(pipeCounts).size === 1;
+  const markdownTable = separatorRow || consistentPipeGrid;
+
+  // HTML: apenas marcação de tabela real (nunca div/section/grid).
+  const htmlTable = /<\s*(table|thead|tbody|tr|td|th)\b/i.test(content);
+  const boxDrawing = /[┌┐└┘├┤┬┴┼─│╔╗╚╝═║]/.test(content);
+  const tabColumns = ls.filter((l) => /\S\t+\S/.test(l)).length >= 3;
+
+  const hasTable = markdownTable || htmlTable || boxDrawing || tabColumns;
   return {
     id: "plain-text",
     label: CHECKLIST_LABELS["plain-text"],
     status: hasTable ? "warn" : "pass",
     detail: hasTable
-      ? "Encontramos estrutura tabular no currículo — muitos ATS não conseguem ler tabelas."
+      ? "Encontramos uma tabela real organizando o conteúdo — muitos ATS não conseguem lê-la."
       : "O currículo usa apenas texto corrido, ideal para leitura automática.",
   };
 }
@@ -94,13 +123,19 @@ export function checkNoImages(content: string): ChecklistItem {
   };
 }
 
-/** Critério 3 — estrutura em coluna única. */
+/**
+ * Critério 3 — colunas reais de leitura.
+ * Espaçamento pontual e HTML de layout não são considerados colunas.
+ */
 export function checkSingleColumn(content: string): ChecklistItem {
   const ls = lines(content).filter((l) => l.trim().length > 0);
-  const columnLike = ls.filter((l) => /\S {3,}\S/.test(l.trimEnd()) || /\S\t+\S/.test(l)).length;
-  const htmlColumns = /<\s*(table|div[^>]*column|section[^>]*col-)/i.test(content);
+  const columnLike = ls.filter(
+    (l) => /\S {6,}\S/.test(l.trimEnd()) || /\S\t+\S/.test(l),
+  ).length;
+  const htmlTableColumns = /<\s*(table|col|colgroup)\b/i.test(content);
 
-  const multiColumn = htmlColumns || (ls.length > 0 && columnLike >= Math.max(3, ls.length * 0.15));
+  const multiColumn =
+    htmlTableColumns || (ls.length >= 8 && columnLike >= Math.max(5, ls.length * 0.3));
   return {
     id: "single-column",
     label: CHECKLIST_LABELS["single-column"],
@@ -111,21 +146,17 @@ export function checkSingleColumn(content: string): ChecklistItem {
   };
 }
 
-/** Critério 4 — seções claramente identificadas. */
+/** Critério 4 — fallback local para seções (usado quando a IA não responde). */
 export function checkSections(content: string): ChecklistItem {
   const ls = lines(content);
   const headings = ls.filter((line) => {
-    const raw = line.trim();
-    if (!raw || raw.length > 60) return false;
-    const isHeadingShape =
-      /^#{1,4}\s+\S/.test(raw) ||
-      /^[A-ZÀ-Ú0-9][A-ZÀ-Ú0-9\s/&.-]+$/.test(raw) ||
-      /^[A-ZÀ-Ú][^.!?]*:$/.test(raw);
-    if (!isHeadingShape) return false;
+    const raw = line.trim().replace(/^[#*\-•\s]+/, "").replace(/[:*]+$/, "");
+    if (!raw || raw.length > 60 || /[.!?]$/.test(raw)) return false;
     const normalized = raw
       .toLowerCase()
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "");
+    if (normalized.split(/\s+/).length > 5) return false;
     return SECTION_KEYWORDS.some((k) => normalized.includes(k));
   });
 
@@ -140,6 +171,7 @@ export function checkSections(content: string): ChecklistItem {
       : "As seções do currículo não estão claramente identificadas com títulos reconhecíveis.",
   };
 }
+
 
 /** Roda somente as validações estruturais (sem IA). */
 export function evaluateStructuralChecklist(content: string): ChecklistItem[] {
