@@ -123,8 +123,19 @@ export async function evaluateContentChecks(
 
   const originalOk = parsed["originalOnlyPass"] === true;
   const languageOk = parsed["objectiveLanguagePass"] === true;
+  const sectionsOk = parsed["sectionsPass"] === true;
 
   return {
+    sections: {
+      status: sectionsOk ? "pass" : "warn",
+      detail: text(
+        "sectionsDetail",
+        sectionsOk
+          ? "As seções estão claramente nomeadas e organizadas."
+          : "As seções do currículo não estão claramente identificadas com títulos reconhecíveis.",
+      ),
+    },
+
     originalOnly: {
       status: originalOk ? "pass" : "warn",
       detail: text(
