@@ -73,27 +73,41 @@ function lines(content: string): string[] {
 }
 
 /**
- * Critério 1 — tabela REAL usada para organizar conteúdo.
- * Divs, grids e HTML de layout não contam como tabela.
+ * Isola o DOCUMENTO do currículo ATS de qualquer coisa vinda da interface.
+ * As validações estruturais só podem enxergar este texto — nunca o DOM da
+ * aplicação (cards, grids, sidebar, badges, botões etc.).
  */
-export function checkPlainText(content: string): ChecklistItem {
+export function extractAtsDocument(content: string): string {
+  return content
+    .replace(/\r\n?/g, "\n")
+    .replace(/[ \t]+$/gm, "")
+    .trim();
+}
+
+/**
+ * Critério 1 — tabela REAL usada para organizar o conteúdo do currículo.
+ * Nunca considera o layout da aplicação: apenas o texto do documento ATS.
+ * Linhas comuns de currículo como "Empresa | Cargo | 2018 – 2025" NÃO são tabela.
+ */
+export function checkPlainText(rawContent: string): ChecklistItem {
+  const content = extractAtsDocument(rawContent);
   const ls = lines(content);
 
-  // Markdown/ASCII: exige linha separadora (|---|) OU 3+ linhas com o mesmo número de colunas.
-  const pipeCounts = ls
-    .map((l) => (l.match(/\|/g)?.length ?? 0))
-    .filter((n) => n >= 2);
+  // Markdown real: exige a linha separadora (|---|---|).
   const separatorRow = ls.some((l) => /^\s*\|[\s:|-]*-{3,}[\s:|-]*\|/.test(l));
-  const consistentPipeGrid =
-    pipeCounts.length >= 3 && new Set(pipeCounts).size === 1;
-  const markdownTable = separatorRow || consistentPipeGrid;
 
-  // HTML: apenas marcação de tabela real (nunca div/section/grid).
+  // ASCII table: linhas delimitadas por pipe nas duas pontas E com colunas
+  // alinhadas por espaçamento — o que caracteriza uma grade, não uma linha de currículo.
+  const gridRows = ls.filter(
+    (l) => /^\s*\|.*\|\s*$/.test(l) && /\s{2,}\|/.test(l),
+  ).length;
+  const asciiTable = gridRows >= 3;
+
   const htmlTable = /<\s*(table|thead|tbody|tr|td|th)\b/i.test(content);
   const boxDrawing = /[┌┐└┘├┤┬┴┼─│╔╗╚╝═║]/.test(content);
   const tabColumns = ls.filter((l) => /\S\t+\S/.test(l)).length >= 3;
 
-  const hasTable = markdownTable || htmlTable || boxDrawing || tabColumns;
+  const hasTable = separatorRow || asciiTable || htmlTable || boxDrawing || tabColumns;
   return {
     id: "plain-text",
     label: CHECKLIST_LABELS["plain-text"],
@@ -103,6 +117,7 @@ export function checkPlainText(content: string): ChecklistItem {
       : "O currículo usa apenas texto corrido, ideal para leitura automática.",
   };
 }
+
 
 /** Critério 2 — imagens, gráficos e elementos visuais. */
 export function checkNoImages(content: string): ChecklistItem {
