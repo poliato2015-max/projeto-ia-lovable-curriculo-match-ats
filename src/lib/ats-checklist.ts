@@ -175,13 +175,9 @@ export function checkSections(content: string): ChecklistItem {
 
 /** Roda somente as validações estruturais (sem IA). */
 export function evaluateStructuralChecklist(content: string): ChecklistItem[] {
-  return [
-    checkPlainText(content),
-    checkNoImages(content),
-    checkSingleColumn(content),
-    checkSections(content),
-  ];
+  return [checkPlainText(content), checkNoImages(content), checkSingleColumn(content)];
 }
+
 
 export interface ChecklistDiff {
   label: string;
