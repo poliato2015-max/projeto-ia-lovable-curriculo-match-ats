@@ -27,6 +27,7 @@ import {
   CHECKLIST_LABELS,
   diffChecklist,
   evaluateStructuralChecklist,
+  checkSections,
   type ChecklistItem,
 } from "@/lib/ats-checklist";
 import type { AnalysisResult } from "../analysis-types";
@@ -101,6 +102,12 @@ export function StepCurriculoATS({
       });
       contentItems = [
         {
+          id: "sections",
+          label: CHECKLIST_LABELS.sections,
+          status: output.sections.status,
+          detail: output.sections.detail,
+        },
+        {
           id: "original-only",
           label: CHECKLIST_LABELS["original-only"],
           status: output.originalOnly.status,
@@ -114,7 +121,7 @@ export function StepCurriculoATS({
         },
       ];
     } catch {
-      setChecklist(structural);
+      setChecklist([...structural, checkSections(text)]);
       setChecklistLoading(false);
       toast.error("Não foi possível avaliar os critérios de conteúdo do checklist ATS.");
       return;
