@@ -7,6 +7,7 @@ export interface ContentChecksInput {
 }
 
 export interface ContentChecksOutput {
+  sections: { status: "pass" | "warn"; detail: string };
   originalOnly: { status: "pass" | "warn"; detail: string };
   objectiveLanguage: { status: "pass" | "warn"; detail: string };
 }
@@ -15,12 +16,16 @@ const responseSchema = {
   type: "object",
   additionalProperties: false,
   required: [
+    "sectionsPass",
+    "sectionsDetail",
     "originalOnlyPass",
     "originalOnlyDetail",
     "objectiveLanguagePass",
     "objectiveLanguageDetail",
   ],
   properties: {
+    sectionsPass: { type: "boolean" },
+    sectionsDetail: { type: "string" },
     originalOnlyPass: { type: "boolean" },
     originalOnlyDetail: { type: "string" },
     objectiveLanguagePass: { type: "boolean" },
@@ -31,20 +36,34 @@ const responseSchema = {
 const SYSTEM_PROMPT = [
   "Você audita currículos otimizados para ATS. Responda em português do Brasil.",
   "",
-  "Avalie DOIS critérios, comparando o CURRÍCULO ATS com o CURRÍCULO ORIGINAL:",
+  "Avalie TRÊS critérios, comparando o CURRÍCULO ATS com o CURRÍCULO ORIGINAL:",
   "",
-  "1) originalOnlyPass — o currículo ATS usa somente informações sustentadas pelo original.",
+  "1) sectionsPass — o currículo ATS tem seções claramente identificadas por títulos.",
+  "Reconheça títulos SEMANTICAMENTE equivalentes, sem exigir texto literal:",
+  "Experiência / Experiência Profissional / Histórico Profissional;",
+  "Formação / Formação Acadêmica / Educação; Competências / Habilidades / Skills;",
+  "Cursos / Certificações / Cursos e Certificações; Idiomas; Projetos;",
+  "Resumo Profissional / Perfil Profissional. true quando há pelo menos três títulos",
+  "claros e organizados. false apenas quando os títulos estão ausentes ou irreconhecíveis.",
+  "",
+  "2) originalOnlyPass — o currículo ATS usa somente informações sustentadas pelo original.",
   "Reorganizar, resumir, reescrever, combinar informações existentes e adaptar a apresentação",
-  "NÃO é invenção. É invenção introduzir fatos novos: empresas, cargos, datas, formações,",
-  "certificações, tecnologias, competências, métricas ou resultados sem base no original.",
+  "NÃO é invenção. É invenção introduzir fatos novos: empresas, cargos, datas, localizações,",
+  "formações, certificações, cursos, tecnologias, ferramentas, projetos, competências,",
+  "métricas, resultados ou responsabilidades sem base no original.",
+  "REGRA DE LOCALIZAÇÃO: a localização que aparece junto ao nome do candidato pertence ao",
+  "candidato. Se o ATS atribuir essa cidade/estado a uma empresa, cargo ou experiência que",
+  "não a possui no original, isso é informação sem suporte → false.",
   "true = tudo fundamentado. false = há informação factual nova sem base.",
   "",
-  "2) objectiveLanguagePass — a redação é objetiva, profissional e clara, sem prolixidade",
-  "ou repetições desnecessárias. Não use regra de contagem de palavras; julgue a qualidade real.",
+  "3) objectiveLanguagePass — a redação é objetiva, profissional e clara, sem prolixidade",
+  "ou repetições desnecessárias. Reformulação legítima não é problema.",
+  "Não use regra de contagem de palavras; julgue a qualidade real.",
   "",
   "Nos campos 'detail', escreva UMA frase curta e específica justificando o resultado",
-  "(cite o dado inventado ou o trecho prolixo quando houver).",
+  "(cite o dado inventado, a seção faltante ou o trecho prolixo quando houver).",
 ].join("\n");
+
 
 /** Avalia os critérios de conteúdo do Checklist ATS com base no conteúdo real. */
 export async function evaluateContentChecks(
@@ -104,8 +123,19 @@ export async function evaluateContentChecks(
 
   const originalOk = parsed["originalOnlyPass"] === true;
   const languageOk = parsed["objectiveLanguagePass"] === true;
+  const sectionsOk = parsed["sectionsPass"] === true;
 
   return {
+    sections: {
+      status: sectionsOk ? "pass" : "warn",
+      detail: text(
+        "sectionsDetail",
+        sectionsOk
+          ? "As seções estão claramente nomeadas e organizadas."
+          : "As seções do currículo não estão claramente identificadas com títulos reconhecíveis.",
+      ),
+    },
+
     originalOnly: {
       status: originalOk ? "pass" : "warn",
       detail: text(
