@@ -201,12 +201,12 @@ export function StepCurriculoATS({
 
   const wordCount = content.trim().split(/\s+/).filter(Boolean).length;
 
+  const documentTitle = `curriculo-ats-${jobTitle || "vaga"}`;
+
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(content);
-      toast.success("Currículo copiado", {
-        description: "Conteúdo enviado para a área de transferência.",
-      });
+      await copyResumeContent(content);
+      toast.success("Currículo copiado");
     } catch {
       toast.error("Não foi possível copiar", {
         description: "Verifique as permissões do navegador.",
@@ -214,10 +214,19 @@ export function StepCurriculoATS({
     }
   };
 
-  const baseFileName = `curriculo-ats-${(jobTitle || "vaga")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "")}`;
+  const handleExport = async (format: "pdf" | "docx") => {
+    setExporting(format);
+    try {
+      if (format === "pdf") await exportResumePdf(content, documentTitle);
+      else await exportResumeDocx(content, documentTitle);
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : "Não foi possível exportar o currículo.",
+      );
+    } finally {
+      setExporting(null);
+    }
+  };
 
   const handleSave = () => {
     saveAtsMutation.mutate(
