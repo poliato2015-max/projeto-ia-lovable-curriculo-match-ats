@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
+import { useNavigate } from "@tanstack/react-router";
 import {
+  FolderOpen,
+  Search,
   ArrowLeft,
   Copy,
   FileText,
@@ -30,6 +33,11 @@ import {
   checkSections,
   type ChecklistItem,
 } from "@/lib/ats-checklist";
+import {
+  copyResumeContent,
+  exportResumeDocx,
+  exportResumePdf,
+} from "@/lib/resume-export";
 import type { AnalysisResult } from "../analysis-types";
 
 interface StepCurriculoATSProps {
@@ -44,17 +52,6 @@ interface StepCurriculoATSProps {
   objectives?: string[];
   instructions?: string;
   onBack: () => void;
-}
-
-
-function download(content: string, fileName: string, mime: string) {
-  const blob = new Blob([content], { type: mime });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = fileName;
-  link.click();
-  URL.revokeObjectURL(url);
 }
 
 export function StepCurriculoATS({
@@ -204,12 +201,12 @@ export function StepCurriculoATS({
 
   const wordCount = content.trim().split(/\s+/).filter(Boolean).length;
 
+  const documentTitle = `curriculo-ats-${jobTitle || "vaga"}`;
+
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(content);
-      toast.success("Currículo copiado", {
-        description: "Conteúdo enviado para a área de transferência.",
-      });
+      await copyResumeContent(content);
+      toast.success("Currículo copiado");
     } catch {
       toast.error("Não foi possível copiar", {
         description: "Verifique as permissões do navegador.",
@@ -217,10 +214,19 @@ export function StepCurriculoATS({
     }
   };
 
-  const baseFileName = `curriculo-ats-${(jobTitle || "vaga")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "")}`;
+  const handleExport = async (format: "pdf" | "docx") => {
+    setExporting(format);
+    try {
+      if (format === "pdf") await exportResumePdf(content, documentTitle);
+      else await exportResumeDocx(content, documentTitle);
+    } catch (err) {
+      toast.error(
+        err instanceof Error ? err.message : "Não foi possível exportar o currículo.",
+      );
+    } finally {
+      setExporting(null);
+    }
+  };
 
   const handleSave = () => {
     saveAtsMutation.mutate(
