@@ -120,7 +120,8 @@ export function checkPlainText(rawContent: string): ChecklistItem {
 
 
 /** Critério 2 — imagens, gráficos e elementos visuais. */
-export function checkNoImages(content: string): ChecklistItem {
+export function checkNoImages(rawContent: string): ChecklistItem {
+  const content = extractAtsDocument(rawContent);
   const markdownImage = /!\[[^\]]*\]\([^)]*\)/.test(content);
   const htmlImage = /<\s*(img|svg|figure|canvas|picture)\b/i.test(content);
   const dataImage = /data:image\//i.test(content);
@@ -142,7 +143,8 @@ export function checkNoImages(content: string): ChecklistItem {
  * Critério 3 — colunas reais de leitura.
  * Espaçamento pontual e HTML de layout não são considerados colunas.
  */
-export function checkSingleColumn(content: string): ChecklistItem {
+export function checkSingleColumn(rawContent: string): ChecklistItem {
+  const content = extractAtsDocument(rawContent);
   const ls = lines(content).filter((l) => l.trim().length > 0);
   const columnLike = ls.filter(
     (l) => /\S {6,}\S/.test(l.trimEnd()) || /\S\t+\S/.test(l),
@@ -162,7 +164,8 @@ export function checkSingleColumn(content: string): ChecklistItem {
 }
 
 /** Critério 4 — fallback local para seções (usado quando a IA não responde). */
-export function checkSections(content: string): ChecklistItem {
+export function checkSections(rawContent: string): ChecklistItem {
+  const content = extractAtsDocument(rawContent);
   const ls = lines(content);
   const headings = ls.filter((line) => {
     const raw = line.trim().replace(/^[#*\-•\s]+/, "").replace(/[:*]+$/, "");
