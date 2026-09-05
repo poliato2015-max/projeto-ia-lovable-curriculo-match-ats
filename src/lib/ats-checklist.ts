@@ -143,7 +143,8 @@ export function checkNoImages(rawContent: string): ChecklistItem {
  * Critério 3 — colunas reais de leitura.
  * Espaçamento pontual e HTML de layout não são considerados colunas.
  */
-export function checkSingleColumn(content: string): ChecklistItem {
+export function checkSingleColumn(rawContent: string): ChecklistItem {
+  const content = extractAtsDocument(rawContent);
   const ls = lines(content).filter((l) => l.trim().length > 0);
   const columnLike = ls.filter(
     (l) => /\S {6,}\S/.test(l.trimEnd()) || /\S\t+\S/.test(l),
