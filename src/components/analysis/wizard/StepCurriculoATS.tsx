@@ -54,17 +54,6 @@ interface StepCurriculoATSProps {
   onBack: () => void;
 }
 
-
-function download(content: string, fileName: string, mime: string) {
-  const blob = new Blob([content], { type: mime });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = fileName;
-  link.click();
-  URL.revokeObjectURL(url);
-}
-
 export function StepCurriculoATS({
   result,
   jobTitle,
