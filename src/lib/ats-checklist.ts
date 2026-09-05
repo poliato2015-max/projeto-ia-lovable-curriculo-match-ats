@@ -164,7 +164,8 @@ export function checkSingleColumn(rawContent: string): ChecklistItem {
 }
 
 /** Critério 4 — fallback local para seções (usado quando a IA não responde). */
-export function checkSections(content: string): ChecklistItem {
+export function checkSections(rawContent: string): ChecklistItem {
+  const content = extractAtsDocument(rawContent);
   const ls = lines(content);
   const headings = ls.filter((line) => {
     const raw = line.trim().replace(/^[#*\-•\s]+/, "").replace(/[:*]+$/, "");
