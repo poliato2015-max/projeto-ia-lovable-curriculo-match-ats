@@ -33,6 +33,11 @@ import {
   checkSections,
   type ChecklistItem,
 } from "@/lib/ats-checklist";
+import {
+  copyResumeContent,
+  exportResumeDocx,
+  exportResumePdf,
+} from "@/lib/resume-export";
 import type { AnalysisResult } from "../analysis-types";
 
 interface StepCurriculoATSProps {
