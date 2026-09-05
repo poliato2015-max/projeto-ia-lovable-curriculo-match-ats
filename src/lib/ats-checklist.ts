@@ -120,7 +120,8 @@ export function checkPlainText(rawContent: string): ChecklistItem {
 
 
 /** Critério 2 — imagens, gráficos e elementos visuais. */
-export function checkNoImages(content: string): ChecklistItem {
+export function checkNoImages(rawContent: string): ChecklistItem {
+  const content = extractAtsDocument(rawContent);
   const markdownImage = /!\[[^\]]*\]\([^)]*\)/.test(content);
   const htmlImage = /<\s*(img|svg|figure|canvas|picture)\b/i.test(content);
   const dataImage = /data:image\//i.test(content);
