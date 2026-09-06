@@ -76,7 +76,9 @@ export function StepCurriculoATS({
   const [savedVersion, setSavedVersion] = useState<number | null>(null);
   const [checklist, setChecklist] = useState<ChecklistItem[] | null>(null);
   const [checklistLoading, setChecklistLoading] = useState(false);
+  const [exporting, setExporting] = useState<"pdf" | "docx" | null>(null);
 
+  const navigate = useNavigate();
   const generate = useServerFn(generateAtsResume);
   const checkChecklist = useServerFn(evaluateAtsChecklist);
   const { saveAtsMutation } = useResumeMutations();
