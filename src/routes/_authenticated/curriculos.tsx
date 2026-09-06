@@ -19,6 +19,8 @@ import {
   type ResumeFilter,
 } from "@/components/resumes";
 import { useResumeMutations, useResumes } from "@/hooks/useResumes";
+import { ensureResumeText } from "@/services/resumes.service";
+import { exportResumeDocx, exportResumePdf } from "@/lib/resume-export";
 
 export const Route = createFileRoute("/_authenticated/curriculos")({
   head: () => ({
@@ -55,8 +57,13 @@ function applyFilter(resumes: Resume[], filter: ResumeFilter): Resume[] {
 function CurriculosPage() {
   const navigate = useNavigate();
   const { data, isLoading, isError } = useResumes();
-  const { importMutation, updateMutation, deleteMutation, defaultMutation } =
-    useResumeMutations();
+  const {
+    importMutation,
+    updateMutation,
+    deleteMutation,
+    defaultMutation,
+    contentMutation,
+  } = useResumeMutations();
 
   const resumes = useMemo(() => data ?? [], [data]);
   const [importOpen, setImportOpen] = useState(false);
@@ -80,7 +87,6 @@ function CurriculosPage() {
   }, [resumes, filter, query]);
 
   const openImport = () => setImportOpen(true);
-  const mock = (label: string) => toast.success(`${label} (mock)`);
   const fail = (error: unknown, fallback: string) =>
     toast.error(error instanceof Error ? error.message : fallback);
 
@@ -114,10 +120,22 @@ function CurriculosPage() {
     }
   };
 
+  /** Exporta o currículo selecionado usando somente o seu conteúdo textual real. */
+  const handleExport = async (resume: Resume, format: "pdf" | "docx") => {
+    try {
+      const text = await ensureResumeText(resume);
+      if (format === "pdf") await exportResumePdf(text, resume.name);
+      else await exportResumeDocx(text, resume.name);
+    } catch (error) {
+      fail(error, "Não foi possível exportar este currículo.");
+    }
+  };
+
   const handleSaveEdit = async (values: {
     title: string;
     position: string;
     company: string;
+    content: string;
   }) => {
     if (!editing) return;
     try {
@@ -129,6 +147,9 @@ function CurriculosPage() {
           company: values.company || null,
         },
       });
+      if (values.content.trim() && values.content.trim() !== (editing.rawText ?? "").trim()) {
+        await contentMutation.mutateAsync({ resume: editing, content: values.content });
+      }
       toast.success("Currículo atualizado.");
       setEditing(null);
     } catch (error) {
@@ -188,8 +209,8 @@ function CurriculosPage() {
               resumes={filtered}
               onView={setViewing}
               onEdit={setEditing}
-              onExportPdf={() => mock("Exportação PDF iniciada")}
-              onExportDocx={() => mock("Exportação DOCX iniciada")}
+              onExportPdf={(r) => void handleExport(r, "pdf")}
+              onExportDocx={(r) => void handleExport(r, "docx")}
               onToggleDefault={(r) => void handleToggleDefault(r)}
               onDelete={(r) => void handleDelete(r)}
             />
