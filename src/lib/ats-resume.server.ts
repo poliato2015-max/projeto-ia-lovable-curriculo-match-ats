@@ -57,7 +57,22 @@ const SYSTEM_PROMPT = [
 
   "Palavras-chave da vaga ausentes no currículo devem ser listadas em 'omittedKeywords',",
   "jamais escritas dentro de 'content'.",
-  "Responda no mesmo idioma do currículo original (normalmente português do Brasil).",
+  "Responda no mesmo idioma do currículo original (normalmente português do Brasil),",
+  "exceto quando o bloco '# Idioma de saída' pedir outro idioma explicitamente.",
+].join("\n");
+
+/** Instrução de idioma quando o objetivo 'Traduzir para inglês' está selecionado. */
+const TRANSLATE_EN_INSTRUCTION = [
+  "# Idioma de saída (OBRIGATÓRIO)",
+  "O candidato escolheu o objetivo 'Traduzir para inglês'.",
+  "Escreva TODO o conteúdo de 'content' em inglês (US), incluindo títulos de seção",
+  "(PROFESSIONAL SUMMARY, PROFESSIONAL EXPERIENCE, EDUCATION, SKILLS, LANGUAGES,",
+  "CERTIFICATIONS, PROJECTS), resumo, descrições de experiências, formação,",
+  "habilidades e projetos. O campo 'notes' também deve ser escrito em inglês.",
+  "A tradução altera SOMENTE o idioma: não invente experiências, cargos, empresas,",
+  "tecnologias, resultados ou localidades; não altere datas nem crie informações",
+  "que não estejam no currículo original. Nomes próprios de empresas, produtos e",
+  "certificações permanecem como no original.",
 ].join("\n");
 
 function buildPrompt(input: GenerateAtsInput): string {
@@ -71,6 +86,7 @@ function buildPrompt(input: GenerateAtsInput): string {
       ? `# Palavras-chave da vaga AUSENTES no currículo (NÃO inserir no currículo, apenas listar em omittedKeywords)\n${input.keywordsMissing.join(", ")}`
       : "",
     input.objectives.length ? `# Objetivos do candidato\n${input.objectives.join(", ")}` : "",
+    input.objectives.includes("translate-en") ? TRANSLATE_EN_INSTRUCTION : "",
     input.instructions ? `# Instruções adicionais\n${input.instructions}` : "",
     "",
     "# Currículo original (única fonte de verdade)",
