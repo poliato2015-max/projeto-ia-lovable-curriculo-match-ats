@@ -345,6 +345,37 @@ export function StepCurriculoATS({
         </div>
       </div>
 
+      {/* Ações após salvar na biblioteca */}
+      {savedVersion !== null && (
+        <div className="flex flex-col gap-3 rounded-xl border border-secondary/30 bg-secondary/5 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm text-foreground">
+            Currículo ATS salvo na sua Biblioteca de Currículos (v{savedVersion}).
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-2"
+              onClick={() => void navigate({ to: "/curriculos" })}
+            >
+              <FolderOpen className="h-4 w-4" /> Acessar Biblioteca
+            </Button>
+            <Button
+              size="sm"
+              className="gap-2"
+              onClick={() =>
+                void navigate({
+                  to: "/analisar-vaga",
+                  search: { novo: String(Date.now()) },
+                })
+              }
+            >
+              <Search className="h-4 w-4" /> Nova análise
+            </Button>
+          </div>
+        </div>
+      )}
+
       {/* Layout principal */}
       <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_320px]">
         {/* Documento */}
