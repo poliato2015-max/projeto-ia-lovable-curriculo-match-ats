@@ -1,4 +1,4 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import {
   LayoutDashboard,
   FileText,
@@ -37,6 +37,11 @@ const bottomItems = [{ title: "Configurações", url: "/configuracoes", icon: Se
 
 export function AppSidebar() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const navigate = useNavigate();
+
+  /** Analisar Vaga sempre inicia um fluxo novo e limpo, sem sobrescrever análises anteriores. */
+  const startNewAnalysis = () =>
+    void navigate({ to: "/analisar-vaga", search: { novo: String(Date.now()) } });
   const isActive = (url: string) => pathname.startsWith(url);
 
   return (
@@ -60,16 +65,29 @@ export function AppSidebar() {
           <SidebarGroupLabel>Principal</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {mainItems.map((item) => (
-                <SidebarMenuItem key={item.url}>
-                  <SidebarMenuButton asChild isActive={isActive(item.url)} tooltip={item.title}>
-                    <Link to={item.url}>
+              {mainItems.map((item) =>
+                item.url === "/analisar-vaga" ? (
+                  <SidebarMenuItem key={item.url}>
+                    <SidebarMenuButton
+                      isActive={isActive(item.url)}
+                      tooltip={item.title}
+                      onClick={startNewAnalysis}
+                    >
                       <item.icon />
                       <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ) : (
+                  <SidebarMenuItem key={item.url}>
+                    <SidebarMenuButton asChild isActive={isActive(item.url)} tooltip={item.title}>
+                      <Link to={item.url}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ),
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
