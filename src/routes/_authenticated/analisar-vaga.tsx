@@ -58,6 +58,12 @@ function resumeTitleOf(wizard: WizardData): string | null {
 }
 
 function AnalisarVagaPage() {
+  const { novo } = Route.useSearch();
+  // Uma nova análise remonta o wizard com estado limpo, sem afetar as anteriores.
+  return <AnalisarVagaWizard key={novo ?? "inicial"} />;
+}
+
+function AnalisarVagaWizard() {
   const [step, setStep] = useState(1);
   const [data, setData] = useState<WizardData>(INITIAL_DATA);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
