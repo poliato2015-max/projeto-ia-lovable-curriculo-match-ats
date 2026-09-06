@@ -295,21 +295,29 @@ export function StepCurriculoATS({
             variant="outline"
             size="sm"
             className="gap-2"
-            disabled={!content}
-            onClick={() => window.print()}
+            disabled={!content || exporting !== null}
+            onClick={() => void handleExport("pdf")}
           >
-            <FileDown className="h-4 w-4" /> PDF
+            {exporting === "pdf" ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <FileDown className="h-4 w-4" />
+            )}{" "}
+            PDF
           </Button>
           <Button
             variant="outline"
             size="sm"
             className="gap-2"
-            disabled={!content}
-            onClick={() =>
-              download(content, `${baseFileName}.doc`, "application/msword")
-            }
+            disabled={!content || exporting !== null}
+            onClick={() => void handleExport("docx")}
           >
-            <FileText className="h-4 w-4" /> DOCX
+            {exporting === "docx" ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <FileText className="h-4 w-4" />
+            )}{" "}
+            DOCX
           </Button>
           <Button
             variant={editing ? "default" : "outline"}
