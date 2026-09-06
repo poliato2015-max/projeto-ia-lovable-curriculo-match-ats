@@ -33,7 +33,7 @@ export function StepCurriculo({ data, onChange, onNext, onBack }: StepCurriculoP
   const [dialogOpen, setDialogOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { deleteMutation } = useResumeMutations();
+  const { deleteMutation, importMutation } = useResumeMutations();
 
   const canContinue =
     !busy &&
@@ -50,8 +50,18 @@ export function StepCurriculo({ data, onChange, onNext, onBack }: StepCurriculoP
     setBusy(true);
     try {
       const text = await extractFileText(file);
-      onChange({ ...data, fileName: file.name, content: text });
-      toast.success("Currículo anexado", { description: file.name });
+      // O arquivo é realmente persistido na Biblioteca como currículo Original,
+      // e é esse mesmo registro que será usado na análise.
+      const saved = await importMutation.mutateAsync({ file });
+      onChange({
+        ...data,
+        fileName: file.name,
+        content: text || saved.rawText || "",
+        savedResume: { ...saved, rawText: text || saved.rawText },
+      });
+      toast.success("Currículo importado", {
+        description: `${file.name} • salvo na sua Biblioteca de Currículos.`,
+      });
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Não foi possível ler este arquivo.",
