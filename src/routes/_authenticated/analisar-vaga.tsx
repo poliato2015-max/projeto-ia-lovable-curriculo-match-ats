@@ -20,9 +20,8 @@ import { runAnalysis as runAnalysisFn } from "@/lib/analysis.functions";
 
 export const Route = createFileRoute("/_authenticated/analisar-vaga")({
   /** `novo` identifica uma nova análise: muda a key e reinicia o wizard limpo. */
-  validateSearch: (search: Record<string, unknown>) => ({
-    novo: typeof search["novo"] === "string" ? search["novo"] : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>): { novo?: string } =>
+    typeof search["novo"] === "string" ? { novo: search["novo"] } : {},
   head: () => ({
     meta: [
       { title: "Analisar Vaga — RadarCV AI" },
