@@ -7,6 +7,7 @@ import {
   saveAtsResume,
   setDefaultResume,
   updateResume,
+  updateResumeContent,
   type ImportResumeInput,
   type SaveAtsResumeInput,
   type UpdateResumeInput,
@@ -49,10 +50,23 @@ export function useResumeMutations() {
     onSuccess: invalidate,
   });
 
+  const contentMutation = useMutation({
+    mutationFn: ({ resume, content }: { resume: Resume; content: string }) =>
+      updateResumeContent(resume, content),
+    onSuccess: invalidate,
+  });
+
   const saveAtsMutation = useMutation({
     mutationFn: (input: SaveAtsResumeInput) => saveAtsResume(input),
     onSuccess: invalidate,
   });
 
-  return { importMutation, updateMutation, deleteMutation, defaultMutation, saveAtsMutation };
+  return {
+    importMutation,
+    updateMutation,
+    deleteMutation,
+    defaultMutation,
+    saveAtsMutation,
+    contentMutation,
+  };
 }
