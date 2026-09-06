@@ -237,3 +237,119 @@ export async function saveAtsResume(input: SaveAtsResumeInput): Promise<SaveAtsR
 
   return { resume, version };
 }
+
+/**
+ * Contexto de origem de um currículo ATS salvo na Biblioteca: a análise que o gerou
+ * e o currículo original correspondente. Usa apenas as tabelas já existentes
+ * (`ats_resumes`, `analyses`, `analysis_results`) — nenhuma tabela nova.
+ */
+export interface AtsOriginContext {
+  analysisId: string | null;
+  originalResumeId: string | null;
+  jobTitle: string;
+  company: string;
+  jobDescription: string;
+  keywordsFound: string[];
+  keywordsMissing: string[];
+  /** Texto do currículo original — única fonte de verdade da nova versão. */
+  originalText: string;
+}
+
+function stringList(value: unknown): string[] {
+  return Array.isArray(value) ? value.filter((v): v is string => typeof v === "string") : [];
+}
+
+export async function loadAtsOrigin(resume: Resume): Promise<AtsOriginContext> {
+  const content = await ensureResumeText(resume);
+
+  const { data: versionRow } = await supabase
+    .from("ats_resumes")
+    .select("analysis_id, resume_id")
+    .eq("content", content)
+    .order("version", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  const analysisId = versionRow?.analysis_id ?? null;
+  let originalResumeId = versionRow?.resume_id ?? null;
+  if (originalResumeId === resume.id) originalResumeId = null;
+
+  let jobTitle = resume.role === "—" ? "" : resume.role;
+  let company = resume.company ?? "";
+  let jobDescription = "";
+  let keywordsFound: string[] = [];
+  let keywordsMissing: string[] = [];
+
+  if (analysisId) {
+    const { data: analysis } = await supabase
+      .from("analyses")
+      .select("job_title, company, job_description, resume_id")
+      .eq("id", analysisId)
+      .maybeSingle();
+
+    if (analysis) {
+      jobTitle = analysis.job_title || jobTitle;
+      company = analysis.company || company;
+      jobDescription = analysis.job_description ?? "";
+      originalResumeId = analysis.resume_id ?? originalResumeId;
+    }
+
+    const { data: results } = await supabase
+      .from("analysis_results")
+      .select("keywords_found, keywords_missing")
+      .eq("analysis_id", analysisId)
+      .maybeSingle();
+
+    keywordsFound = stringList(results?.keywords_found);
+    keywordsMissing = stringList(results?.keywords_missing);
+  }
+
+  let originalText = "";
+  if (originalResumeId) {
+    const { data: original } = await supabase
+      .from("resumes")
+      .select("*")
+      .eq("id", originalResumeId)
+      .maybeSingle();
+    if (original) originalText = await ensureResumeText(mapRowToResume(original as ResumeRow));
+  }
+
+  if (!originalText.trim()) {
+    throw new Error(
+      "Não encontramos o currículo original desta versão ATS para gerar uma nova versão.",
+    );
+  }
+
+  return {
+    analysisId,
+    originalResumeId,
+    jobTitle,
+    company,
+    jobDescription,
+    keywordsFound,
+    keywordsMissing,
+    originalText,
+  };
+}
+
+/**
+ * Atualiza o conteúdo textual de um currículo. Para versões ATS, mantém a versão
+ * registrada em `ats_resumes` sincronizada, preservando a associação com a análise
+ * e com o currículo original.
+ */
+export async function updateResumeContent(
+  resume: Resume,
+  content: string,
+): Promise<Resume> {
+  const text = content.trim();
+  if (!text) throw new Error("O conteúdo do currículo não pode ficar vazio.");
+
+  if (resume.kind === "ats" && resume.rawText?.trim()) {
+    await supabase
+      .from("ats_resumes")
+      .update({ content: text })
+      .eq("content", resume.rawText.trim());
+  }
+
+  return updateResume(resume.id, { raw_text: text });
+}
