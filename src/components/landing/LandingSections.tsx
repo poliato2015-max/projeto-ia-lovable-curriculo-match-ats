@@ -27,11 +27,6 @@ import { scrollToSection } from "@/lib/navigation";
 import { useAppEntryRoute } from "@/hooks/useAppEntry";
 import { HeroMockup } from "./HeroMockup";
 
-import shotAnalisar from "@/assets/landing/shot-analisar-vaga.png";
-import shotResultado from "@/assets/landing/shot-resultado-ats.png";
-import shotCurriculoAts from "@/assets/landing/shot-curriculo-ats.png";
-import shotBiblioteca from "@/assets/landing/shot-biblioteca.png";
-
 function Section({
   id,
   className,
@@ -231,68 +226,6 @@ export function HowItWorksSection() {
                 {s.text}
               </p>
             </div>
-          </motion.div>
-        ))}
-      </div>
-    </Section>
-  );
-}
-
-const shots = [
-  {
-    src: shotAnalisar,
-    title: "Analisar Vaga",
-    text: "Fluxo completo da análise, em etapas guiadas.",
-  },
-  {
-    src: shotResultado,
-    title: "Resultado ATS",
-    text: "Pontuação, Match e recomendações inteligentes.",
-  },
-  {
-    src: shotCurriculoAts,
-    title: "Currículo ATS",
-    text: "Editor do currículo otimizado, pronto para exportar.",
-  },
-  {
-    src: shotBiblioteca,
-    title: "Biblioteca",
-    text: "Gerenciamento dos currículos importados e versões ATS.",
-  },
-];
-
-export function ShowcaseSection() {
-  return (
-    <Section>
-      <SectionHeading
-        title="Conheça a Plataforma"
-        text="Veja o RadarCV em ação, direto da interface real do produto."
-      />
-      <div className="grid gap-5 md:grid-cols-2">
-        {shots.map((s, i) => (
-          <motion.div
-            key={s.title}
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.35, delay: i * 0.05 }}
-          >
-            <Card className="h-full overflow-hidden border-border/70 shadow-sm transition-shadow hover:shadow-md">
-              <div className="border-b border-border/60 bg-surface/40 p-3">
-                <div className="overflow-hidden rounded-lg border border-border/60">
-                  <img
-                    src={s.src}
-                    alt={`Tela ${s.title} do RadarCV AI`}
-                    loading="lazy"
-                    className="block w-full"
-                  />
-                </div>
-              </div>
-              <CardContent className="p-5">
-                <h3 className="text-base font-semibold text-foreground">{s.title}</h3>
-                <p className="mt-1.5 text-sm text-muted-foreground">{s.text}</p>
-              </CardContent>
-            </Card>
           </motion.div>
         ))}
       </div>
