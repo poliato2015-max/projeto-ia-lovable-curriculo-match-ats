@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   deleteResume,
   importResume,
+  listAtsResumeMeta,
   listResumes,
   saveAtsResume,
   setDefaultResume,
@@ -20,6 +21,14 @@ export function useResumes(enabled = true) {
   return useQuery({
     queryKey: RESUMES_KEY,
     queryFn: listResumes,
+    enabled,
+  });
+}
+
+export function useAtsResumeMeta(enabled = true) {
+  return useQuery({
+    queryKey: ["ats-resume-meta"],
+    queryFn: listAtsResumeMeta,
     enabled,
   });
 }
