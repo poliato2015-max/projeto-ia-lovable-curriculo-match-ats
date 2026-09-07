@@ -6,7 +6,6 @@ import {
   ProblemSection,
   FeaturesSection,
   HowItWorksSection,
-  ShowcaseSection,
   BenefitsSection,
   AboutSection,
   FinalCTASection,
@@ -46,7 +45,6 @@ function LandingPage() {
         <ProblemSection />
         <FeaturesSection />
         <HowItWorksSection />
-        <ShowcaseSection />
         <BenefitsSection />
         <AboutSection />
         <FinalCTASection />

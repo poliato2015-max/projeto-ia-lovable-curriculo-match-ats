@@ -353,3 +353,68 @@ export async function updateResumeContent(
 
   return updateResume(resume.id, { raw_text: text });
 }
+
+/**
+ * Metadados reais das versões ATS: versão registrada em `ats_resumes` e a análise
+ * de origem (`analyses`). Sem tabelas novas — apenas leitura dos relacionamentos.
+ */
+export interface AtsResumeMeta {
+  version: number;
+  jobTitle: string | null;
+  company: string | null;
+}
+
+const normalizeContent = (value: string) => value.replace(/\s+/g, " ").trim();
+
+/** Mapa conteúdo-normalizado → metadados, usado para enriquecer os cards da Biblioteca. */
+export async function listAtsResumeMeta(): Promise<Map<string, AtsResumeMeta>> {
+  const map = new Map<string, AtsResumeMeta>();
+
+  const { data, error } = await supabase
+    .from("ats_resumes")
+    .select("content, version, analysis_id")
+    .order("version", { ascending: true });
+
+  if (error || !data) return map;
+
+  const analysisIds = Array.from(
+    new Set(
+      (data as { analysis_id: string | null }[])
+        .map((r) => r.analysis_id)
+        .filter((id): id is string => Boolean(id)),
+    ),
+  );
+
+  const analyses = new Map<string, { job_title: string | null; company: string | null }>();
+  if (analysisIds.length > 0) {
+    const { data: rows } = await supabase
+      .from("analyses")
+      .select("id, job_title, company")
+      .in("id", analysisIds);
+    for (const row of (rows ?? []) as {
+      id: string;
+      job_title: string | null;
+      company: string | null;
+    }[]) {
+      analyses.set(row.id, { job_title: row.job_title, company: row.company });
+    }
+  }
+
+  for (const row of data as {
+    content: string | null;
+    version: number | null;
+    analysis_id: string | null;
+  }[]) {
+    if (!row.content) continue;
+    const analysis = row.analysis_id ? analyses.get(row.analysis_id) : undefined;
+    map.set(normalizeContent(row.content), {
+      version: row.version ?? 1,
+      jobTitle: analysis?.job_title ?? null,
+      company: analysis?.company ?? null,
+    });
+  }
+
+  return map;
+}
+
+export const atsMetaKey = normalizeContent;

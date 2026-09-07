@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   deleteResume,
   importResume,
+  listAtsResumeMeta,
   listResumes,
   saveAtsResume,
   setDefaultResume,
@@ -24,9 +25,20 @@ export function useResumes(enabled = true) {
   });
 }
 
+export function useAtsResumeMeta(enabled = true) {
+  return useQuery({
+    queryKey: ["ats-resume-meta"],
+    queryFn: listAtsResumeMeta,
+    enabled,
+  });
+}
+
 export function useResumeMutations() {
   const qc = useQueryClient();
-  const invalidate = () => qc.invalidateQueries({ queryKey: RESUMES_KEY });
+  const invalidate = () => {
+    void qc.invalidateQueries({ queryKey: RESUMES_KEY });
+    void qc.invalidateQueries({ queryKey: ["ats-resume-meta"] });
+  };
 
   const importMutation = useMutation({
     mutationFn: (input: ImportResumeInput) => importResume(input),

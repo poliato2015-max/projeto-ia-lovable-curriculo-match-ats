@@ -4,7 +4,6 @@ import {
   FileText,
   Search,
   History,
-  Sparkles,
   Settings,
   Radar,
 } from "lucide-react";
@@ -28,10 +27,8 @@ const mainItems = [
   { title: "Currículos", url: "/curriculos", icon: FileText },
 ];
 
-const insightsItems = [
-  { title: "Histórico", url: "/historico", icon: History },
-  { title: "IA Coach", url: "/ia-coach", icon: Sparkles },
-];
+/** IA Coach fica fora da navegação na Fase 1 (rota mantida para a Fase 2). */
+const insightsItems = [{ title: "Histórico", url: "/historico", icon: History }];
 
 const bottomItems = [{ title: "Configurações", url: "/configuracoes", icon: Settings }];
 
