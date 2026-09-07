@@ -27,7 +27,7 @@ const mainItems = [
   { title: "Currículos", url: "/curriculos", icon: FileText },
 ];
 
-/** IA Coach fica fora da navegação na Fase 1 (rota mantida para a Fase 2). */
+/** Insights da Fase 1. */
 const insightsItems = [{ title: "Histórico", url: "/historico", icon: History }];
 
 const bottomItems = [{ title: "Configurações", url: "/configuracoes", icon: Settings }];
