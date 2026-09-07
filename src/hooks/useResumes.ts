@@ -35,7 +35,10 @@ export function useAtsResumeMeta(enabled = true) {
 
 export function useResumeMutations() {
   const qc = useQueryClient();
-  const invalidate = () => qc.invalidateQueries({ queryKey: RESUMES_KEY });
+  const invalidate = () => {
+    void qc.invalidateQueries({ queryKey: RESUMES_KEY });
+    void qc.invalidateQueries({ queryKey: ["ats-resume-meta"] });
+  };
 
   const importMutation = useMutation({
     mutationFn: (input: ImportResumeInput) => importResume(input),

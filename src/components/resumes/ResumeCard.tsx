@@ -117,10 +117,12 @@ export function ResumeCard({
                 <DropdownMenuItem onClick={() => onEdit?.(resume)}>
                   <Pencil className="mr-2 h-4 w-4" /> Editar
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => onToggleDefault?.(resume)}>
-                  <Star className="mr-2 h-4 w-4" />
-                  {resume.favorite ? "Remover padrão" : "Definir como padrão"}
-                </DropdownMenuItem>
+                {!isAts && (
+                  <DropdownMenuItem onClick={() => onToggleDefault?.(resume)}>
+                    <Star className="mr-2 h-4 w-4" />
+                    {resume.favorite ? "Remover padrão" : "Definir como padrão"}
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuItem onClick={() => onExportPdf?.(resume)}>
                   <FileDown className="mr-2 h-4 w-4" /> Exportar PDF
                 </DropdownMenuItem>
