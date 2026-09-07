@@ -18,8 +18,8 @@ import {
   type Resume,
   type ResumeFilter,
 } from "@/components/resumes";
-import { useResumeMutations, useResumes } from "@/hooks/useResumes";
-import { ensureResumeText } from "@/services/resumes.service";
+import { useAtsResumeMeta, useResumeMutations, useResumes } from "@/hooks/useResumes";
+import { atsMetaKey, ensureResumeText, type AtsResumeMeta } from "@/services/resumes.service";
 import { exportResumeDocx, exportResumePdf } from "@/lib/resume-export";
 
 export const Route = createFileRoute("/_authenticated/curriculos")({
@@ -57,6 +57,7 @@ function applyFilter(resumes: Resume[], filter: ResumeFilter): Resume[] {
 function CurriculosPage() {
   const navigate = useNavigate();
   const { data, isLoading, isError } = useResumes();
+  const { data: atsMetaByContent } = useAtsResumeMeta();
   const {
     importMutation,
     updateMutation,
@@ -85,6 +86,18 @@ function CurriculosPage() {
         (r.company ?? "").toLowerCase().includes(q),
     );
   }, [resumes, filter, query]);
+
+  /** Relaciona cada currículo ATS ao seu registro real em `ats_resumes`. */
+  const atsMeta = useMemo(() => {
+    const map = new Map<string, AtsResumeMeta>();
+    if (!atsMetaByContent) return map;
+    for (const r of resumes) {
+      if (r.kind !== "ats" || !r.rawText) continue;
+      const found = atsMetaByContent.get(atsMetaKey(r.rawText));
+      if (found) map.set(r.id, found);
+    }
+    return map;
+  }, [resumes, atsMetaByContent]);
 
   const openImport = () => setImportOpen(true);
   const fail = (error: unknown, fallback: string) =>
@@ -207,6 +220,7 @@ function CurriculosPage() {
           ) : (
             <ResumeList
               resumes={filtered}
+              atsMeta={atsMeta}
               onView={setViewing}
               onEdit={setEditing}
               onExportPdf={(r) => void handleExport(r, "pdf")}
