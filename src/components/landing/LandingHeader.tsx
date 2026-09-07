@@ -21,7 +21,7 @@ export function LandingHeader() {
           <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-secondary text-primary-foreground shadow-sm">
             <Radar className="h-5 w-5" />
           </span>
-          <span className="text-sm font-bold tracking-tight text-foreground">RadarCV AI</span>
+          <span className="text-sm font-bold tracking-tight text-foreground">RadarCV</span>
         </div>
 
         <nav className="mx-auto hidden items-center gap-1 md:flex">

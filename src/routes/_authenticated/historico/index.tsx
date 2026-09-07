@@ -43,13 +43,13 @@ import type { AnalysisRecord } from "@/services/analyses.service";
 export const Route = createFileRoute("/_authenticated/historico/")({
   head: () => ({
     meta: [
-      { title: "Histórico de análises — RadarCV AI" },
+      { title: "Histórico de análises — RadarCV" },
       {
         name: "description",
         content:
           "Consulte suas análises de vagas anteriores, acompanhe o Match ATS e reabra resultados.",
       },
-      { property: "og:title", content: "Histórico de análises — RadarCV AI" },
+      { property: "og:title", content: "Histórico de análises — RadarCV" },
       {
         property: "og:description",
         content: "Consulte suas análises de vagas anteriores e acompanhe seus resultados.",

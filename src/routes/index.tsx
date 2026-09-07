@@ -15,13 +15,13 @@ import {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "RadarCV AI — Match ATS e currículos otimizados com IA" },
+      { title: "RadarCV — Match ATS e currículos otimizados com IA" },
       {
         name: "description",
         content:
           "Analise vagas, descubra seu Match ATS, receba recomendações inteligentes e gere um currículo otimizado com Inteligência Artificial.",
       },
-      { property: "og:title", content: "RadarCV AI — Match ATS e currículos otimizados com IA" },
+      { property: "og:title", content: "RadarCV — Match ATS e currículos otimizados com IA" },
       {
         property: "og:description",
         content:

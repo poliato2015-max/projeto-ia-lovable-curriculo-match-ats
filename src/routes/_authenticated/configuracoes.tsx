@@ -25,13 +25,13 @@ import { useResumeMutations, useResumes } from "@/hooks/useResumes";
 export const Route = createFileRoute("/_authenticated/configuracoes")({
   head: () => ({
     meta: [
-      { title: "Configurações — RadarCV AI" },
+      { title: "Configurações — RadarCV" },
       {
         name: "description",
         content:
-          "Gerencie suas preferências, currículo padrão e informações da sua conta no RadarCV AI.",
+          "Gerencie suas preferências, currículo padrão e informações da sua conta no RadarCV.",
       },
-      { property: "og:title", content: "Configurações — RadarCV AI" },
+      { property: "og:title", content: "Configurações — RadarCV" },
       {
         property: "og:description",
         content: "Gerencie suas preferências e informações da sua conta.",

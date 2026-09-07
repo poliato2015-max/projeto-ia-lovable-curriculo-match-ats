@@ -12,12 +12,12 @@ import { useAnalysis } from "@/hooks/useAnalyses";
 export const Route = createFileRoute("/_authenticated/historico/$analysisId")({
   head: () => ({
     meta: [
-      { title: "Resultado da análise — RadarCV AI" },
+      { title: "Resultado da análise — RadarCV" },
       {
         name: "description",
         content: "Reveja o Match ATS, métricas e recomendações de uma análise anterior.",
       },
-      { property: "og:title", content: "Resultado da análise — RadarCV AI" },
+      { property: "og:title", content: "Resultado da análise — RadarCV" },
       {
         property: "og:description",
         content: "Reveja o Match ATS e as recomendações de uma análise anterior.",

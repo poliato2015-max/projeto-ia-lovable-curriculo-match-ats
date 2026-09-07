@@ -37,13 +37,13 @@ import type { DashboardData } from "@/services/dashboard.service";
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
     meta: [
-      { title: "Dashboard — RadarCV AI" },
+      { title: "Dashboard — RadarCV" },
       {
         name: "description",
         content:
           "Acompanhe o desempenho das suas análises de vagas, evolução do match ATS e pontos de melhoria.",
       },
-      { property: "og:title", content: "Dashboard — RadarCV AI" },
+      { property: "og:title", content: "Dashboard — RadarCV" },
       {
         property: "og:description",
         content: "Acompanhe seu desempenho nas análises e identifique onde pode melhorar.",
