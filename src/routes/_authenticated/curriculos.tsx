@@ -25,7 +25,7 @@ import { exportResumeDocx, exportResumePdf } from "@/lib/resume-export";
 export const Route = createFileRoute("/_authenticated/curriculos")({
   head: () => ({
     meta: [
-      { title: "Biblioteca de Currículos — RadarCV AI" },
+      { title: "Biblioteca de Currículos — RadarCV" },
       {
         name: "description",
         content:

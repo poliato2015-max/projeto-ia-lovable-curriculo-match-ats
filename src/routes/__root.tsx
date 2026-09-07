@@ -81,14 +81,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "RadarCV AI — Inteligência para currículos e vagas" },
+      { title: "RadarCV — Inteligência para currículos e vagas" },
       {
         name: "description",
         content:
-          "RadarCV AI ajuda profissionais a otimizar currículos, analisar vagas e gerar versões ATS com inteligência artificial.",
+          "RadarCV ajuda profissionais a otimizar currículos, analisar vagas e gerar versões ATS com inteligência artificial.",
       },
-      { name: "author", content: "RadarCV AI" },
-      { property: "og:title", content: "RadarCV AI" },
+      { name: "author", content: "RadarCV" },
+      { property: "og:title", content: "RadarCV" },
       {
         property: "og:description",
         content: "Otimize currículos, analise vagas e destaque-se com IA.",

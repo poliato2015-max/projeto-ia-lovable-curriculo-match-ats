@@ -278,10 +278,10 @@ export function AboutSection() {
           <BookOpen className="h-5 w-5" />
         </span>
         <h2 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-          Sobre o RadarCV AI
+          Sobre o RadarCV
         </h2>
         <p className="mt-4 text-sm leading-relaxed text-muted-foreground md:text-base">
-          RadarCV AI é um projeto Open Source desenvolvido para estudos de Inteligência Artificial
+          RadarCV é um projeto Open Source desenvolvido para estudos de Inteligência Artificial
           aplicada à otimização de currículos para sistemas ATS.
         </p>
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground md:text-base">
@@ -342,7 +342,7 @@ export function LandingFooter() {
           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-secondary text-primary-foreground shadow-sm">
             <Radar className="h-4 w-4" />
           </span>
-          <span className="text-sm font-bold tracking-tight text-foreground">RadarCV AI</span>
+          <span className="text-sm font-bold tracking-tight text-foreground">RadarCV</span>
           <Badge variant="outline" className="text-[10px]">
             Versão Beta
           </Badge>

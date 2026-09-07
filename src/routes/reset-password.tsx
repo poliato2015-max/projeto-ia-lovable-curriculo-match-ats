@@ -13,15 +13,15 @@ export const Route = createFileRoute("/reset-password")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Redefinir senha — RadarCV AI" },
+      { title: "Redefinir senha — RadarCV" },
       {
         name: "description",
-        content: "Defina uma nova senha para sua conta RadarCV AI.",
+        content: "Defina uma nova senha para sua conta RadarCV.",
       },
-      { property: "og:title", content: "Redefinir senha — RadarCV AI" },
+      { property: "og:title", content: "Redefinir senha — RadarCV" },
       {
         property: "og:description",
-        content: "Defina uma nova senha para sua conta RadarCV AI.",
+        content: "Defina uma nova senha para sua conta RadarCV.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -61,7 +61,7 @@ function ResetPasswordPage() {
         <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-secondary text-primary-foreground shadow-sm">
           <Radar className="h-5 w-5" />
         </span>
-        <span className="text-base font-bold tracking-tight text-foreground">RadarCV AI</span>
+        <span className="text-base font-bold tracking-tight text-foreground">RadarCV</span>
       </div>
 
       <Card className="w-full max-w-md border-border/70 shadow-sm">

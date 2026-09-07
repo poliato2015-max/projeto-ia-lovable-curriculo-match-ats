@@ -24,7 +24,7 @@ export const Route = createFileRoute("/_authenticated/analisar-vaga")({
     typeof search["novo"] === "string" ? { novo: search["novo"] } : {},
   head: () => ({
     meta: [
-      { title: "Analisar Vaga — RadarCV AI" },
+      { title: "Analisar Vaga — RadarCV" },
       {
         name: "description",
         content:

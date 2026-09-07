@@ -17,16 +17,16 @@ export const Route = createFileRoute("/auth")({
   validateSearch: searchSchema,
   head: () => ({
     meta: [
-      { title: "Entrar — RadarCV AI" },
+      { title: "Entrar — RadarCV" },
       {
         name: "description",
         content:
-          "Acesse sua conta RadarCV AI para analisar vagas e gerenciar sua biblioteca de currículos.",
+          "Acesse sua conta RadarCV para analisar vagas e gerenciar sua biblioteca de currículos.",
       },
-      { property: "og:title", content: "Entrar — RadarCV AI" },
+      { property: "og:title", content: "Entrar — RadarCV" },
       {
         property: "og:description",
-        content: "Acesse sua conta RadarCV AI e continue otimizando seus currículos.",
+        content: "Acesse sua conta RadarCV e continue otimizando seus currículos.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -107,7 +107,7 @@ function AuthPage() {
         <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-secondary text-primary-foreground shadow-sm">
           <Radar className="h-5 w-5" />
         </span>
-        <span className="text-base font-bold tracking-tight text-foreground">RadarCV AI</span>
+        <span className="text-base font-bold tracking-tight text-foreground">RadarCV</span>
       </Link>
 
       <Card className="w-full max-w-md border-border/70 shadow-sm">
@@ -152,7 +152,7 @@ function AuthPage() {
             <CardHeader>
               <CardTitle>Acesse sua conta</CardTitle>
               <CardDescription>
-                Entre ou crie sua conta para usar o RadarCV AI.
+                Entre ou crie sua conta para usar o RadarCV.
               </CardDescription>
             </CardHeader>
             <CardContent>

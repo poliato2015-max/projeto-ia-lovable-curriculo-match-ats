@@ -27,7 +27,7 @@ const mainItems = [
   { title: "Currículos", url: "/curriculos", icon: FileText },
 ];
 
-/** IA Coach fica fora da navegação na Fase 1 (rota mantida para a Fase 2). */
+/** Insights da Fase 1. */
 const insightsItems = [{ title: "Histórico", url: "/historico", icon: History }];
 
 const bottomItems = [{ title: "Configurações", url: "/configuracoes", icon: Settings }];
@@ -49,7 +49,7 @@ export function AppSidebar() {
             <Radar className="h-5 w-5" />
           </div>
           <div className="min-w-0 group-data-[collapsible=icon]:hidden">
-            <div className="truncate text-sm font-bold tracking-tight">RadarCV AI</div>
+            <div className="truncate text-sm font-bold tracking-tight">RadarCV</div>
             <div className="truncate text-[11px] text-sidebar-foreground/60">
               Inteligência de carreira
             </div>
