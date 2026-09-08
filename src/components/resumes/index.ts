@@ -1,5 +1,4 @@
 export * from "./types";
-export { MOCK_RESUMES } from "./mock";
 export { ResumeCard } from "./ResumeCard";
 export { ResumeList } from "./ResumeList";
 export { ResumeFilters } from "./ResumeFilters";
