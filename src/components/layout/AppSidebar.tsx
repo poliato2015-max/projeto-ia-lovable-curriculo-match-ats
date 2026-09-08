@@ -25,10 +25,8 @@ const mainItems = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
   { title: "Analisar Vaga", url: "/analisar-vaga", icon: Search },
   { title: "Currículos", url: "/curriculos", icon: FileText },
+  { title: "Histórico", url: "/historico", icon: History },
 ];
-
-/** Insights da Fase 1. */
-const insightsItems = [{ title: "Histórico", url: "/historico", icon: History }];
 
 const bottomItems = [{ title: "Configurações", url: "/configuracoes", icon: Settings }];
 
