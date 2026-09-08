@@ -25,10 +25,8 @@ const mainItems = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
   { title: "Analisar Vaga", url: "/analisar-vaga", icon: Search },
   { title: "Currículos", url: "/curriculos", icon: FileText },
+  { title: "Histórico", url: "/historico", icon: History },
 ];
-
-/** Insights da Fase 1. */
-const insightsItems = [{ title: "Histórico", url: "/historico", icon: History }];
 
 const bottomItems = [{ title: "Configurações", url: "/configuracoes", icon: Settings }];
 
@@ -85,24 +83,6 @@ export function AppSidebar() {
                   </SidebarMenuItem>
                 ),
               )}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        <SidebarGroup>
-          <SidebarGroupLabel>Insights</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {insightsItems.map((item) => (
-                <SidebarMenuItem key={item.url}>
-                  <SidebarMenuButton asChild isActive={isActive(item.url)} tooltip={item.title}>
-                    <Link to={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
