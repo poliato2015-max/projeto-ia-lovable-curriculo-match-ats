@@ -1,6 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Radar, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Radar } from "lucide-react";
 import { scrollToSection } from "@/lib/navigation";
 import { useAppEntryRoute } from "@/hooks/useAppEntry";
 
@@ -38,12 +37,12 @@ export function LandingHeader() {
         </nav>
 
         <div className="ml-auto md:ml-0">
-          <Button asChild size="sm" className="gap-1.5">
-            <Link to={entryRoute}>
-              Analisar uma vaga
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </Button>
+          <Link
+            to={entryRoute}
+            className="rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
+          >
+            Entrar
+          </Link>
         </div>
       </div>
     </header>

@@ -53,6 +53,7 @@ function AuthPage() {
   const [mode, setMode] = useState<"login" | "signup" | "recover">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -82,6 +83,10 @@ function AuthPage() {
 
   const onSignup = (e: React.FormEvent) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      toast.error("As senhas não coincidem.");
+      return;
+    }
     void handle(async () => {
       const { needsConfirmation } = await signUp(email, password);
       toast.success(
