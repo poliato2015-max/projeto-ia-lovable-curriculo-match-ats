@@ -233,57 +233,57 @@ function AuthPage() {
                         placeholder="voce@email.com"
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="signup-password">Senha</Label>
-                      <Input
-                        id="signup-password"
-                        type="password"
-                        required
-                        minLength={6}
-                        value={password}
-                        onChange={(e) => {
-                          setPassword(e.target.value);
-                          setSignupError(null);
-                        }}
-                        placeholder="Crie uma senha"
-                        aria-invalid={Boolean(passwordError)}
-                      />
-                      <p className="text-xs text-muted-foreground">
-                        Use no mínimo 6 caracteres, combinando letras maiúsculas, minúsculas e
-                        números. Evite senhas comuns ou já usadas em outros sites.
-                      </p>
-                      {passwordError && (
-                        <p className="text-xs font-medium text-destructive">{passwordError}</p>
-                      )}
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="signup-confirm-password">Confirmar senha</Label>
-                      <Input
-                        id="signup-confirm-password"
-                        type="password"
-                        required
-                        minLength={6}
-                        value={confirmPassword}
-                        onChange={(e) => {
-                          setConfirmPassword(e.target.value);
-                          setSignupError(null);
-                        }}
-                        placeholder="Repita sua senha"
-                        aria-invalid={Boolean(confirmError)}
-                      />
-                      {confirmError && (
-                        <p className="text-xs font-medium text-destructive">{confirmError}</p>
-                      )}
-                    </div>
-                    {signupError && (
-                      <p className="text-sm font-medium text-destructive">{signupError}</p>
-                    )}
-                    <Button type="submit" className="w-full" disabled={busy}>
-                      {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                      Criar conta
-                    </Button>
-                  </form>
-                </TabsContent>
+                <div className="space-y-2">
+                  <Label htmlFor="signup-password">Senha</Label>
+                  <Input
+                    id="signup-password"
+                    type="password"
+                    required
+                    minLength={6}
+                    value={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      setSignupError(null);
+                    }}
+                    placeholder="Crie uma senha"
+                    aria-invalid={Boolean(passwordError)}
+                  />
+                  {passwordError && (
+                    <p className="text-xs font-medium text-destructive">{passwordError}</p>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="signup-confirm-password">Confirmar senha</Label>
+                  <Input
+                    id="signup-confirm-password"
+                    type="password"
+                    required
+                    minLength={6}
+                    value={confirmPassword}
+                    onChange={(e) => {
+                      setConfirmPassword(e.target.value);
+                      setSignupError(null);
+                    }}
+                    placeholder="Repita sua senha"
+                    aria-invalid={Boolean(confirmError)}
+                  />
+                  {confirmError && (
+                    <p className="text-xs font-medium text-destructive">{confirmError}</p>
+                  )}
+                  <p className="text-xs text-muted-foreground">
+                    Use no mínimo 6 caracteres, combinando letras maiúsculas, minúsculas e
+                    números. Evite senhas comuns ou já usadas em outros sites.
+                  </p>
+                  {signupError && (
+                    <p className="text-xs font-medium text-destructive">{signupError}</p>
+                  )}
+                </div>
+                <Button type="submit" className="w-full" disabled={busy}>
+                  {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  Criar conta
+                </Button>
+              </form>
+            </TabsContent>
               </Tabs>
             </CardContent>
           </>
