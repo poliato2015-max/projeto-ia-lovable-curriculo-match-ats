@@ -53,6 +53,7 @@ function AuthPage() {
   const [mode, setMode] = useState<"login" | "signup" | "recover">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -82,6 +83,10 @@ function AuthPage() {
 
   const onSignup = (e: React.FormEvent) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      toast.error("As senhas não coincidem.");
+      return;
+    }
     void handle(async () => {
       const { needsConfirmation } = await signUp(email, password);
       toast.success(
@@ -223,6 +228,18 @@ function AuthPage() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="Mínimo de 6 caracteres"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-confirm-password">Confirmar senha</Label>
+                      <Input
+                        id="signup-confirm-password"
+                        type="password"
+                        required
+                        minLength={6}
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        placeholder="Repita sua senha"
                       />
                     </div>
                     <Button type="submit" className="w-full" disabled={busy}>
