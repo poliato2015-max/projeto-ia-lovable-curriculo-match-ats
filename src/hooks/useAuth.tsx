@@ -32,6 +32,10 @@ function friendlyError(message: string): string {
     return "Este e-mail já possui uma conta.";
   if (m.includes("password should be at least"))
     return "A senha deve ter pelo menos 6 caracteres.";
+  if (m.includes("weak") || m.includes("pwned") || m.includes("known to be weak"))
+    return "Essa senha é muito comum e já apareceu em vazamentos. Escolha uma senha diferente, misturando letras maiúsculas, minúsculas e números.";
+  if (m.includes("password should contain"))
+    return "A senha precisa ter letras maiúsculas, minúsculas e números.";
   if (m.includes("rate limit") || m.includes("too many"))
     return "Muitas tentativas. Aguarde alguns instantes.";
   if (m.includes("failed to fetch") || m.includes("network"))
