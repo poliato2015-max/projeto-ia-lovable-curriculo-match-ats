@@ -9,7 +9,6 @@ import {
   FileCheck2,
   FileSearch,
   FileText,
-  Github,
   History,
   KeyRound,
   Library,
@@ -288,12 +287,6 @@ export function AboutSection() {
           Seu objetivo é demonstrar, na prática, a construção de uma plataforma SaaS moderna
           utilizando IA, automação e boas práticas de arquitetura de software.
         </p>
-        <div className="mt-6">
-          <Button variant="ghost" size="sm" className="gap-1.5 text-muted-foreground">
-            <Github className="h-4 w-4" />
-            Ver projeto no GitHub
-          </Button>
-        </div>
       </div>
     </Section>
   );
