@@ -55,6 +55,7 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [busy, setBusy] = useState(false);
+  const [signupError, setSignupError] = useState<string | null>(null);
 
   useEffect(() => {
     if (session) {
