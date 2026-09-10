@@ -81,19 +81,33 @@ function AuthPage() {
     });
   };
 
+  const passwordError =
+    password.length > 0 && password.length < 6
+      ? "A senha deve ter pelo menos 6 caracteres."
+      : null;
+  const confirmError =
+    confirmPassword.length > 0 && confirmPassword !== password
+      ? "As senhas não coincidem."
+      : null;
+
   const onSignup = (e: React.FormEvent) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      toast.error("As senhas não coincidem.");
+    if (passwordError || confirmError || password !== confirmPassword) {
+      setSignupError("Verifique os campos de senha antes de continuar.");
       return;
     }
+    setSignupError(null);
     void handle(async () => {
-      const { needsConfirmation } = await signUp(email, password);
-      toast.success(
-        needsConfirmation
-          ? "Conta criada! Confirme seu e-mail para entrar."
-          : "Conta criada com sucesso!",
-      );
+      try {
+        const { needsConfirmation } = await signUp(email, password);
+        toast.success(
+          needsConfirmation
+            ? "Conta criada! Confirme seu e-mail para entrar."
+            : "Conta criada com sucesso!",
+        );
+      } catch (error) {
+        setSignupError(error instanceof Error ? error.message : "Algo deu errado.");
+      }
     });
   };
 
