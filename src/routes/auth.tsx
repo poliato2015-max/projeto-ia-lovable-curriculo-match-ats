@@ -230,6 +230,18 @@ function AuthPage() {
                         placeholder="Mínimo de 6 caracteres"
                       />
                     </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-confirm-password">Confirmar senha</Label>
+                      <Input
+                        id="signup-confirm-password"
+                        type="password"
+                        required
+                        minLength={6}
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        placeholder="Repita sua senha"
+                      />
+                    </div>
                     <Button type="submit" className="w-full" disabled={busy}>
                       {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                       Criar conta
