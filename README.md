@@ -1,470 +1,90 @@
-# projeto_ia_lovable_n8n_curriculo_match_ats
+# 📄 RadarCV
 
-# RadarCV AI
+> Inteligência de carreira com IA para transformar uma vaga de emprego em um currículo mais estratégico, direcionado e compatível com sistemas ATS.
 
-## Sprint 01A — Foundation
-
-### Contexto
-
-Você está iniciando o desenvolvimento do RadarCV AI.
-
-O objetivo desta sprint NÃO é criar funcionalidades.
-
-O objetivo é criar uma fundação extremamente sólida, organizada, reutilizável e preparada para receber novas funcionalidades nas próximas sprints.
-
-Pense como um arquiteto de software construindo a estrutura de um produto SaaS moderno.
-
-Todo o código deve ser limpo, modular, escalável e reutilizável.
+[![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)](#)
+[![React](https://img.shields.io/badge/React-TypeScript-61DAFB)](#)
+[![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3FCF8E)](#)
+[![AI](https://img.shields.io/badge/AI-Generative%20AI-purple)](#)
 
 ---
 
-# Escopo desta Sprint
+# 📋 Sobre o projeto
 
-Construa apenas:
+O **RadarCV** é uma plataforma desenvolvida para auxiliar profissionais na preparação de currículos direcionados a oportunidades específicas de trabalho.
 
-- Layout global
+A proposta é utilizar Inteligência Artificial para analisar uma vaga de emprego, identificar os principais requisitos e características da oportunidade e, a partir dessas informações, gerar um currículo otimizado para sistemas de recrutamento baseados em **ATS: Applicant Tracking Systems**.
 
-- Sidebar
+Além da análise e geração do currículo, a plataforma permite armazenar, editar, versionar e exportar os currículos gerados.
 
-- Header
-
-- Dashboard
-
-- Sistema de navegação
-
-- Tema
-
-- Componentes reutilizáveis
-
-Todo o restante será implementado nas próximas sprints.
+O projeto foi desenvolvido como um estudo prático envolvendo **desenvolvimento de software, Inteligência Artificial, banco de dados, autenticação, persistência de informações e integração entre diferentes serviços**.
 
 ---
 
-# Fora do Escopo
+# 🏁 Objetivo
 
-NÃO implementar:
+O principal objetivo do RadarCV AI é tornar o processo de adaptação de um currículo para uma determinada vaga mais rápido, estruturado e orientado por dados.
 
-- Login
+Em vez de utilizar o mesmo currículo para diferentes oportunidades, o usuário pode analisar uma vaga específica e utilizar os resultados da análise para criar uma versão do currículo mais alinhada à oportunidade.
 
-- Cadastro
+A plataforma busca combinar:
 
-- Autenticação
-
-- Supabase
-
-- Banco de Dados
-
-- APIs
-
-- IA
-
-- OpenAI
-
-- Claude
-
-- Gemini
-
-- Upload
-
-- Parser
-
-- Matchmaking
-
-- ATS
-
-- Exportação
-
-- Histórico
-
-- Analytics reais
-
-- IA Coach
-
-Não simular funcionalidades complexas.
-
-Não antecipar próximas sprints.
+- análise de vagas;
+- Inteligência Artificial generativa;
+- otimização para ATS;
+- organização de currículos;
+- versionamento;
+- exportação de documentos;
+- persistência de dados.
 
 ---
 
-# Stack
+## 💡 O problema
 
-Utilizar exclusivamente:
+Um dos principais desafios enfrentados por candidatos durante uma busca por emprego é adaptar o currículo para diferentes oportunidades.
 
-- React
+Uma mesma experiência profissional pode ser apresentada de diferentes maneiras dependendo dos requisitos da vaga.
 
-- TypeScript
+Além disso, muitos processos seletivos utilizam sistemas ATS para realizar uma primeira análise dos currículos recebidos.
 
-- Vite
+Isso cria alguns desafios:
 
-- Tailwind CSS
+- identificar rapidamente os requisitos mais importantes de uma vaga;
+- descobrir quais palavras-chave estão presentes ou ausentes no currículo;
+- entender os pontos fortes e fracos em relação à oportunidade;
+- adaptar o currículo sem alterar fatos da experiência profissional;
+- manter diferentes versões organizadas;
+- produzir documentos em formatos adequados para envio.
 
-- shadcn/ui
-
-- React Router
-
-- Lucide Icons
-
-- Framer Motion
-
----
-
-# Design
-
-Utilizar obrigatoriamente o Design System do shadcn/ui.
-
-Inspirar-se visualmente em:
-
-- Linear
-
-- Notion
-
-- Stripe
-
-- Vercel
-
-Características:
-
-- visual premium
-
-- minimalista
-
-- muito espaço em branco
-
-- excelente hierarquia visual
-
-- animações discretas
-
-- bordas suaves
-
-- cards elegantes
-
-- aparência profissional
-
-Paleta:
-
-Primary
-
-Roxo (#8B5CF6)
-
-Secondary
-
-Coral (#FF6B6B)
-
-Background
-
-Branco
-
-Surface
-
-#FAFAFA
-
-Border
-
-#E5E7EB
-
-Text
-
-#111827
-
-Preparar Dark Mode.
+O RadarCV AI foi desenvolvido para centralizar esse processo em uma única plataforma.
 
 ---
 
-# Layout
-
-Criar um layout padrão para toda a aplicação.
-
-Estrutura:
-
-Sidebar fixa
-
-↓
-
-Header superior
-
-↓
-
-Área principal
-
-↓
-
-Footer discreto
-
-A Sidebar deverá permanecer durante toda a navegação.
-
-No Mobile ela deverá transformar-se em um Drawer.
-
----
-
-# Sidebar
-
-Adicionar apenas os menus abaixo.
-
-Não desenvolver as páginas ainda.
-
-- Dashboard
-
-- Currículos
-
-- Analisar Vaga
-
-- Currículos ATS
-
-- Histórico
-
-- Analytics
-
-- IA Coach
-
-- Configurações
-
-Utilizar ícones Lucide.
-
-Adicionar estados:
-
-- ativo
-
-- hover
-
-- focus
-
----
-
-# Rotas
-
-Criar todas as rotas.
-
-Apenas a Dashboard deverá possuir conteúdo.
-
-Todas as demais páginas deverão utilizar um componente reutilizável chamado:
-
-ComingSoonPage
-
-Este componente deverá conter:
-
-- Ícone
-
-- Título
-
-- Texto curto
-
-- Badge "Em desenvolvimento"
-
-Não criar interfaces específicas para essas páginas nesta sprint.
-
----
-
-# Dashboard
-
-Criar uma Dashboard elegante utilizando apenas dados mockados.
-
-Adicionar:
-
-Hero principal.
-
-Cards de estatísticas.
-
-Atividades recentes.
-
-Gráfico simples.
-
-Cards modernos.
-
-Utilizar componentes reutilizáveis.
-
-Exemplo de estatísticas:
-
-- Currículos
-
-- Vagas analisadas
-
-- Score médio ATS
-
-- Currículos ATS gerados
-
-Todos os números devem ser fictícios.
-
----
-
-# Componentização
-
-Criar componentes reutilizáveis.
-
-Exemplos:
-
-AppSidebar
-
-AppHeader
-
-PageContainer
-
-PageTitle
-
-SectionTitle
-
-StatsCard
-
-ContentCard
-
-EmptyState
-
-LoadingState
-
-ComingSoonPage
-
-ThemeToggle
-
-Todos devem ser independentes.
-
-Evitar duplicação de código.
-
----
-
-# Estrutura
-
-Organizar utilizando:
-
-src/
-
-components/
-
-layouts/
-
-pages/
-
-hooks/
-
-contexts/
-
-services/
-
-types/
-
-lib/
-
-utils/
-
-assets/
-
----
-
-# UX
-
-Adicionar:
-
-Skeletons
-
-Hover Effects
-
-Transições suaves
-
-Microinterações
-
-Cards responsivos
-
-Feedback visual
-
-Loading mockado
-
-Estados vazios
-
----
-
-# Responsividade
-
-Desktop
-
-Tablet
-
-Mobile
-
-A navegação deve funcionar perfeitamente em todos os tamanhos.
-
----
-
-# Acessibilidade
-
-Preparar toda a interface seguindo WCAG.
-
-Focus visível.
-
-Navegação por teclado.
-
-Bom contraste.
-
----
-
-# Código
-
-Utilizar boas práticas React.
-
-Componentes pequenos.
-
-Código organizado.
-
-Tipagem completa.
-
-Baixo acoplamento.
-
-Alta reutilização.
-
----
-
-# Critérios de Aceitação
-
-Ao finalizar esta sprint deverá existir:
-
-✅ Layout completo
-
-✅ Sidebar
-
-✅ Header
-
-✅ Dashboard moderna
-
-✅ Navegação funcionando
-
-✅ Rotas criadas
-
-✅ Tema preparado
-
-✅ Componentes reutilizáveis
-
-✅ Responsividade
-
-✅ Dados mockados
-
-✅ ComingSoonPage reutilizável
-
----
-
-# Importante
-
-Esta sprint representa apenas a fundação da aplicação.
-
-Não implemente nenhuma funcionalidade além do solicitado.
-
-Preserve uma arquitetura preparada para receber novas funcionalidades nas próximas sprints sem necessidade de refatoração.
-
-Ao finalizar, preserve toda a estrutura criada para que as próximas sprints apenas adicionem novas funcionalidades, sem alterar a arquitetura existente.
-
-This project was built with [Lovable](https://lovable.dev).
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/c5a20e7f-a799-4641-ad3d-0ecb4fd31e11).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
-```
+## 🛠️ A solução
+
+O RadarCV AI transforma uma vaga de emprego em um fluxo estruturado de análise e preparação de currículo.
+
+O fluxo principal da plataforma é:
+
+```text
+Vaga de emprego
+       ↓
+Análise com IA
+       ↓
+Resultado da análise
+       ↓
+Recomendações
+       ↓
+Geração do currículo ATS
+       ↓
+Validação ATS
+       ↓
+Edição
+       ↓
+Biblioteca de currículos
+       ↓
+Versionamento
+       ↓
+Exportação PDF / DOCX
+
+```text
