@@ -39,7 +39,7 @@ A plataforma busca combinar:
 
 ---
 
-## 💡 O problema
+# 💡 O problema
 
 Um dos principais desafios enfrentados por candidatos durante uma busca por emprego é adaptar o currículo para diferentes oportunidades.
 
@@ -60,7 +60,7 @@ O RadarCV AI foi desenvolvido para centralizar esse processo em uma única plata
 
 ---
 
-## 🛠️ A solução
+# 🛠️ A solução
 
 O RadarCV transforma uma vaga de emprego em um fluxo estruturado de análise e preparação de currículo.
 
@@ -111,20 +111,47 @@ flowchart TD
     L --> M
 ```
 # 🌐 Acesse o projeto
-### Aplicação
+## Aplicação
 
 URL: COLOCAR_AQUI_O_LINK_DA_APLICAÇÃO
 
 
 # ✨ Principais funcionalidades
-### 1. Landing Page
+## 1. Landing Page
 
-A página inicial apresenta a proposta do RadarCV AI e direciona o usuário para o acesso à plataforma.
+A página inicial apresenta a proposta do RadarCV e direciona o usuário para o acesso à plataforma.
 
 ### 📸 Screenshot
 
-![Screenshot 1](COLOCAR_AQUI_O_LINK_DA_IMAGEM)
+![landing Page](https://raw.githubusercontent.com/poliato2015-max/imagens/main/projeto-ia-lovable-curriculo-match-ats/projeto_ia_lovable_curriculo_match_ats_landing_page.png)
 
+## 2. Cadastro e autenticação
 
+O RadarCV possui fluxo de cadastro e autenticação de usuários.
 
+O processo de cadastro conta com validações relacionadas às informações de acesso e senha, incluindo confirmação da senha.
+
+### 📸 Screenshot
+
+![login](https://raw.githubusercontent.com/poliato2015-max/imagens/main/projeto-ia-lovable-curriculo-match-ats/projeto_ia_lovable_curriculo_match_ats_login.png)
+
+## 3. Dashboard
+
+((( DESCRECER ESTA TELA DO SISTEMA ))
+
+![login](https://raw.githubusercontent.com/poliato2015-max/imagens/main/projeto-ia-lovable-curriculo-match-ats/projeto_ia_lovable_curriculo_match_ats_dashboard.png)
+
+## 4. Analisar vaga
+
+O usuário pode iniciar uma nova análise informando os dados de uma oportunidade de emprego.
+
+### 4.1 - Etapa 1 ( Dados da Vaga )
+
+((( DESCRECER ESTA TELA DO SISTEMA ))
+
+### 📸 Screenshot
+
+![Dados da Vaga](https://raw.githubusercontent.com/poliato2015-max/imagens/main/projeto-ia-lovable-curriculo-match-ats/projeto_ia_lovable_curriculo_match_ats_analisar_vaga_dados_vaga.png)
+
+----------------A Inteligência Artificial processa as informações da vaga e do currículo utilizado para produzir uma análise estruturada.
 
