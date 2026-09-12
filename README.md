@@ -66,25 +66,47 @@ O RadarCV AI transforma uma vaga de emprego em um fluxo estruturado de análise 
 
 O fluxo principal da plataforma é:
 
-```text
-Vaga de emprego
-       ↓
-Análise com IA
-       ↓
-Resultado da análise
-       ↓
-Recomendações
-       ↓
-Geração do currículo ATS
-       ↓
-Validação ATS
-       ↓
-Edição
-       ↓
-Biblioteca de currículos
-       ↓
-Versionamento
-       ↓
-Exportação PDF / DOCX
+```mermaid
+flowchart TD
+    subgraph INPUT["📥 Entrada"]
+        A[Vaga de emprego]
+        B[Currículo de origem]
+    end
 
-```text
+    subgraph IA["🤖 Processamento com IA"]
+        C["Análise com IA<br/>(comparação vaga × currículo)"]
+        D[Resultado da análise]
+        E[Recomendações]
+    end
+
+    subgraph GERACAO["📝 Geração e Validação ATS"]
+        F[Gerar currículo ATS]
+        G[Validação ATS]
+        H{Score ATS atinge<br/>o mínimo exigido?}
+    end
+
+    subgraph HUMANO["✍️ Revisão"]
+        I[Edição manual do usuário]
+    end
+
+    subgraph OUTPUT["💾 Armazenamento e Saída"]
+        J[Salvar na Biblioteca]
+        K[Controle de Versão Automático]
+        L[Gerar PDF / DOCX]
+        M[Currículo pronto para candidatura]
+    end
+
+    A --> C
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+    G --> H
+    H -- Não --> E
+    H -- Sim --> I
+    I --> J
+    J --> K
+    K --> L
+    L --> M
+```
