@@ -110,11 +110,9 @@ flowchart TD
     K --> L
     L --> M
 ```
-# 🌐 Acesse o projeto
-## Aplicação
+# 🌐 Acesso ao aplicativo
 
-URL: COLOCAR_AQUI_O_LINK_DA_APLICAÇÃO
-
+https://radarcv.lovable.app/
 
 # ✨ Principais funcionalidades
 ## 1. Landing Page
