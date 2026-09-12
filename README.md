@@ -147,7 +147,9 @@ O usuário pode iniciar uma nova análise informando os dados de uma oportunidad
 
 ### 4.1 - Etapa Vaga
 
-((( DESCRECER ESTA ETAPA E TELA DO SISTEMA ))
+O usuário pode iniciar uma nova análise informando os dados de uma oportunidade de emprego.
+
+A Inteligência Artificial processa as informações da vaga e do currículo utilizado para produzir uma análise estruturada.
 
 ### 📸 Screenshot
 
@@ -171,8 +173,18 @@ O usuário pode iniciar uma nova análise informando os dados de uma oportunidad
 
 ### 4.4 - Etapa Resultado
 
-((( DESCRECER ESTA ETAPA E TELA DO SISTEMA ))
-----------------A Inteligência Artificial processa as informações da vaga e do currículo utilizado para produzir uma análise estruturada.
+Após o processamento, o sistema apresenta um resultado estruturado da análise da oportunidade.
+
+Entre as informações apresentadas estão:
+
+- percentual de compatibilidade;
+- resumo da análise;
+- pontos fortes;
+- pontos de atenção;
+- palavras-chave encontradas;
+- Gaps identificados;
+- recomendações;
+- próximos passos.
 
 ### 📸 Screenshot
 
@@ -180,7 +192,292 @@ O usuário pode iniciar uma nova análise informando os dados de uma oportunidad
 
 ### 4.5 - Etapa Curriculo ATS
 
-((( DESCRECER ESTA ETAPA E TELA DO SISTEMA ))
+A partir da análise realizada, o RadarCV pode gerar uma versão direcionada do currículo.
+
+O conteúdo é estruturado considerando as informações profissionais fornecidas pelo usuário e os requisitos identificados na oportunidade.
+
+Nesta etapa o usuário tem as seguintes informações para sua decisão:
+- Checklist ATS: Permite verificar diferentes aspectos relacionados à estrutura e ao conteúdo do currículo antes de sua utilização.
+- Palavras Chaves: Permite verificar as chaves encontradas e destacadas no curriculo
+- Botões:
+- Copiar conteúdo;
+- Exportar PDF;
+- Exportar DOCX;
+- Editar: Currículo pode ser editado para revisar e ajustar o conteúdo do currículo antes do salvamento ou exportação.
+- Salvar na Biblioteca: Grava o currículo ATS na biblioteca de currículos
 
 ![Curriculo ATS](https://raw.githubusercontent.com/poliato2015-max/imagens/main/projeto-ia-lovable-curriculo-match-ats/projeto_ia_lovable_curriculo_match_ats_analisar_vaga_curriculo_ats.png)
+
+## 5. Biblioteca de Currículos
+
+A Biblioteca centraliza os currículos criados e importados pelo usuário.
+
+A partir dela é possível acessar os documentos e executar ações como:
+
+- copiar conteúdo;
+- exportar PDF;
+- exportar DOCX;
+- editar;
+- excluir;
+- gerar uma nova versão.
+
+### 5.1 Importar Currículo
+
+Por este recurso o usuário consegue importar currículos para seu controle ou escolha para análises futuras
+
+### 5.2 Currículo padrão
+
+O usuário pode definir um currículo como padrão.
+
+Essa referência facilita a utilização do currículo principal durante novas análises.
+
+### 5.3 Versionamento
+
+O RadarCV mantém diferentes versões dos currículos ATS.
+
+Isso permite organizar a evolução dos documentos e manter versões associadas às análises que deram origem a eles.
+
+### 📸 Screenshot
+
+![Biblioteca](https://raw.githubusercontent.com/poliato2015-max/imagens/main/projeto-ia-lovable-curriculo-match-ats/projeto_ia_lovable_curriculo_match_ats_biblioteca.png)
+
+## 6. Histórico de análises
+
+O sistema mantém o histórico das análises realizadas.
+
+O usuário pode consultar análises anteriores e acessar novamente os resultados relacionados a cada oportunidade.
+
+![Histórico](https://raw.githubusercontent.com/poliato2015-max/imagens/main/projeto-ia-lovable-curriculo-match-ats/projeto_ia_lovable_curriculo_match_ats_historico.png)
+
+## 7. Configurações
+
+((( DESCRECER ESTA TELA DO SISTEMA ))
+
+![Configurações](https://raw.githubusercontent.com/poliato2015-max/imagens/main/projeto-ia-lovable-curriculo-match-ats/projeto_ia_lovable_curriculo_match_ats_configuracao_clara.png)
+
+![Configurações](https://raw.githubusercontent.com/poliato2015-max/imagens/main/projeto-ia-lovable-curriculo-match-ats/projeto_ia_lovable_curriculo_match_ats_configuracao_escura.png)
+
+# 🏗️ Arquitetura
+
+O RadarCV AI utiliza uma arquitetura baseada em aplicação web, funções server-side e serviços gerenciados.
+
+                         ┌──────────────────┐
+                         │     Usuário       │
+                         └────────┬─────────┘
+                                  │
+                                  ▼
+                    ┌─────────────────────────┐
+                    │      Interface Web      │
+                    │    React + TanStack     │
+                    │          Start          │
+                    └────────────┬────────────┘
+                                 │
+                                 ▼
+                    ┌─────────────────────────┐
+                    │     Server Functions    │
+                    │ Processamento server-side│
+                    └────────────┬────────────┘
+                                 │
+                  ┌──────────────┴──────────────┐
+                  │                             │
+                  ▼                             ▼
+       ┌─────────────────────┐       ┌─────────────────────┐
+       │       Supabase      │       │ Inteligência        │
+       │                     │       │ Artificial          │
+       │ • Auth              │       │                     │
+       │ • PostgreSQL        │       │ • Análise de vagas  │
+       │ • Storage            │       │ • Geração ATS       │
+       │ • RLS                │       │ • Tradução          │
+       └─────────────────────┘       └─────────────────────┘
+
+### Camadas principais
+
+### Frontend
+
+Responsável pela interface e interação com o usuário.
+
+### Server Functions
+
+Responsáveis pelo processamento server-side e pela execução das operações que fazem parte da lógica da aplicação.
+
+### Supabase
+
+Utilizado para autenticação, banco de dados, armazenamento de arquivos e controle de acesso através de RLS.
+
+### Inteligência Artificial
+
+Utilizada nos processos de análise da vaga, geração dos currículos e demais recursos relacionados ao processamento de linguagem.
+
+# 🗄️ Estrutura de dados
+
+O projeto utiliza PostgreSQL através do Supabase.
+
+Entre as principais entidades utilizadas estão:
+
+### Entidade	Responsabilidade
+| resumes | Armazena os currículos dos usuários |
+| analyses | Armazena as análises realizadas |
+| analysis_results | Armazena os resultados detalhados das análises |
+| ats_resumes | Armazena os currículos ATS gerados |
+Relacionamento simplificado
+```text
+┌──────────────┐
+│   resumes    │
+└──────┬───────┘
+       │
+       │
+       ▼
+┌──────────────┐
+│   analyses   │
+└──────┬───────┘
+       │
+       ├───────────────────┐
+       │                   │
+       ▼                   ▼
+┌──────────────────┐ ┌──────────────┐
+│ analysis_results │ │ ats_resumes  │
+└──────────────────┘ └──────────────┘
+
+🔐 Segurança
+
+A aplicação utiliza recursos de segurança fornecidos pelo Supabase e pela arquitetura server-side.
+
+Entre os mecanismos utilizados estão:
+
+autenticação de usuários;
+rotas protegidas;
+identificação do usuário autenticado;
+Row Level Security (RLS);
+controle de acesso aos dados;
+armazenamento de arquivos com controle por usuário;
+operações server-side.
+
+O objetivo é garantir que os dados de currículos e análises sejam associados ao usuário correto.
+
+🛠️ Tecnologias utilizadas
+Tecnologia	Utilização
+React	Interface da aplicação
+TypeScript	Desenvolvimento e tipagem
+TanStack Start	Framework da aplicação
+TanStack Router	Roteamento
+Tailwind CSS	Estilização
+Supabase	Backend como serviço
+PostgreSQL	Banco de dados
+Supabase Auth	Autenticação
+Supabase Storage	Armazenamento de arquivos
+Row Level Security	Controle de acesso aos dados
+Server Functions	Processamento server-side
+Generative AI	Análise e geração de conteúdo
+PDF	Exportação de currículos
+DOCX	Exportação de currículos
+GitHub	Versionamento do código
+Lovable	Desenvolvimento assistido por IA
+
+🤝 Desenvolvimento assistido por Inteligência Artificial
+
+O RadarCV também representa um estudo sobre o uso de Inteligência Artificial no próprio processo de desenvolvimento de software.
+
+O projeto foi desenvolvido utilizando uma abordagem de desenvolvimento assistido por IA, explorando ferramentas capazes de auxiliar em diferentes etapas, como:
+
+estruturação da aplicação;
+implementação de funcionalidades;
+criação e evolução da interface;
+integração com serviços;
+análise de código;
+identificação de problemas;
+documentação;
+refinamento da experiência do usuário.
+
+O objetivo não foi apenas utilizar IA como funcionalidade do produto, mas também investigar como ferramentas de IA podem participar do próprio processo de desenvolvimento de software.
+
+🧠 Aprendizados e desafios
+
+O desenvolvimento do RadarCV proporcionou aprendizados em diferentes áreas.
+
+Desenvolvimento de produto
+
+Foi necessário transformar uma ideia inicial em um fluxo de utilização coerente, conectando análise de vaga, geração de currículo, edição, armazenamento e exportação.
+
+Integração entre IA e aplicação
+
+Um dos desafios foi estruturar a comunicação entre a aplicação e os processos de Inteligência Artificial, mantendo os dados organizados e utilizáveis pelas etapas seguintes.
+
+Persistência de dados
+
+Outro ponto importante foi garantir que análises, currículos e versões permanecessem disponíveis após sua criação.
+
+Versionamento
+
+O gerenciamento de diferentes versões de currículos exigiu uma estrutura capaz de relacionar documentos às análises que deram origem a eles.
+
+ATS
+
+O projeto também permitiu explorar conceitos relacionados a sistemas de rastreamento de candidatos e à necessidade de estruturar currículos de forma adequada para processamento automatizado.
+
+Segurança
+
+A utilização de autenticação, RLS e armazenamento controlado permitiu aprofundar o entendimento sobre proteção e isolamento de dados em aplicações multiusuário.
+
+Desenvolvimento assistido por IA
+
+O projeto também serviu como laboratório para compreender os benefícios e limitações do desenvolvimento utilizando ferramentas de geração de código e assistência por Inteligência Artificial.
+
+📈 Evolução do projeto
+
+O RadarCV foi desenvolvido de forma incremental.
+
+O projeto passou por diferentes ciclos de desenvolvimento, nos quais funcionalidades foram implementadas, testadas e refinadas.
+
+🧪 Validação da aplicação
+
+Durante o desenvolvimento, os principais fluxos da aplicação foram testados.
+
+Entre os fluxos validados estão:
+
+cadastro;
+autenticação;
+análise de vaga;
+apresentação do resultado;
+geração de currículo ATS;
+checklist ATS;
+edição;
+salvamento;
+Biblioteca;
+versionamento;
+exportação PDF;
+exportação DOCX;
+cópia do currículo;
+opções de objetivo, exemplo tradução para o idioma inglês;
+histórico de análises.
+
+🔮 Próximas evoluções
+
+O RadarCV pode evoluir futuramente para incorporar novos recursos relacionados à carreira e recrutamento.
+
+Algumas possibilidades incluem:
+
+análise de múltiplas vagas;
+acompanhamento de candidaturas;
+métricas de evolução dos currículos;
+melhorias na análise ATS;
+recomendações mais personalizadas;
+integração com plataformas de recrutamento;
+acompanhamento do processo seletivo;
+recursos adicionais de preparação para entrevistas;
+novos formatos de exportação;
+evolução dos recursos de Inteligência Artificial.
+
+As funcionalidades acima representam possibilidades futuras e não fazem parte da implementação atual.
+
+```
+## 👨‍💻 Autor
+
+Desenvolvido por **Marcelo Poliato de Oliveira** como projeto prático de desenvolvimento assistido por IA Generativa.
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Marcelo%20Poliato-0077B5?logo=linkedin)](https://www.linkedin.com/in/marcelo-poliato)
+[![GitHub](https://img.shields.io/badge/GitHub-poliato2015--max-181717?logo=github)](https://github.com/poliato2015-max)
+
+
+
+
 
