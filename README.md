@@ -62,7 +62,7 @@ O RadarCV AI foi desenvolvido para centralizar esse processo em uma única plata
 
 ## 🛠️ A solução
 
-O RadarCV AI transforma uma vaga de emprego em um fluxo estruturado de análise e preparação de currículo.
+O RadarCV transforma uma vaga de emprego em um fluxo estruturado de análise e preparação de currículo.
 
 O fluxo principal da plataforma é:
 
@@ -110,3 +110,21 @@ flowchart TD
     K --> L
     L --> M
 ```
+# 🌐 Acesse o projeto
+### Aplicação
+
+URL: COLOCAR_AQUI_O_LINK_DA_APLICAÇÃO
+
+
+# ✨ Principais funcionalidades
+### 1. Landing Page
+
+A página inicial apresenta a proposta do RadarCV AI e direciona o usuário para o acesso à plataforma.
+
+### 📸 Screenshot
+
+![Screenshot 1](COLOCAR_AQUI_O_LINK_DA_IMAGEM)
+
+
+
+
