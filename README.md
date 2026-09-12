@@ -145,13 +145,42 @@ O processo de cadastro conta com validações relacionadas às informações de 
 
 O usuário pode iniciar uma nova análise informando os dados de uma oportunidade de emprego.
 
-### 4.1 - Etapa 1 ( Dados da Vaga )
+### 4.1 - Etapa Vaga
 
-((( DESCRECER ESTA TELA DO SISTEMA ))
+((( DESCRECER ESTA ETAPA E TELA DO SISTEMA ))
 
 ### 📸 Screenshot
 
 ![Dados da Vaga](https://raw.githubusercontent.com/poliato2015-max/imagens/main/projeto-ia-lovable-curriculo-match-ats/projeto_ia_lovable_curriculo_match_ats_analisar_vaga_dados_vaga.png)
 
+### 4.2 - Etapa Curriculo
+
+((( DESCRECER ESTA ETAPA E TELA DO SISTEMA ))
+
+### 📸 Screenshot
+
+![Dados do Curriculo](https://raw.githubusercontent.com/poliato2015-max/imagens/main/projeto-ia-lovable-curriculo-match-ats/projeto_ia_lovable_curriculo_match_ats_analisar_vaga_curriculo.png)
+
+### 4.3 - Etapa Objetivo
+
+((( DESCRECER ESTA ETAPA E TELA DO SISTEMA ))
+
+### 📸 Screenshot
+
+![Objetivo](https://raw.githubusercontent.com/poliato2015-max/imagens/main/projeto-ia-lovable-curriculo-match-ats/projeto_ia_lovable_curriculo_match_ats_analisar_vaga_objetivo.png)
+
+### 4.4 - Etapa Resultado
+
+((( DESCRECER ESTA ETAPA E TELA DO SISTEMA ))
 ----------------A Inteligência Artificial processa as informações da vaga e do currículo utilizado para produzir uma análise estruturada.
+
+### 📸 Screenshot
+
+![Resumo Executivo](https://raw.githubusercontent.com/poliato2015-max/imagens/main/projeto-ia-lovable-curriculo-match-ats/projeto_ia_lovable_curriculo_match_ats_analisar_vaga_resultado.png)
+
+### 4.5 - Etapa Curriculo ATS
+
+((( DESCRECER ESTA ETAPA E TELA DO SISTEMA ))
+
+![Curriculo ATS](https://raw.githubusercontent.com/poliato2015-max/imagens/main/projeto-ia-lovable-curriculo-match-ats/projeto_ia_lovable_curriculo_match_ats_analisar_vaga_curriculo_ats.png)
 
