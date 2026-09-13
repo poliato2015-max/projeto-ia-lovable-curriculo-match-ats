@@ -320,22 +320,22 @@ Entre as principais entidades utilizadas estão:
 | ats_resumes | Armazena os currículos ATS gerados |
 Relacionamento simplificado
 ```text
-┌──────────────┐
-│   resumes    │
-└──────┬───────┘
-       │
-       │
-       ▼
-┌──────────────┐
-│   analyses   │
-└──────┬───────┘
-       │
-       ├───────────────────┐
-       │                   │
-       ▼                   ▼
-┌──────────────────┐ ┌──────────────┐
-│ analysis_results │ │ ats_resumes  │
-└──────────────────┘ └──────────────┘
+                                   ┌──────────────────┐
+                                   │      resumes     │
+                                   └─────────┬────────┘
+                                             │
+                                             │
+                                             ▼
+                                   ┌──────────────────┐ 
+                                   │     analyses     │
+                                   └─────────┬────────┘
+                                             │
+                                             ├────────────────────────────────┐
+                                             │                                │
+                                             ▼                                ▼
+                                   ┌──────────────────┐              ┌──────────────────┐  
+                                   │ analysis_results │              │    ats_resumes   │
+                                   └──────────────────┘              └──────────────────┘
 
 🔐 Segurança
 
