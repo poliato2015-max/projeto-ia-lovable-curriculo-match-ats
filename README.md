@@ -260,23 +260,23 @@ O usuário pode consultar análises anteriores e acessar novamente os resultados
 
 O RadarCV AI utiliza uma arquitetura baseada em aplicação web, funções server-side e serviços gerenciados.
 
-                         ┌──────────────────┐
-                         │     Usuário       │
-                         └────────┬─────────┘
-                                  │
-                                  ▼
-                    ┌─────────────────────────┐
-                    │      Interface Web      │
-                    │    React + TanStack     │
-                    │          Start          │
-                    └────────────┬────────────┘
-                                 │
-                                 ▼
-                    ┌─────────────────────────┐
-                    │     Server Functions    │
-                    │ Processamento server-side│
-                    └────────────┬────────────┘
-                                 │
+                                                      ┌──────────────────────────┐
+                                                      │         Usuário          │
+                                                      └────────────┬─────────────┘
+                                                                   │
+                                                                   ▼
+                                                      ┌───────────────────────────┐
+                                                      │       Interface Web       │
+                                                      │      React + TanStack     │
+                                                      │          Start            │
+                                                      └────────────┬──────────────┘
+                                                                   │
+                                                                   ▼
+                                                      ┌───────────────────────────┐
+                                                      │      Server Functions     │
+                                                      │ Processamento server-side │
+                                                      └────────────┬──────────────┘
+                                                                   │
                                          ┌─────────────────────────┴────────────────────────────┐
                                          │                                                      │
                                          ▼                                                      ▼
