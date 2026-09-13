@@ -144,8 +144,6 @@ O usuário também pode iniciar rapidamente uma nova análise por meio do botão
 
 ![login](https://raw.githubusercontent.com/poliato2015-max/imagens/main/projeto-ia-lovable-curriculo-match-ats/projeto_ia_lovable_curriculo_match_ats_dashboard.png)
 
----
-
 ## 4. Analisar vaga
 
 O usuário pode iniciar uma nova análise informando os dados de uma oportunidade de emprego.
@@ -213,8 +211,6 @@ Nesta etapa o usuário tem as seguintes informações para sua decisão:
 
 ![Curriculo ATS](https://raw.githubusercontent.com/poliato2015-max/imagens/main/projeto-ia-lovable-curriculo-match-ats/projeto_ia_lovable_curriculo_match_ats_analisar_vaga_curriculo_ats.png)
 
----
-
 ## 5. Biblioteca de Currículos
 
 A Biblioteca centraliza os currículos criados e importados pelo usuário.
@@ -248,8 +244,6 @@ Isso permite organizar a evolução dos documentos e manter versões associadas 
 
 ![Biblioteca](https://raw.githubusercontent.com/poliato2015-max/imagens/main/projeto-ia-lovable-curriculo-match-ats/projeto_ia_lovable_curriculo_match_ats_biblioteca.png)
 
----
-
 ## 6. Histórico de análises
 
 O sistema mantém o histórico das análises realizadas.
@@ -258,8 +252,6 @@ O usuário pode consultar análises anteriores e acessar novamente os resultados
 
 ![Histórico](https://raw.githubusercontent.com/poliato2015-max/imagens/main/projeto-ia-lovable-curriculo-match-ats/projeto_ia_lovable_curriculo_match_ats_historico.png)
 
----
-
 ## 7. Configurações
 
 ((( DESCRECER ESTA TELA DO SISTEMA ))
@@ -267,6 +259,8 @@ O usuário pode consultar análises anteriores e acessar novamente os resultados
 ![Configurações](https://raw.githubusercontent.com/poliato2015-max/imagens/main/projeto-ia-lovable-curriculo-match-ats/projeto_ia_lovable_curriculo_match_ats_configuracao_clara.png)
 
 ![Configurações](https://raw.githubusercontent.com/poliato2015-max/imagens/main/projeto-ia-lovable-curriculo-match-ats/projeto_ia_lovable_curriculo_match_ats_configuracao_escura.png)
+
+---
 
 # 🏗️ Arquitetura
 
@@ -301,21 +295,22 @@ O RadarCV AI utiliza uma arquitetura baseada em aplicação web, funções serve
                         │ • RLS                   │                            │                         │
                         └─────────────────────────┘                            └─────────────────────────┘
 
-### Camadas principais
 
-### Frontend
+## Camadas principais
+
+- ### Frontend
 
 Responsável pela interface e interação com o usuário.
 
-### Server Functions
+- ### Server Functions
 
 Responsáveis pelo processamento server-side e pela execução das operações que fazem parte da lógica da aplicação.
 
-### Supabase
+- ### Supabase
 
 Utilizado para autenticação, banco de dados, armazenamento de arquivos e controle de acesso através de RLS.
 
-### Inteligência Artificial
+- ### Inteligência Artificial
 
 Utilizada nos processos de análise da vaga, geração dos currículos e demais recursos relacionados ao processamento de linguagem.
 
@@ -355,6 +350,7 @@ Entre as principais entidades utilizadas estão:
                                    └──────────────────┘              └──────────────────┘
 
 ```
+---
 
 # 🔐 Segurança
 
@@ -371,6 +367,8 @@ Entre os mecanismos utilizados estão:
 - operações server-side.
 
 O objetivo é garantir que os dados de currículos e análises sejam associados ao usuário correto.
+
+---
 
 # 🛠️ Tecnologias utilizadas
 | Tecnologia | Utilização |
@@ -392,6 +390,8 @@ O objetivo é garantir que os dados de currículos e análises sejam associados 
 | **GitHub** | Versionamento do código
 | **Lovable** | Desenvolvimento assistido por IA
 
+---
+
 # 🤝 Desenvolvimento assistido por Inteligência Artificial
 
 O RadarCV também representa um estudo sobre o uso de Inteligência Artificial no próprio processo de desenvolvimento de software.
@@ -409,36 +409,42 @@ O projeto foi desenvolvido utilizando uma abordagem de desenvolvimento assistido
 
 O objetivo não foi apenas utilizar IA como funcionalidade do produto, mas também investigar como ferramentas de IA podem participar do próprio processo de desenvolvimento de software.
 
+---
+
 # 🧠 Aprendizados e desafios
 
 O desenvolvimento do RadarCV proporcionou aprendizados em diferentes áreas.
 
-- Desenvolvimento de produto
--- Foi necessário transformar uma ideia inicial em um fluxo de utilização coerente, conectando análise de vaga, geração de currículo, edição, armazenamento e exportação.
+- ### Desenvolvimento de produto
+Foi necessário transformar uma ideia inicial em um fluxo de utilização coerente, conectando análise de vaga, geração de currículo, edição, armazenamento e exportação.
 
-- Integração entre IA e aplicação
--- Um dos desafios foi estruturar a comunicação entre a aplicação e os processos de Inteligência Artificial, mantendo os dados organizados e utilizáveis pelas etapas seguintes.
+- ### Integração entre IA e aplicação
+Um dos desafios foi estruturar a comunicação entre a aplicação e os processos de Inteligência Artificial, mantendo os dados organizados e utilizáveis pelas etapas seguintes.
 
-- Persistência de dados
---  Outro ponto importante foi garantir que análises, currículos e versões permanecessem disponíveis após sua criação.
+- ### Persistência de dados
+Outro ponto importante foi garantir que análises, currículos e versões permanecessem disponíveis após sua criação.
 
-- Versionamento
--- O gerenciamento de diferentes versões de currículos exigiu uma estrutura capaz de relacionar documentos às análises que deram origem a eles.
+- ### Versionamento
+O gerenciamento de diferentes versões de currículos exigiu uma estrutura capaz de relacionar documentos às análises que deram origem a eles.
 
-- ATS
--- O projeto também permitiu explorar conceitos relacionados a sistemas de rastreamento de candidatos e à necessidade de estruturar currículos de forma adequada para processamento automatizado.
+- ### ATS
+O projeto também permitiu explorar conceitos relacionados a sistemas de rastreamento de candidatos e à necessidade de estruturar currículos de forma adequada para processamento automatizado.
 
-- Segurança
--- A utilização de autenticação, RLS e armazenamento controlado permitiu aprofundar o entendimento sobre proteção e isolamento de dados em aplicações multiusuário.
+- ### Segurança
+A utilização de autenticação, RLS e armazenamento controlado permitiu aprofundar o entendimento sobre proteção e isolamento de dados em aplicações multiusuário.
 
-- Desenvolvimento assistido por IA
--- O projeto também serviu como laboratório para compreender os benefícios e limitações do desenvolvimento utilizando ferramentas de geração de código e assistência por Inteligência Artificial.
+- ### Desenvolvimento assistido por IA
+O projeto também serviu como laboratório para compreender os benefícios e limitações do desenvolvimento utilizando ferramentas de geração de código e assistência por Inteligência Artificial.
+
+---
 
 # 📈 Evolução do projeto
 
 O RadarCV foi desenvolvido de forma incremental.
 
 O projeto passou por diferentes ciclos de desenvolvimento, nos quais funcionalidades foram implementadas, testadas e refinadas.
+
+---
 
 # 🧪 Validação da aplicação
 
@@ -464,6 +470,8 @@ Entre os fluxos validados estão:
 - variação nas opções de objetivo, exemplo tradução para o idioma inglês;
 - histórico de análises.
 
+---
+
 # 🔮 Próximas evoluções
 
 O RadarCV pode evoluir futuramente para incorporar novos recursos relacionados à carreira e recrutamento.
@@ -482,6 +490,8 @@ Algumas possibilidades incluem:
 - evolução dos recursos de Inteligência Artificial.
 
 As funcionalidades acima representam possibilidades futuras e não fazem parte da implementação atual.
+
+---
 
 ## 👨‍💻 Autor
 
