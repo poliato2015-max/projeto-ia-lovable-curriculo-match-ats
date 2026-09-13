@@ -98,9 +98,13 @@ graph TD
     Exportacao(["Exportar PDF / DOCX"]):::saida
 
 ```
+---
+
 # 🌐 Acesso ao aplicativo
 
 https://radarcv.lovable.app/
+
+---
 
 # ✨ Principais funcionalidades
 ## 1. Landing Page
@@ -244,6 +248,8 @@ Isso permite organizar a evolução dos documentos e manter versões associadas 
 
 ![Biblioteca](https://raw.githubusercontent.com/poliato2015-max/imagens/main/projeto-ia-lovable-curriculo-match-ats/projeto_ia_lovable_curriculo_match_ats_biblioteca.png)
 
+---
+
 ## 6. Histórico de análises
 
 O sistema mantém o histórico das análises realizadas.
@@ -251,6 +257,8 @@ O sistema mantém o histórico das análises realizadas.
 O usuário pode consultar análises anteriores e acessar novamente os resultados relacionados a cada oportunidade.
 
 ![Histórico](https://raw.githubusercontent.com/poliato2015-max/imagens/main/projeto-ia-lovable-curriculo-match-ats/projeto_ia_lovable_curriculo_match_ats_historico.png)
+
+---
 
 ## 7. Configurações
 
@@ -264,34 +272,34 @@ O usuário pode consultar análises anteriores e acessar novamente os resultados
 
 O RadarCV AI utiliza uma arquitetura baseada em aplicação web, funções server-side e serviços gerenciados.
 
-                                                      ┌──────────────────────────┐
-                                                      │         Usuário          │
-                                                      └────────────┬─────────────┘
-                                                                   │
-                                                                   ▼
-                                                      ┌───────────────────────────┐
-                                                      │       Interface Web       │
-                                                      │      React + TanStack     │
-                                                      │          Start            │
-                                                      └────────────┬──────────────┘
-                                                                   │
-                                                                   ▼
-                                                      ┌───────────────────────────┐
-                                                      │      Server Functions     │
-                                                      │ Processamento server-side │
-                                                      └────────────┬──────────────┘
-                                                                   │
-                                         ┌─────────────────────────┴────────────────────────────┐
-                                         │                                                      │
-                                         ▼                                                      ▼
-                            ┌─────────────────────────┐                            ┌─────────────────────────┐
-                            │         Supabase        │                            │ Inteligência Artificial │
-                            │                         │                            │                         │
-                            │ • Auth                  │                            │ • Análise de vagas      │
-                            │ • PostgreSQL            │                            │ • Geração ATS           │
-                            │ • Storage               │                            │                         │
-                            │ • RLS                   │                            │                         │
-                            └─────────────────────────┘                            └─────────────────────────┘
+                                                  ┌──────────────────────────┐
+                                                  │         Usuário          │
+                                                  └────────────┬─────────────┘
+                                                               │
+                                                               ▼
+                                                  ┌───────────────────────────┐
+                                                  │       Interface Web       │
+                                                  │      React + TanStack     │
+                                                  │          Start            │
+                                                  └────────────┬──────────────┘
+                                                               │
+                                                               ▼
+                                                  ┌───────────────────────────┐
+                                                  │      Server Functions     │
+                                                  │ Processamento server-side │
+                                                  └────────────┬──────────────┘
+                                                               │
+                                     ┌─────────────────────────┴────────────────────────────┐
+                                     │                                                      │
+                                     ▼                                                      ▼
+                        ┌─────────────────────────┐                            ┌─────────────────────────┐
+                        │         Supabase        │                            │ Inteligência Artificial │
+                        │                         │                            │                         │
+                        │ • Auth                  │                            │ • Análise de vagas      │
+                        │ • PostgreSQL            │                            │ • Geração ATS           │
+                        │ • Storage               │                            │                         │
+                        │ • RLS                   │                            │                         │
+                        └─────────────────────────┘                            └─────────────────────────┘
 
 ### Camadas principais
 
@@ -405,33 +413,26 @@ O objetivo não foi apenas utilizar IA como funcionalidade do produto, mas tamb�
 
 O desenvolvimento do RadarCV proporcionou aprendizados em diferentes áreas.
 
-Desenvolvimento de produto
+- Desenvolvimento de produto
+-- Foi necessário transformar uma ideia inicial em um fluxo de utilização coerente, conectando análise de vaga, geração de currículo, edição, armazenamento e exportação.
 
-Foi necessário transformar uma ideia inicial em um fluxo de utilização coerente, conectando análise de vaga, geração de currículo, edição, armazenamento e exportação.
+- Integração entre IA e aplicação
+-- Um dos desafios foi estruturar a comunicação entre a aplicação e os processos de Inteligência Artificial, mantendo os dados organizados e utilizáveis pelas etapas seguintes.
 
-Integração entre IA e aplicação
+- Persistência de dados
+--  Outro ponto importante foi garantir que análises, currículos e versões permanecessem disponíveis após sua criação.
 
-Um dos desafios foi estruturar a comunicação entre a aplicação e os processos de Inteligência Artificial, mantendo os dados organizados e utilizáveis pelas etapas seguintes.
+- Versionamento
+-- O gerenciamento de diferentes versões de currículos exigiu uma estrutura capaz de relacionar documentos às análises que deram origem a eles.
 
-Persistência de dados
+- ATS
+-- O projeto também permitiu explorar conceitos relacionados a sistemas de rastreamento de candidatos e à necessidade de estruturar currículos de forma adequada para processamento automatizado.
 
-Outro ponto importante foi garantir que análises, currículos e versões permanecessem disponíveis após sua criação.
+- Segurança
+-- A utilização de autenticação, RLS e armazenamento controlado permitiu aprofundar o entendimento sobre proteção e isolamento de dados em aplicações multiusuário.
 
-Versionamento
-
-O gerenciamento de diferentes versões de currículos exigiu uma estrutura capaz de relacionar documentos às análises que deram origem a eles.
-
-ATS
-
-O projeto também permitiu explorar conceitos relacionados a sistemas de rastreamento de candidatos e à necessidade de estruturar currículos de forma adequada para processamento automatizado.
-
-Segurança
-
-A utilização de autenticação, RLS e armazenamento controlado permitiu aprofundar o entendimento sobre proteção e isolamento de dados em aplicações multiusuário.
-
-Desenvolvimento assistido por IA
-
-O projeto também serviu como laboratório para compreender os benefícios e limitações do desenvolvimento utilizando ferramentas de geração de código e assistência por Inteligência Artificial.
+- Desenvolvimento assistido por IA
+-- O projeto também serviu como laboratório para compreender os benefícios e limitações do desenvolvimento utilizando ferramentas de geração de código e assistência por Inteligência Artificial.
 
 # 📈 Evolução do projeto
 
@@ -452,13 +453,15 @@ Entre os fluxos validados estão:
 - geração de currículo ATS;
 - checklist ATS;
 - edição;
+- exclusão;
 - salvamento;
 - biblioteca;
+- Filtros;
 - versionamento;
 - exportação PDF;
 - exportação DOCX;
 - cópia do currículo;
-- opções de objetivo, exemplo tradução para o idioma inglês;
+- variação nas opções de objetivo, exemplo tradução para o idioma inglês;
 - histórico de análises.
 
 # 🔮 Próximas evoluções
