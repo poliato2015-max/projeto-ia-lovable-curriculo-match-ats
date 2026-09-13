@@ -277,17 +277,17 @@ O RadarCV AI utiliza uma arquitetura baseada em aplicação web, funções serve
                     │ Processamento server-side│
                     └────────────┬────────────┘
                                  │
-                  ┌──────────────┴──────────────┐
-                  │                             │
-                  ▼                             ▼
-       ┌─────────────────────┐       ┌─────────────────────┐
-       │       Supabase      │       │ Inteligência        │
-       │                     │       │ Artificial          │
-       │ • Auth              │       │                     │
-       │ • PostgreSQL        │       │ • Análise de vagas  │
-       │ • Storage            │       │ • Geração ATS       │
-       │ • RLS                │       │ • Tradução          │
-       └─────────────────────┘       └─────────────────────┘
+                                         ┌─────────────────────────┴────────────────────────────┐
+                                         │                                                      │
+                                         ▼                                                      ▼
+                            ┌─────────────────────────┐                            ┌─────────────────────────┐
+                            │         Supabase        │                            │ Inteligência Artificial │
+                            │                         │                            │                         │
+                            │ • Auth                  │                            │ • Análise de vagas      │
+                            │ • PostgreSQL            │                            │ • Geração ATS           │
+                            │ • Storage               │                            │                         │
+                            │ • RLS                   │                            │                         │
+                            └─────────────────────────┘                            └─────────────────────────┘
 
 ### Camadas principais
 
