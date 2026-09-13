@@ -67,48 +67,36 @@ O RadarCV transforma uma vaga de emprego em um fluxo estruturado de análise e p
 O fluxo principal da plataforma é:
 
 ```mermaid
-flowchart TD
-    subgraph INPUT["📥 Entrada"]
-        A[Vaga de emprego]
-        B[Currículo de origem]
-    end
+graph TD
+    %% Estilos visuais para o GitHub
+    classDef entrada fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+    classDef ia fill:#f3e5f5,stroke:#4a148c,stroke-width:2px;
+    classDef acao fill:#fff3e0,stroke:#e65100,stroke-width:2px;
+    classDef saida fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px;
 
-    subgraph IA["🤖 Processamento com IA"]
-        C["Análise com IA<br/>(comparação vaga × currículo)"]
-        D[Resultado da análise]
-        E[Recomendações]
-    end
+    %% Fluxo Principal
+    Start([Início]) --> Passo1
+    
+    Passo1["Passo 1: Vaga de Emprego<br/>(Título, Empresa, Link/Descrição)"]:::entrada
+    Passo1 --> Passo2
+    
+    Passo2["Passo 2: Currículo de Origem<br/>(Upload ou Seleção)"]:::entrada
+    Passo2 --> Passo3
+    
+    Passo3["Passo 3: Definição de Objetivo<br/>(Prioridades e Instruções)"]:::entrada
+    Passo3 --> AnaliseIA
+    
+    AnaliseIA{{"Análise com IA"}}:::ia
+    AnaliseIA --> Resultado
+    
+    Resultado["Resultado da Análise<br/>(Score + Recomendações)"]:::ia
+    Resultado --> GerarATS
+    
+    GerarATS["Gerar Currículo ATS"]:::acao
+    GerarATS --> Exportacao
+    
+    Exportacao(["Exportar PDF / DOCX"]):::saida
 
-    subgraph GERACAO["📝 Geração e Validação ATS"]
-        F[Gerar currículo ATS]
-        G[Validação ATS]
-        H{Score ATS atinge<br/>o mínimo exigido?}
-    end
-
-    subgraph HUMANO["✍️ Revisão"]
-        I[Edição manual do usuário]
-    end
-
-    subgraph OUTPUT["💾 Armazenamento e Saída"]
-        J[Salvar na Biblioteca]
-        K[Controle de Versão Automático]
-        L[Gerar PDF / DOCX]
-        M[Currículo pronto para candidatura]
-    end
-
-    A --> C
-    B --> C
-    C --> D
-    D --> E
-    E --> F
-    F --> G
-    G --> H
-    H -- Não --> E
-    H -- Sim --> I
-    I --> J
-    J --> K
-    K --> L
-    L --> M
 ```
 # 🌐 Acesso ao aplicativo
 
@@ -128,6 +116,7 @@ A página inicial apresenta a proposta do RadarCV e direciona o usuário para o 
 O RadarCV possui fluxo de cadastro e autenticação de usuários.
 
 O processo de cadastro conta com validações relacionadas às informações de acesso e senha, incluindo confirmação da senha.
+> **Observação** O usuário também pode recuperar o acesso à conta por meio do recurso **“Esqueci minha senha”**.
 
 ### 📸 Screenshot
 
@@ -135,7 +124,19 @@ O processo de cadastro conta com validações relacionadas às informações de 
 
 ## 3. Dashboard
 
-((( DESCRECER ESTA TELA DO SISTEMA ))
+O Dashboard apresenta uma visão consolidada do desempenho do usuário nas análises realizadas pelo RadarCV.
+
+A tela disponibiliza indicadores como **Match médio**, **Melhor match**, **Análises realizadas** e **Análises no mês atual**, permitindo acompanhar de forma rápida o histórico de utilização e os resultados obtidos.
+
+Também é apresentado o **Histórico do seu Match ATS**, com a evolução cronológica das pontuações de compatibilidade. O usuário pode selecionar diferentes períodos de visualização, como 7, 30, 90 dias ou todo o histórico.
+
+A tela apresenta ainda a **distribuição das análises por faixa de compatibilidade**, separando os resultados em alta, boa e baixa compatibilidade.
+
+Com base nos resultados das análises, o Dashboard consolida os **principais pontos de atenção** e os **principais pontos fortes** identificados com maior frequência.
+
+Por fim, o bloco **Próximo passo** apresenta orientações baseadas nas recomendações e próximos passos identificados nas análises realizadas.
+
+O usuário também pode iniciar rapidamente uma nova análise por meio do botão **“Nova análise”**, disponível no Dashboard.
 
 ![login](https://raw.githubusercontent.com/poliato2015-max/imagens/main/projeto-ia-lovable-curriculo-match-ats/projeto_ia_lovable_curriculo_match_ats_dashboard.png)
 
