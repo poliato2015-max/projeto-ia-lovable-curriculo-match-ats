@@ -326,8 +326,9 @@ Entre as principais entidades utilizadas estão:
 | **analysis_results** | Armazena os resultados detalhados das análises |
 | **ats_resumes** | Armazena os currículos ATS gerados |
 
-Relacionamento simplificado
-```text
+### Relacionamento simplificado
+```
+
                                    ┌──────────────────┐
                                    │      resumes     │
                                    └─────────┬────────┘
@@ -345,65 +346,62 @@ Relacionamento simplificado
                                    │ analysis_results │              │    ats_resumes   │
                                    └──────────────────┘              └──────────────────┘
 
+```
 
----
-
----
-####### 🔐 Segurança
+# 🔐 Segurança
 
 A aplicação utiliza recursos de segurança fornecidos pelo Supabase e pela arquitetura server-side.
 
 Entre os mecanismos utilizados estão:
 
-autenticação de usuários;
-rotas protegidas;
-identificação do usuário autenticado;
-Row Level Security (RLS);
-controle de acesso aos dados;
-armazenamento de arquivos com controle por usuário;
-operações server-side.
+- autenticação de usuários;
+- rotas protegidas;
+- identificação do usuário autenticado;
+- Row Level Security (RLS);
+- controle de acesso aos dados;
+- armazenamento de arquivos com controle por usuário;
+- operações server-side.
 
 O objetivo é garantir que os dados de currículos e análises sejam associados ao usuário correto.
 
----
+# 🛠️ Tecnologias utilizadas
+| Tecnologia | Utilização |
+|---|---|
+| **React**	| Interface da aplicação
+| **TypeScript** | Desenvolvimento e tipagem
+| **TanStack Start** | Framework da aplicação
+| **TanStack Router** | Roteamento
+| **Tailwind CSS** | Estilização
+| **Supabase** | Backend como serviço
+| **PostgreSQL** | Banco de dados
+| **Supabase Auth** | Autenticação
+| **Supabase Storage** | Armazenamento de arquivos
+| **Row Level Security** | Controle de acesso aos dados
+| **Server Functions** | Processamento server-side
+| **Generative AI** | Análise e geração de conteúdo
+| **PDF** | Exportação de currículos
+| **DOCX** | Exportação de currículos
+| **GitHub** | Versionamento do código
+| **Lovable** | Desenvolvimento assistido por IA
 
-🛠️ Tecnologias utilizadas
-Tecnologia	Utilização
-React	Interface da aplicação
-TypeScript	Desenvolvimento e tipagem
-TanStack Start	Framework da aplicação
-TanStack Router	Roteamento
-Tailwind CSS	Estilização
-Supabase	Backend como serviço
-PostgreSQL	Banco de dados
-Supabase Auth	Autenticação
-Supabase Storage	Armazenamento de arquivos
-Row Level Security	Controle de acesso aos dados
-Server Functions	Processamento server-side
-Generative AI	Análise e geração de conteúdo
-PDF	Exportação de currículos
-DOCX	Exportação de currículos
-GitHub	Versionamento do código
-Lovable	Desenvolvimento assistido por IA
-
-🤝 Desenvolvimento assistido por Inteligência Artificial
+# 🤝 Desenvolvimento assistido por Inteligência Artificial
 
 O RadarCV também representa um estudo sobre o uso de Inteligência Artificial no próprio processo de desenvolvimento de software.
 
 O projeto foi desenvolvido utilizando uma abordagem de desenvolvimento assistido por IA, explorando ferramentas capazes de auxiliar em diferentes etapas, como:
 
-estruturação da aplicação;
-implementação de funcionalidades;
-criação e evolução da interface;
-integração com serviços;
-análise de código;
-identificação de problemas;
-documentação;
-refinamento da experiência do usuário.
+- estruturação da aplicação;
+- implementação de funcionalidades;
+- criação e evolução da interface;
+- integração com serviços;
+- análise de código;
+- identificação de problemas;
+- documentação;
+- refinamento da experiência do usuário.
 
 O objetivo não foi apenas utilizar IA como funcionalidade do produto, mas também investigar como ferramentas de IA podem participar do próprio processo de desenvolvimento de software.
 
-🧠 Aprendizados e desafios
+# 🧠 Aprendizados e desafios
 
 O desenvolvimento do RadarCV proporcionou aprendizados em diferentes áreas.
 
@@ -435,50 +433,50 @@ Desenvolvimento assistido por IA
 
 O projeto também serviu como laboratório para compreender os benefícios e limitações do desenvolvimento utilizando ferramentas de geração de código e assistência por Inteligência Artificial.
 
-📈 Evolução do projeto
+# 📈 Evolução do projeto
 
 O RadarCV foi desenvolvido de forma incremental.
 
 O projeto passou por diferentes ciclos de desenvolvimento, nos quais funcionalidades foram implementadas, testadas e refinadas.
 
-🧪 Validação da aplicação
+# 🧪 Validação da aplicação
 
 Durante o desenvolvimento, os principais fluxos da aplicação foram testados.
 
 Entre os fluxos validados estão:
 
-cadastro;
-autenticação;
-análise de vaga;
-apresentação do resultado;
-geração de currículo ATS;
-checklist ATS;
-edição;
-salvamento;
-Biblioteca;
-versionamento;
-exportação PDF;
-exportação DOCX;
-cópia do currículo;
-opções de objetivo, exemplo tradução para o idioma inglês;
-histórico de análises.
+- cadastro;
+- autenticação;
+- análise de vaga;
+- apresentação do resultado;
+- geração de currículo ATS;
+- checklist ATS;
+- edição;
+- salvamento;
+- biblioteca;
+- versionamento;
+- exportação PDF;
+- exportação DOCX;
+- cópia do currículo;
+- opções de objetivo, exemplo tradução para o idioma inglês;
+- histórico de análises.
 
-🔮 Próximas evoluções
+# 🔮 Próximas evoluções
 
 O RadarCV pode evoluir futuramente para incorporar novos recursos relacionados à carreira e recrutamento.
 
 Algumas possibilidades incluem:
 
-análise de múltiplas vagas;
-acompanhamento de candidaturas;
-métricas de evolução dos currículos;
-melhorias na análise ATS;
-recomendações mais personalizadas;
-integração com plataformas de recrutamento;
-acompanhamento do processo seletivo;
-recursos adicionais de preparação para entrevistas;
-novos formatos de exportação;
-evolução dos recursos de Inteligência Artificial.
+- análise de múltiplas vagas;
+- acompanhamento de candidaturas;
+- métricas de evolução dos currículos;
+- melhorias na análise ATS;
+- recomendações mais personalizadas;
+- integração com plataformas de recrutamento;
+- acompanhamento do processo seletivo;
+- recursos adicionais de preparação para entrevistas;
+- novos formatos de exportação;
+- evolução dos recursos de Inteligência Artificial.
 
 As funcionalidades acima representam possibilidades futuras e não fazem parte da implementação atual.
 
