@@ -140,6 +140,8 @@ O usuário também pode iniciar rapidamente uma nova análise por meio do botão
 
 ![login](https://raw.githubusercontent.com/poliato2015-max/imagens/main/projeto-ia-lovable-curriculo-match-ats/projeto_ia_lovable_curriculo_match_ats_dashboard.png)
 
+---
+
 ## 4. Analisar vaga
 
 O usuário pode iniciar uma nova análise informando os dados de uma oportunidade de emprego.
@@ -206,6 +208,8 @@ Nesta etapa o usuário tem as seguintes informações para sua decisão:
 - Salvar na Biblioteca: Grava o currículo ATS na biblioteca de currículos
 
 ![Curriculo ATS](https://raw.githubusercontent.com/poliato2015-max/imagens/main/projeto-ia-lovable-curriculo-match-ats/projeto_ia_lovable_curriculo_match_ats_analisar_vaga_curriculo_ats.png)
+
+---
 
 ## 5. Biblioteca de Currículos
 
@@ -307,17 +311,21 @@ Utilizado para autenticação, banco de dados, armazenamento de arquivos e contr
 
 Utilizada nos processos de análise da vaga, geração dos currículos e demais recursos relacionados ao processamento de linguagem.
 
+---
+
 # 🗄️ Estrutura de dados
 
 O projeto utiliza PostgreSQL através do Supabase.
 
 Entre as principais entidades utilizadas estão:
 
-### Entidade	Responsabilidade
-| resumes | Armazena os currículos dos usuários |
-| analyses | Armazena as análises realizadas |
-| analysis_results | Armazena os resultados detalhados das análises |
-| ats_resumes | Armazena os currículos ATS gerados |
+| Entidade | Responsabilidade |
+|---|---|
+| **resumes** | Armazena os currículos dos usuários |
+| **analyses** | Armazena as análises realizadas |
+| **analysis_results** | Armazena os resultados detalhados das análises |
+| **ats_resumes** | Armazena os currículos ATS gerados |
+
 Relacionamento simplificado
 ```text
                                    ┌──────────────────┐
@@ -337,7 +345,11 @@ Relacionamento simplificado
                                    │ analysis_results │              │    ats_resumes   │
                                    └──────────────────┘              └──────────────────┘
 
-🔐 Segurança
+
+---
+
+---
+####### 🔐 Segurança
 
 A aplicação utiliza recursos de segurança fornecidos pelo Supabase e pela arquitetura server-side.
 
@@ -352,6 +364,8 @@ armazenamento de arquivos com controle por usuário;
 operações server-side.
 
 O objetivo é garantir que os dados de currículos e análises sejam associados ao usuário correto.
+
+---
 
 🛠️ Tecnologias utilizadas
 Tecnologia	Utilização
@@ -468,7 +482,6 @@ evolução dos recursos de Inteligência Artificial.
 
 As funcionalidades acima representam possibilidades futuras e não fazem parte da implementação atual.
 
-```
 ## 👨‍💻 Autor
 
 Desenvolvido por **Marcelo Poliato de Oliveira** como projeto prático de desenvolvimento assistido por IA Generativa.
