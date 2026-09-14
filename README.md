@@ -68,35 +68,46 @@ O fluxo principal da plataforma é:
 
 ```mermaid
 graph TD
-    %% Estilos visuais para o GitHub
+    %% Estilos visuais
     classDef entrada fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
     classDef ia fill:#f3e5f5,stroke:#4a148c,stroke-width:2px;
     classDef acao fill:#fff3e0,stroke:#e65100,stroke-width:2px;
     classDef saida fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px;
 
-    %% Fluxo Principal
-    Start([Início]) --> Passo1
-    
-    Passo1["Passo 1: Vaga de Emprego<br/>(Título, Empresa, Link/Descrição)"]:::entrada
-    Passo1 --> Passo2
-    
-    Passo2["Passo 2: Currículo de Origem<br/>(Upload ou Seleção)"]:::entrada
-    Passo2 --> Passo3
-    
-    Passo3["Passo 3: Definição de Objetivo<br/>(Prioridades e Instruções)"]:::entrada
-    Passo3 --> AnaliseIA
-    
+    %% Fluxo principal
+    Inicio([Início]) --> Vaga
+
+    Vaga["Vaga de Emprego<br/>(Título, Empresa e conteúdo da vaga)"]:::entrada
+    Vaga --> Curriculo
+
+    Curriculo["Currículo de Origem<br/>(Importar, colar ou selecionar)"]:::entrada
+    Curriculo --> Objetivo
+
+    Objetivo["Definição de Objetivo<br/>(Prioridades e Instruções)"]:::entrada
+    Objetivo --> AnaliseIA
+
     AnaliseIA{{"Análise com IA"}}:::ia
     AnaliseIA --> Resultado
-    
+
     Resultado["Resultado da Análise<br/>(Score + Recomendações)"]:::ia
     Resultado --> GerarATS
-    
-    GerarATS["Gerar Currículo ATS"]:::acao
-    GerarATS --> Exportacao
-    
-    Exportacao(["Exportar PDF / DOCX"]):::saida
 
+    GerarATS["Gerar Currículo ATS"]:::acao
+    GerarATS --> Validacao
+
+    Validacao["Validação ATS<br/>(Checklist)"]:::acao
+    Validacao --> Edicao
+
+    Edicao["Edição pelo usuário"]:::acao
+    Edicao --> Biblioteca
+
+    Biblioteca["Salvar na Biblioteca"]:::acao
+    Biblioteca --> Versionamento
+
+    Versionamento["Versionamento"]:::acao
+    Versionamento --> Exportacao
+
+    Exportacao(["Exportar PDF / DOCX"]):::saida
 ```
 ---
 
@@ -411,29 +422,31 @@ Entre as principais entidades utilizadas estão:
 ### Relacionamento simplificado
 ```
 
-                                   ┌──────────────────┐
-                                   │      resumes     │
-                                   └─────────┬────────┘
+                                   ┌────────────────────┐
+                                   │ resumes currículos │
+                                   └─────────┬──────────┘
                                              │
                                              │
                                              ▼
-                                   ┌──────────────────┐ 
-                                   │     analyses     │
-                                   └─────────┬────────┘
+                                   ┌───────────────────┐ 
+                                   │     analyses      │
+                                   │ analises de vagas │
+                                   └─────────┬─────────┘
                                              │
-                                             ├────────────────────────────────┐
-                                             │                                │
-                                             ▼                                ▼
-                                   ┌──────────────────┐              ┌──────────────────┐  
-                                   │ analysis_results │              │    ats_resumes   │
-                                   └──────────────────┘              └──────────────────┘
+                            ┌─────────────────────────────────┐
+                            │                                 │
+                            ▼                                 ▼
+                   ┌──────────────────┐              ┌──────────────────┐  
+                   │ analysis_results │              │    ats_resumes   │
+                   │    resultados    │              │   currículos ATS │  
+                   └──────────────────┘              └──────────────────┘
 
 ```
 ---
 
 # 🔐 Segurança
 
-A aplicação utiliza recursos de segurança fornecidos pelo Supabase e pela arquitetura server-side.
+A aplicação utiliza autenticação, controle de acesso e recursos de segurança do Supabase, combinados com operações server-side.
 
 Entre os mecanismos utilizados estão:
 
@@ -442,32 +455,32 @@ Entre os mecanismos utilizados estão:
 - identificação do usuário autenticado;
 - Row Level Security (RLS);
 - controle de acesso aos dados;
-- armazenamento de arquivos com controle por usuário;
-- operações server-side.
+- armazenamento de arquivos com políticas de acesso por usuário;
+- operações server-side para processamento das funcionalidades da aplicação.
 
-O objetivo é garantir que os dados de currículos e análises sejam associados ao usuário correto.
+O objetivo é manter os dados de currículos e análises isolados entre os usuários, aplicando políticas de acesso de acordo com o usuário autenticado.
 
 ---
 
 # 🛠️ Tecnologias utilizadas
 | Tecnologia | Utilização |
 |---|---|
-| **React**	| Interface da aplicação
-| **TypeScript** | Desenvolvimento e tipagem
-| **TanStack Start** | Framework da aplicação
-| **TanStack Router** | Roteamento
-| **Tailwind CSS** | Estilização
-| **Supabase** | Backend como serviço
-| **PostgreSQL** | Banco de dados
-| **Supabase Auth** | Autenticação
-| **Supabase Storage** | Armazenamento de arquivos
-| **Row Level Security** | Controle de acesso aos dados
-| **Server Functions** | Processamento server-side
-| **Generative AI** | Análise e geração de conteúdo
-| **PDF** | Exportação de currículos
-| **DOCX** | Exportação de currículos
-| **GitHub** | Versionamento do código
-| **Lovable** | Desenvolvimento assistido por IA
+| **React** | Interface da aplicação |
+| **TypeScript** | Desenvolvimento e tipagem |
+| **TanStack Start** | Framework da aplicação |
+| **TanStack Router** | Roteamento |
+| **Tailwind CSS** | Estilização |
+| **Supabase** | Backend como serviço |
+| **PostgreSQL** | Banco de dados |
+| **Supabase Auth** | Autenticação |
+| **Supabase Storage** | Armazenamento de arquivos |
+| **Row Level Security** | Controle de acesso aos dados por usuário |
+| **Server Functions** | Processamento server-side |
+| **IA Generativa** | Análise e geração de conteúdo |
+| **PDF** | Exportação de currículos |
+| **DOCX** | Exportação de currículos |
+| **GitHub** | Versionamento do código |
+| **Lovable** | Desenvolvimento assistido por IA |
 
 ---
 
@@ -519,56 +532,72 @@ O projeto também serviu como laboratório para compreender os benefícios e lim
 
 # 📈 Evolução do projeto
 
-O RadarCV foi desenvolvido de forma incremental.
+O RadarCV foi desenvolvido de forma incremental, passando por diferentes ciclos de implementação, validação e refinamento.
 
-O projeto passou por diferentes ciclos de desenvolvimento, nos quais funcionalidades foram implementadas, testadas e refinadas.
+Ao longo desse processo, o projeto evoluiu desde a estruturação inicial da aplicação até a consolidação de um fluxo completo para análise de oportunidades e preparação de currículos.
+
+Entre os principais avanços do projeto estão:
+
+- estruturação do fluxo de análise de vagas;
+- integração da Inteligência Artificial ao processamento das informações;
+- utilização de currículos como referência para as análises;
+- geração de currículos ATS a partir dos resultados obtidos;
+- implementação de edição, armazenamento e versionamento dos currículos;
+- criação da Biblioteca de Currículos e do Histórico de análises;
+- implementação das exportações em PDF e DOCX;
+- evolução da interface e refinamento da experiência do usuário;
+- validação dos principais fluxos e funcionalidades da aplicação.
+
+O desenvolvimento incremental permitiu que cada etapa fosse testada e refinada antes da evolução para as etapas seguintes, contribuindo para a consolidação da versão atual do RadarCV.
 
 ---
 
 # 🧪 Validação da aplicação
 
-Durante o desenvolvimento, os fluxos da aplicação foram testados.
+A versão atual do RadarCV passou por ciclos de testes e validação dos principais fluxos da aplicação.
 
-Entre os fluxos validados estão:
+Foram validados, entre outros, os seguintes processos:
 
-- cadastro;
-- autenticação;
-- análise de vaga;
-- apresentação do resultado;
-- geração de currículo ATS;
-- checklist ATS;
-- edição;
-- exclusão;
-- salvamento;
-- biblioteca;
-- Filtros;
-- versionamento;
-- exportação PDF;
-- exportação DOCX;
-- cópia do currículo;
-- variação nas opções de objetivo, exemplo tradução para o idioma inglês;
-- histórico de análises.
+- cadastro e autenticação de usuários;
+- recuperação de acesso por meio do recurso de redefinição de senha;
+- criação de uma nova análise de vaga;
+- utilização de diferentes formas de fornecimento do currículo;
+- processamento da análise com Inteligência Artificial;
+- apresentação dos resultados e recomendações;
+- geração e edição do currículo ATS;
+- validação do currículo ATS por meio do checklist;
+- salvamento de currículos e análises;
+- utilização da Biblioteca de Currículos;
+- definição de currículo padrão;
+- histórico de análises;
+- geração de novas versões de currículos ATS;
+- exportação dos currículos em PDF e DOCX;
+- cópia do conteúdo do currículo;
+- alternativas de opções de objetivo, incluindo tradução para o idioma inglês;
+- navegação entre as principais áreas da aplicação.
+
+Os testes realizados tiveram como objetivo verificar tanto o funcionamento das funcionalidades quanto a continuidade dos dados entre as diferentes etapas do fluxo.
+
+A validação também contribuiu para identificar ajustes de interface, comportamento e experiência do usuário realizados ao longo do desenvolvimento.
 
 ---
 
 # 🔮 Próximas evoluções
 
-O RadarCV pode evoluir futuramente para incorporar novos recursos relacionados à carreira e recrutamento.
+A versão atual do RadarCV estabelece a base para novas funcionalidades e evoluções da plataforma.
 
-Algumas possibilidades incluem:
+Entre as principais possibilidades de evolução previstas para as próximas etapas do projeto estão:
 
-- análise de múltiplas vagas;
-- acompanhamento de candidaturas;
-- métricas de evolução dos currículos;
-- melhorias na análise ATS;
-- recomendações mais personalizadas;
-- integração com plataformas de recrutamento;
-- acompanhamento do processo seletivo;
-- recursos adicionais de preparação para entrevistas;
-- novos formatos de exportação;
-- evolução dos recursos de Inteligência Artificial.
+- **IA Coach**, ampliando o suporte ao usuário na preparação para processos seletivos;
+- aprimoramento dos mecanismos de análise e geração de currículos ATS;
+- evolução dos recursos de acompanhamento de desempenho das análises;
+- ampliação dos recursos de personalização dos currículos;
+- aprimoramento dos mecanismos de segurança e controle de acesso;
+- evolução dos recursos de gerenciamento e organização dos currículos;
+- ampliação das possibilidades de integração com outras ferramentas e serviços;
+- criação de novos recursos de apoio à preparação para processos seletivos.
 
-As funcionalidades acima representam possibilidades futuras e não fazem parte da implementação atual.
+Essas evoluções representam os próximos passos do RadarCV e poderão ser implementadas de forma incremental, de acordo com as prioridades definidas para as próximas etapas do projeto.
 
 ---
 
