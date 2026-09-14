@@ -150,9 +150,16 @@ O usuário pode iniciar uma nova análise informando os dados de uma oportunidad
 
 ### 4.1 - Etapa Vaga
 
-O usuário pode iniciar uma nova análise informando os dados de uma oportunidade de emprego.
+Está é a primeira etapa do fluxo analisar vaga, o usuário informa os principais dados da oportunidade que deseja.
 
-A Inteligência Artificial processa as informações da vaga e do currículo utilizado para produzir uma análise estruturada.
+São solicitados:
+
+- **Título da vaga**;
+- **Empresa**;
+- forma de informar a vaga, podendo utilizar **URL, Descrição ou Upload**;
+- **Link da vaga**, quando utilizada a opção URL.
+
+O campo de link é opcional e pode receber endereços de plataformas públicas de recrutamento, como LinkedIn, Gupy e Kenoby.
 
 ### 📸 Screenshot
 
@@ -160,7 +167,17 @@ A Inteligência Artificial processa as informações da vaga e do currículo uti
 
 ### 4.2 - Etapa Curriculo
 
-((( DESCRECER ESTA ETAPA E TELA DO SISTEMA ))
+Nesta etapa, o usuário define qual currículo será utilizado como base para a análise da vaga.
+
+O RadarCV oferece diferentes formas de fornecer o currículo para a análise:
+
+- **Importar um currículo:** o usuário pode enviar um arquivo de currículo. Após a importação, o currículo é armazenado na **Biblioteca de Currículos**, podendo ser utilizado em análises futuras.
+- **Colar os dados do currículo:** o usuário pode inserir diretamente o conteúdo textual do currículo para utilizá-lo na análise.
+- **Utilizar um currículo salvo:** o usuário pode selecionar um currículo que já esteja armazenado na **Biblioteca de Currículos**, evitando a necessidade de inseri-lo novamente.
+
+A possibilidade de utilizar currículos previamente armazenados permite que o usuário mantenha diferentes versões ou currículos em sua Biblioteca e escolha aquele mais adequado para cada oportunidade.
+
+O currículo selecionado ou fornecido nesta etapa será utilizado como referência pela Inteligência Artificial na comparação com os requisitos da vaga.
 
 ### 📸 Screenshot
 
