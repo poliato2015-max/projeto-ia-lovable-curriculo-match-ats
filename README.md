@@ -527,7 +527,7 @@ O projeto passou por diferentes ciclos de desenvolvimento, nos quais funcionalid
 
 # 🧪 Validação da aplicação
 
-Durante o desenvolvimento, os principais fluxos da aplicação foram testados.
+Durante o desenvolvimento, os fluxos da aplicação foram testados.
 
 Entre os fluxos validados estão:
 
