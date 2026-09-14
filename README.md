@@ -185,7 +185,18 @@ O currículo selecionado ou fornecido nesta etapa será utilizado como referênc
 
 ### 4.3 - Etapa Objetivo
 
-((( DESCRECER ESTA ETAPA E TELA DO SISTEMA ))
+Nesta etapa, o usuário define um ou mais objetivos para orientar a análise da IA.
+
+É possível selecionar de uma a seis opções:
+
+- **Maximizar ATS**;
+- **Destacar Liderança**;
+- **Reduzir currículo**;
+- **Melhorar narrativa**;
+- **Adaptar para transição de carreira**;
+- **Traduzir para inglês**.
+
+A tela também disponibiliza o campo **“Instruções adicionais (opcional)”**, onde o usuário pode incluir informações específicas para orientar a análise, como destacar determinada experiência profissional.
 
 ### 📸 Screenshot
 
@@ -263,17 +274,68 @@ Isso permite organizar a evolução dos documentos e manter versões associadas 
 
 ## 6. Histórico de análises
 
-O sistema mantém o histórico das análises realizadas.
+O Histórico de análises reúne as oportunidades já analisadas pelo usuário e seus respectivos resultados.
 
-O usuário pode consultar análises anteriores e acessar novamente os resultados relacionados a cada oportunidade.
+A tela apresenta indicadores com o **Total de análises**, a **Última análise realizada** e o **Maior Match ATS** obtido.
+
+O usuário pode pesquisar análises pelo campo **“Pesquisar análises...”**, utilizar os filtros disponíveis e alterar a ordenação dos resultados, incluindo a opção **“Mais recentes”**.
+
+Cada registro apresenta:
+
+- **cargo da oportunidade**;
+- **empresa**;
+- **data da análise**;
+- **currículo utilizado**;
+- **percentual de Match ATS**;
+- classificação de compatibilidade do resultado.
+
+Através do botão **“Ver análise”**, o usuário pode acessar novamente os detalhes da análise realizada.
+
+A tela também disponibiliza a opção de **excluir uma análise** e o botão **“Nova análise”**, permitindo iniciar uma nova avaliação de oportunidade diretamente a partir do Histórico.
 
 ![Histórico](https://raw.githubusercontent.com/poliato2015-max/imagens/main/projeto-ia-lovable-curriculo-match-ats/projeto_ia_lovable_curriculo_match_ats_historico.png)
 
 ## 7. Configurações
 
-((( DESCRECER ESTA TELA DO SISTEMA ))
+A tela de Configurações reúne informações da conta, preferências relacionadas aos currículos e opções de segurança e sessão.
+
+### Conta
+
+Exibe o e-mail utilizado na conta do RadarCV. Nesta versão, o e-mail não pode ser alterado pela plataforma.
+
+### Currículo padrão
+
+Permite selecionar qual currículo original será utilizado como referência nas análises. A tela também identifica qual currículo está atualmente definido como padrão.
+
+### Segurança
+
+Apresenta o status da autenticação da conta, indicando que o acesso está protegido pelo sistema de autenticação do RadarCV.
+
+### Sessão
+
+Disponibiliza a opção **“Sair da conta”** para encerrar o acesso no dispositivo atual. Após sair, o usuário é redirecionado para a página inicial.
 
 ![Configurações](https://raw.githubusercontent.com/poliato2015-max/imagens/main/projeto-ia-lovable-curriculo-match-ats/projeto_ia_lovable_curriculo_match_ats_configuracao_clara.png)
+
+## 8. Header
+
+O Header reúne recursos de navegação, pesquisa, personalização da interface e acesso às opções da conta, permanecendo disponível nas diferentes áreas da plataforma.
+
+### Navegação
+
+O Header possui um controle para expandir ou recolher a navegação lateral, permitindo ajustar a área disponível para o conteúdo principal.
+
+### Pesquisa
+
+O campo **“Pesquisar no RadarCV...”** permite realizar pesquisas diretamente pelo cabeçalho da aplicação.
+
+### Tema claro e escuro
+
+O Header disponibiliza um controle para alternar entre os temas **claro e escuro**, permitindo adaptar a aparência da interface à preferência do usuário.
+
+### Conta do usuário
+
+O avatar localizado no canto superior direito identifica o usuário autenticado e disponibiliza as ações relacionadas à sua conta, incluindo a opção de **sair da conta**.
 
 ![Configurações](https://raw.githubusercontent.com/poliato2015-max/imagens/main/projeto-ia-lovable-curriculo-match-ats/projeto_ia_lovable_curriculo_match_ats_configuracao_escura.png)
 
@@ -297,7 +359,7 @@ O RadarCV AI utiliza uma arquitetura baseada em aplicação web, funções serve
                                                                ▼
                                                   ┌───────────────────────────┐
                                                   │      Server Functions     │
-                                                  │ Processamento server-side │
+                                                  │     Lógica Server-side    │
                                                   └────────────┬──────────────┘
                                                                │
                                      ┌─────────────────────────┴────────────────────────────┐
