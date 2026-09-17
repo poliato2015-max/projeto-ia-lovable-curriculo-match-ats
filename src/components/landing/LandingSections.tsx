@@ -336,16 +336,10 @@ export function LandingFooter() {
             <Radar className="h-4 w-4" />
           </span>
           <span className="text-sm font-bold tracking-tight text-foreground">RadarCV</span>
-          <Badge variant="outline" className="text-[10px]">
-            Versão Beta
-          </Badge>
         </div>
-        <p className="max-w-xl text-xs leading-relaxed text-muted-foreground">
-          Projeto Open Source para estudos de Inteligência Artificial aplicada à otimização de
-          currículos para sistemas ATS.
-        </p>
       </div>
     </footer>
   );
 }
+
 
