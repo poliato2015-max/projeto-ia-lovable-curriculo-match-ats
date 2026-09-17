@@ -15,7 +15,7 @@ import {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "RadarCV — Match ATS e currículos otimizados com IA" },
+      { title: "RadarCV" },
       {
         name: "description",
         content:
