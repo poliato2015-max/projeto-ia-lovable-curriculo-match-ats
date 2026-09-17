@@ -356,34 +356,34 @@ O avatar localizado no canto superior direito identifica o usuário autenticado 
 
 O RadarCV AI utiliza uma arquitetura baseada em aplicação web, funções server-side e serviços gerenciados.
 
-                                                  ┌──────────────────────────┐
-                                                  │         Usuário          │
-                                                  └────────────┬─────────────┘
-                                                               │
-                                                               ▼
-                                                  ┌───────────────────────────┐
-                                                  │       Interface Web       │
-                                                  │      React + TanStack     │
-                                                  │          Start            │
-                                                  └────────────┬──────────────┘
-                                                               │
-                                                               ▼
-                                                  ┌───────────────────────────┐
-                                                  │      Server Functions     │
-                                                  │     Lógica Server-side    │
-                                                  └────────────┬──────────────┘
-                                                               │
-                                     ┌─────────────────────────┴────────────────────────────┐
-                                     │                                                      │
-                                     ▼                                                      ▼
-                        ┌─────────────────────────┐                            ┌─────────────────────────┐
-                        │         Supabase        │                            │ Inteligência Artificial │
-                        │                         │                            │                         │
-                        │ • Auth                  │                            │ • Análise de vagas      │
-                        │ • PostgreSQL            │                            │ • Geração ATS           │
-                        │ • Storage               │                            │                         │
-                        │ • RLS                   │                            │                         │
-                        └─────────────────────────┘                            └─────────────────────────┘
+                                        ┌──────────────────────────┐
+                                        │         Usuário          │
+                                        └────────────┬─────────────┘
+                                                     │
+                                                     ▼
+                                        ┌───────────────────────────┐
+                                        │       Interface Web       │
+                                        │      React + TanStack     │
+                                        │          Start            │
+                                        └────────────┬──────────────┘
+                                                     │
+                                                     ▼
+                                        ┌───────────────────────────┐
+                                        │      Server Functions     │
+                                        │     Lógica Server-side    │
+                                        └────────────┬──────────────┘
+                                                     │
+                           ┌─────────────────────────┴────────────────────────────┐
+                           │                                                      │
+                           ▼                                                      ▼
+              ┌─────────────────────────┐                            ┌─────────────────────────┐
+              │         Supabase        │                            │ Inteligência Artificial │
+              │                         │                            │                         │
+              │ • Auth                  │                            │ • Análise de vagas      │
+              │ • PostgreSQL            │                            │ • Geração ATS           │
+              │ • Storage               │                            │                         │
+              │ • RLS                   │                            │                         │
+              └─────────────────────────┘                            └─────────────────────────┘
 
 
 ## Camadas principais
