@@ -7,7 +7,7 @@ import {
   ArrowLeft,
   FileCheck2,
   Loader2,
-  Trash2,
+  X,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -33,7 +33,7 @@ export function StepCurriculo({ data, onChange, onNext, onBack }: StepCurriculoP
   const [dialogOpen, setDialogOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { deleteMutation, importMutation } = useResumeMutations();
+  const { importMutation } = useResumeMutations();
 
   const canContinue =
     !busy &&
@@ -91,21 +91,11 @@ export function StepCurriculo({ data, onChange, onNext, onBack }: StepCurriculoP
     }
   };
 
-  const handleDeleteSaved = async () => {
-    const resume = data.savedResume;
-    if (!resume) return;
-    try {
-      await deleteMutation.mutateAsync({ id: resume.id, filePath: resume.filePath });
-      const next = { ...data, content: "" };
-      delete next.savedResume;
-      delete next.fileName;
-      onChange(next);
-      toast.success("Currículo excluído da sua biblioteca.");
-    } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Não foi possível excluir o currículo.",
-      );
-    }
+  const handleRemoveSaved = () => {
+    const next = { ...data, content: "" };
+    delete next.savedResume;
+    delete next.fileName;
+    onChange(next);
   };
 
   return (
@@ -200,10 +190,9 @@ export function StepCurriculo({ data, onChange, onNext, onBack }: StepCurriculoP
                 variant="ghost"
                 size="sm"
                 className="gap-1.5 text-destructive hover:bg-destructive/10 hover:text-destructive"
-                disabled={deleteMutation.isPending}
-                onClick={() => void handleDeleteSaved()}
+                onClick={handleRemoveSaved}
               >
-                <Trash2 className="h-4 w-4" /> Excluir
+                <X className="h-4 w-4" /> Remover
               </Button>
             </div>
           ) : (
