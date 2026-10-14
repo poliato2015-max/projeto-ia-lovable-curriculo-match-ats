@@ -1,12 +1,5 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import {
-  LayoutDashboard,
-  FileText,
-  Search,
-  History,
-  Settings,
-  Radar,
-} from "lucide-react";
+import { LayoutDashboard, FileText, Search, History, Settings, Radar } from "lucide-react";
 
 import {
   Sidebar,

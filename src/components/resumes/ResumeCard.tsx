@@ -56,9 +56,7 @@ export function ResumeCard({
 }: ResumeCardProps) {
   const isAts = resume.kind === "ats";
   const isDefault = !isAts && Boolean(resume.favorite);
-  const originLabel = isAts
-    ? [meta?.jobTitle, meta?.company].filter(Boolean).join(" • ")
-    : "";
+  const originLabel = isAts ? [meta?.jobTitle, meta?.company].filter(Boolean).join(" • ") : "";
   const KindIcon = isAts ? Sparkles : FileUp;
 
   const stop = (e: React.MouseEvent) => e.stopPropagation();
@@ -82,20 +80,14 @@ export function ResumeCard({
             <div
               className={cn(
                 "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl",
-                isAts
-                  ? "bg-secondary/15 text-secondary"
-                  : "bg-primary/10 text-primary",
+                isAts ? "bg-secondary/15 text-secondary" : "bg-primary/10 text-primary",
               )}
             >
               <FileText className="h-5 w-5" />
             </div>
             <div className="min-w-0">
-              <p className="truncate text-sm font-semibold text-foreground">
-                {resume.name}
-              </p>
-              <p className="truncate text-xs text-muted-foreground">
-                {resume.role}
-              </p>
+              <p className="truncate text-sm font-semibold text-foreground">{resume.name}</p>
+              <p className="truncate text-xs text-muted-foreground">{resume.role}</p>
             </div>
           </div>
           <div onClick={stop}>
@@ -143,32 +135,32 @@ export function ResumeCard({
 
         <CardContent className="space-y-3">
           <div className="flex flex-wrap items-center gap-2">
-          {isDefault && (
+            {isDefault && (
+              <Badge
+                variant="secondary"
+                className="gap-1 border border-primary/30 bg-primary/10 text-primary"
+              >
+                <Star className="h-3 w-3 fill-current" />
+                Currículo padrão
+              </Badge>
+            )}
             <Badge
               variant="secondary"
-              className="gap-1 border border-primary/30 bg-primary/10 text-primary"
+              className={cn(
+                "gap-1 border",
+                isAts
+                  ? "border-secondary/30 bg-secondary/10 text-secondary"
+                  : "border-primary/20 bg-primary/10 text-primary",
+              )}
             >
-              <Star className="h-3 w-3 fill-current" />
-              Currículo padrão
+              <KindIcon className="h-3 w-3" />
+              {isAts ? "ATS Gerado" : "Importado"}
             </Badge>
-          )}
-          <Badge
-            variant="secondary"
-            className={cn(
-              "gap-1 border",
-              isAts
-                ? "border-secondary/30 bg-secondary/10 text-secondary"
-                : "border-primary/20 bg-primary/10 text-primary",
-            )}
-          >
-            <KindIcon className="h-3 w-3" />
-            {isAts ? "ATS Gerado" : "Importado"}
-          </Badge>
-          {isAts && meta?.version ? (
-            <Badge variant="outline" className="border-border/70 text-muted-foreground">
-              Versão {meta.version}
-            </Badge>
-          ) : null}
+            {isAts && meta?.version ? (
+              <Badge variant="outline" className="border-border/70 text-muted-foreground">
+                Versão {meta.version}
+              </Badge>
+            ) : null}
           </div>
 
           {isAts && (

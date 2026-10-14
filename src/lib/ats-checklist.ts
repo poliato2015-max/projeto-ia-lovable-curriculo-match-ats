@@ -98,9 +98,7 @@ export function checkPlainText(rawContent: string): ChecklistItem {
 
   // ASCII table: linhas delimitadas por pipe nas duas pontas E com colunas
   // alinhadas por espaçamento — o que caracteriza uma grade, não uma linha de currículo.
-  const gridRows = ls.filter(
-    (l) => /^\s*\|.*\|\s*$/.test(l) && /\s{2,}\|/.test(l),
-  ).length;
+  const gridRows = ls.filter((l) => /^\s*\|.*\|\s*$/.test(l) && /\s{2,}\|/.test(l)).length;
   const asciiTable = gridRows >= 3;
 
   const htmlTable = /<\s*(table|thead|tbody|tr|td|th)\b/i.test(content);
@@ -117,7 +115,6 @@ export function checkPlainText(rawContent: string): ChecklistItem {
       : "O currículo usa apenas texto corrido, ideal para leitura automática.",
   };
 }
-
 
 /** Critério 2 — imagens, gráficos e elementos visuais. */
 export function checkNoImages(rawContent: string): ChecklistItem {
@@ -146,9 +143,7 @@ export function checkNoImages(rawContent: string): ChecklistItem {
 export function checkSingleColumn(rawContent: string): ChecklistItem {
   const content = extractAtsDocument(rawContent);
   const ls = lines(content).filter((l) => l.trim().length > 0);
-  const columnLike = ls.filter(
-    (l) => /\S {6,}\S/.test(l.trimEnd()) || /\S\t+\S/.test(l),
-  ).length;
+  const columnLike = ls.filter((l) => /\S {6,}\S/.test(l.trimEnd()) || /\S\t+\S/.test(l)).length;
   const htmlTableColumns = /<\s*(table|col|colgroup)\b/i.test(content);
 
   const multiColumn =
@@ -168,7 +163,10 @@ export function checkSections(rawContent: string): ChecklistItem {
   const content = extractAtsDocument(rawContent);
   const ls = lines(content);
   const headings = ls.filter((line) => {
-    const raw = line.trim().replace(/^[#*\-•\s]+/, "").replace(/[:*]+$/, "");
+    const raw = line
+      .trim()
+      .replace(/^[#*\-•\s]+/, "")
+      .replace(/[:*]+$/, "");
     if (!raw || raw.length > 60 || /[.!?]$/.test(raw)) return false;
     const normalized = raw
       .toLowerCase()
@@ -190,12 +188,10 @@ export function checkSections(rawContent: string): ChecklistItem {
   };
 }
 
-
 /** Roda somente as validações estruturais (sem IA). */
 export function evaluateStructuralChecklist(content: string): ChecklistItem[] {
   return [checkPlainText(content), checkNoImages(content), checkSingleColumn(content)];
 }
-
 
 export interface ChecklistDiff {
   label: string;
@@ -203,10 +199,7 @@ export interface ChecklistDiff {
   to: ChecklistStatus;
 }
 
-export function diffChecklist(
-  previous: ChecklistItem[],
-  next: ChecklistItem[],
-): ChecklistDiff[] {
+export function diffChecklist(previous: ChecklistItem[], next: ChecklistItem[]): ChecklistDiff[] {
   const prevById = new Map(previous.map((i) => [i.id, i.status]));
   return next
     .filter((item) => prevById.has(item.id) && prevById.get(item.id) !== item.status)

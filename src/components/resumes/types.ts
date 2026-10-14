@@ -24,10 +24,4 @@ export interface Resume {
   fileName?: string;
 }
 
-
-export type ResumeFilter =
-  | "all"
-  | "original"
-  | "ats"
-  | "favorites"
-  | "recent";
+export type ResumeFilter = "all" | "original" | "ats" | "favorites" | "recent";

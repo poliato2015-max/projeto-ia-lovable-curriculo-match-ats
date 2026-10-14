@@ -20,12 +20,7 @@ export function ContentCard({
   bodyClassName,
 }: ContentCardProps) {
   return (
-    <Card
-      className={cn(
-        "border-border/70 shadow-sm transition-shadow hover:shadow-md",
-        className,
-      )}
-    >
+    <Card className={cn("border-border/70 shadow-sm transition-shadow hover:shadow-md", className)}>
       {(title || action) && (
         <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
           <div className="min-w-0">

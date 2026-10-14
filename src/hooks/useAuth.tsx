@@ -1,11 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import type { Session, User } from "@supabase/supabase-js";
 
 import { supabase } from "@/lib/supabase";
@@ -30,8 +23,7 @@ function friendlyError(message: string): string {
   if (m.includes("email not confirmed")) return "Confirme seu e-mail antes de entrar.";
   if (m.includes("already registered") || m.includes("already been registered"))
     return "Este e-mail já possui uma conta.";
-  if (m.includes("password should be at least"))
-    return "A senha deve ter pelo menos 6 caracteres.";
+  if (m.includes("password should be at least")) return "A senha deve ter pelo menos 6 caracteres.";
   if (m.includes("weak") || m.includes("pwned") || m.includes("known to be weak"))
     return "Essa senha é muito comum e já apareceu em vazamentos. Escolha uma senha diferente, misturando letras maiúsculas, minúsculas e números.";
   if (m.includes("password should contain"))

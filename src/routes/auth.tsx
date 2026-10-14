@@ -83,13 +83,9 @@ function AuthPage() {
   };
 
   const passwordError =
-    password.length > 0 && password.length < 6
-      ? "A senha deve ter pelo menos 6 caracteres."
-      : null;
+    password.length > 0 && password.length < 6 ? "A senha deve ter pelo menos 6 caracteres." : null;
   const confirmError =
-    confirmPassword.length > 0 && confirmPassword !== password
-      ? "As senhas não coincidem."
-      : null;
+    confirmPassword.length > 0 && confirmPassword !== password ? "As senhas não coincidem." : null;
 
   const onSignup = (e: React.FormEvent) => {
     e.preventDefault();
@@ -171,9 +167,7 @@ function AuthPage() {
           <>
             <CardHeader>
               <CardTitle>Acesse sua conta</CardTitle>
-              <CardDescription>
-                Entre ou crie sua conta para usar o RadarCV.
-              </CardDescription>
+              <CardDescription>Entre ou crie sua conta para usar o RadarCV.</CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs value={mode} onValueChange={(v) => setMode(v as "login" | "signup")}>
@@ -233,57 +227,57 @@ function AuthPage() {
                         placeholder="voce@email.com"
                       />
                     </div>
-                <div className="space-y-2">
-                  <Label htmlFor="signup-password">Senha</Label>
-                  <Input
-                    id="signup-password"
-                    type="password"
-                    required
-                    minLength={6}
-                    value={password}
-                    onChange={(e) => {
-                      setPassword(e.target.value);
-                      setSignupError(null);
-                    }}
-                    placeholder="Crie uma senha"
-                    aria-invalid={Boolean(passwordError)}
-                  />
-                  {passwordError && (
-                    <p className="text-xs font-medium text-destructive">{passwordError}</p>
-                  )}
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="signup-confirm-password">Confirmar senha</Label>
-                  <Input
-                    id="signup-confirm-password"
-                    type="password"
-                    required
-                    minLength={6}
-                    value={confirmPassword}
-                    onChange={(e) => {
-                      setConfirmPassword(e.target.value);
-                      setSignupError(null);
-                    }}
-                    placeholder="Repita sua senha"
-                    aria-invalid={Boolean(confirmError)}
-                  />
-                  {confirmError && (
-                    <p className="text-xs font-medium text-destructive">{confirmError}</p>
-                  )}
-                  <p className="text-xs text-muted-foreground">
-                    Use no mínimo 6 caracteres, combinando letras maiúsculas, minúsculas e
-                    números. Evite senhas comuns ou já usadas em outros sites.
-                  </p>
-                  {signupError && (
-                    <p className="text-xs font-medium text-destructive">{signupError}</p>
-                  )}
-                </div>
-                <Button type="submit" className="w-full" disabled={busy}>
-                  {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  Criar conta
-                </Button>
-              </form>
-            </TabsContent>
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-password">Senha</Label>
+                      <Input
+                        id="signup-password"
+                        type="password"
+                        required
+                        minLength={6}
+                        value={password}
+                        onChange={(e) => {
+                          setPassword(e.target.value);
+                          setSignupError(null);
+                        }}
+                        placeholder="Crie uma senha"
+                        aria-invalid={Boolean(passwordError)}
+                      />
+                      {passwordError && (
+                        <p className="text-xs font-medium text-destructive">{passwordError}</p>
+                      )}
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-confirm-password">Confirmar senha</Label>
+                      <Input
+                        id="signup-confirm-password"
+                        type="password"
+                        required
+                        minLength={6}
+                        value={confirmPassword}
+                        onChange={(e) => {
+                          setConfirmPassword(e.target.value);
+                          setSignupError(null);
+                        }}
+                        placeholder="Repita sua senha"
+                        aria-invalid={Boolean(confirmError)}
+                      />
+                      {confirmError && (
+                        <p className="text-xs font-medium text-destructive">{confirmError}</p>
+                      )}
+                      <p className="text-xs text-muted-foreground">
+                        Use no mínimo 6 caracteres, combinando letras maiúsculas, minúsculas e
+                        números. Evite senhas comuns ou já usadas em outros sites.
+                      </p>
+                      {signupError && (
+                        <p className="text-xs font-medium text-destructive">{signupError}</p>
+                      )}
+                    </div>
+                    <Button type="submit" className="w-full" disabled={busy}>
+                      {busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                      Criar conta
+                    </Button>
+                  </form>
+                </TabsContent>
               </Tabs>
             </CardContent>
           </>

@@ -1,4 +1,16 @@
-import { Briefcase, GraduationCap, Languages, Sparkles, RotateCcw, Building2, CalendarDays, FileText } from "lucide-react";
+import { useState } from "react";
+import {
+  Briefcase,
+  GraduationCap,
+  Languages,
+  Sparkles,
+  RotateCcw,
+  Building2,
+  CalendarDays,
+  FileText,
+  FileDown,
+  Loader2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ATSScoreCard } from "../ATSScoreCard";
 import { SkillsCard } from "../SkillsCard";
@@ -7,6 +19,8 @@ import { MetricCard } from "../MetricCard";
 import { RecommendationsCard } from "../RecommendationsCard";
 import { AnalysisSummary } from "../AnalysisSummary";
 import { GapsCard } from "../GapsCard";
+import { toast } from "sonner";
+import { exportAnalysisReportPdf } from "@/lib/resume-export";
 import type { AnalysisResult } from "../analysis-types";
 
 interface StepResultadoProps {
@@ -39,6 +53,26 @@ export function StepResultado({
     month: "short",
     year: "numeric",
   });
+  const [exporting, setExporting] = useState(false);
+
+  const handleExportReport = async () => {
+    setExporting(true);
+    try {
+      await exportAnalysisReportPdf({
+        result,
+        jobTitle,
+        company,
+        analyzedAt,
+        resumeTitle,
+        readOnly,
+      });
+      toast.success("Relatório PDF baixado");
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Falha ao gerar PDF do relatório");
+    } finally {
+      setExporting(false);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -74,6 +108,21 @@ export function StepResultado({
           <Button variant="ghost" size="sm" className="gap-2" onClick={onReset}>
             <RotateCcw className="h-4 w-4" /> {resetLabel ?? "Nova análise"}
           </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-2"
+            disabled={exporting}
+            onClick={handleExportReport}
+            aria-label="Exportar relatório de análise em PDF"
+          >
+            {exporting ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <FileDown className="h-4 w-4" />
+            )}
+            PDF Relatório
+          </Button>
           {onGenerate && (
             <Button size="sm" className="gap-2" onClick={onGenerate}>
               <Sparkles className="h-4 w-4" /> Gerar Currículo ATS
@@ -81,7 +130,6 @@ export function StepResultado({
           )}
         </div>
       </div>
-
 
       {/* Hero: Match ATS + Resumo Executivo */}
       <div className="grid gap-4 lg:grid-cols-5">
@@ -152,6 +200,5 @@ export function StepResultado({
         </div>
       )}
     </div>
-
   );
 }

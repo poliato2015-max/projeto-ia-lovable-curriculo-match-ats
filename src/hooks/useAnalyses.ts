@@ -1,9 +1,4 @@
-import {
-  useInfiniteQuery,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import {
   deleteAnalysis,
@@ -21,8 +16,7 @@ export function useAnalyses() {
     queryKey: ANALYSES_KEY,
     initialPageParam: 0,
     queryFn: ({ pageParam }) => listAnalyses(pageParam as number, PAGE_SIZE),
-    getNextPageParam: (lastPage, pages) =>
-      lastPage.hasMore ? pages.length : undefined,
+    getNextPageParam: (lastPage, pages) => (lastPage.hasMore ? pages.length : undefined),
   });
 }
 

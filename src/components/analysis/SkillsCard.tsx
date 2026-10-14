@@ -3,10 +3,7 @@ import { ContentCard } from "@/components/common/ContentCard";
 import { cn } from "@/lib/utils";
 import type { SkillItem, SkillStatus } from "./analysis-types";
 
-const CONFIG: Record<
-  SkillStatus,
-  { icon: typeof Check; className: string; label: string }
-> = {
+const CONFIG: Record<SkillStatus, { icon: typeof Check; className: string; label: string }> = {
   match: {
     icon: Check,
     className: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
@@ -52,9 +49,7 @@ export function SkillsCard({ title, description, skills }: SkillsCardProps) {
               </span>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center justify-between gap-2">
-                  <span className="truncate text-sm font-medium text-foreground">
-                    {skill.name}
-                  </span>
+                  <span className="truncate text-sm font-medium text-foreground">{skill.name}</span>
                   <span className="shrink-0 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
                     {cfg.label}
                   </span>

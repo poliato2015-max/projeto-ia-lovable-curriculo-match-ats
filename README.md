@@ -109,6 +109,7 @@ graph TD
 
     Exportacao(["Exportar PDF / DOCX"]):::saida
 ```
+
 ---
 
 # 🌐 Acesso ao aplicativo
@@ -118,6 +119,7 @@ https://radarcv.lovable.app/
 ---
 
 # ✨ Principais funcionalidades
+
 ## 1. Landing Page
 
 A página inicial apresenta a proposta do RadarCV e direciona o usuário para o acesso à plataforma.
@@ -131,6 +133,7 @@ A página inicial apresenta a proposta do RadarCV e direciona o usuário para o 
 O RadarCV possui fluxo de cadastro e autenticação de usuários.
 
 O processo de cadastro conta com validações relacionadas às informações de acesso e senha, incluindo confirmação da senha.
+
 > **Observação** O usuário também pode recuperar o acesso à conta por meio do recurso **“Esqueci minha senha”**.
 
 ### 📸 Screenshot
@@ -239,6 +242,7 @@ A partir da análise realizada, o RadarCV pode gerar uma versão direcionada do 
 O conteúdo é estruturado considerando as informações profissionais fornecidas pelo usuário e os requisitos identificados na oportunidade.
 
 Nesta etapa o usuário tem as seguintes informações para sua decisão:
+
 - Checklist ATS: Permite verificar diferentes aspectos relacionados à estrutura e ao conteúdo do currículo antes de sua utilização.
 - Palavras Chaves: Permite verificar as chaves encontradas e destacadas no curriculo
 - Botões:
@@ -385,7 +389,6 @@ O RadarCV AI utiliza uma arquitetura baseada em aplicação web, funções serve
               │ • RLS                   │                            │                         │
               └─────────────────────────┘                            └─────────────────────────┘
 
-
 ## Camadas principais
 
 - ### Frontend
@@ -412,14 +415,15 @@ O projeto utiliza PostgreSQL através do Supabase.
 
 Entre as principais entidades utilizadas estão:
 
-| Entidade | Responsabilidade |
-|---|---|
-| **resumes** | Armazena os currículos dos usuários |
-| **analyses** | Armazena as análises realizadas |
+| Entidade             | Responsabilidade                               |
+| -------------------- | ---------------------------------------------- |
+| **resumes**          | Armazena os currículos dos usuários            |
+| **analyses**         | Armazena as análises realizadas                |
 | **analysis_results** | Armazena os resultados detalhados das análises |
-| **ats_resumes** | Armazena os currículos ATS gerados |
+| **ats_resumes**      | Armazena os currículos ATS gerados             |
 
 ### Relacionamento simplificado
+
 ```
 
                                    ┌────────────────────┐
@@ -428,7 +432,7 @@ Entre as principais entidades utilizadas estão:
                                              │
                                              │
                                              ▼
-                                   ┌───────────────────┐ 
+                                   ┌───────────────────┐
                                    │     analyses      │
                                    │ analises de vagas │
                                    └─────────┬─────────┘
@@ -436,12 +440,13 @@ Entre as principais entidades utilizadas estão:
                             ┌─────────────────────────────────┐
                             │                                 │
                             ▼                                 ▼
-                   ┌──────────────────┐              ┌──────────────────┐  
+                   ┌──────────────────┐              ┌──────────────────┐
                    │ analysis_results │              │    ats_resumes   │
-                   │    resultados    │              │   currículos ATS │  
+                   │    resultados    │              │   currículos ATS │
                    └──────────────────┘              └──────────────────┘
 
 ```
+
 ---
 
 # 🔐 Segurança
@@ -463,24 +468,25 @@ O objetivo é manter os dados de currículos e análises isolados entre os usuá
 ---
 
 # 🛠️ Tecnologias utilizadas
-| Tecnologia | Utilização |
-|---|---|
-| **React** | Interface da aplicação |
-| **TypeScript** | Desenvolvimento e tipagem |
-| **TanStack Start** | Framework da aplicação |
-| **TanStack Router** | Roteamento |
-| **Tailwind CSS** | Estilização |
-| **Supabase** | Backend como serviço |
-| **PostgreSQL** | Banco de dados |
-| **Supabase Auth** | Autenticação |
-| **Supabase Storage** | Armazenamento de arquivos |
+
+| Tecnologia             | Utilização                               |
+| ---------------------- | ---------------------------------------- |
+| **React**              | Interface da aplicação                   |
+| **TypeScript**         | Desenvolvimento e tipagem                |
+| **TanStack Start**     | Framework da aplicação                   |
+| **TanStack Router**    | Roteamento                               |
+| **Tailwind CSS**       | Estilização                              |
+| **Supabase**           | Backend como serviço                     |
+| **PostgreSQL**         | Banco de dados                           |
+| **Supabase Auth**      | Autenticação                             |
+| **Supabase Storage**   | Armazenamento de arquivos                |
 | **Row Level Security** | Controle de acesso aos dados por usuário |
-| **Server Functions** | Processamento server-side |
-| **IA Generativa** | Análise e geração de conteúdo |
-| **PDF** | Exportação de currículos |
-| **DOCX** | Exportação de currículos |
-| **GitHub** | Versionamento do código |
-| **Lovable** | Desenvolvimento assistido por IA |
+| **Server Functions**   | Processamento server-side                |
+| **IA Generativa**      | Análise e geração de conteúdo            |
+| **PDF**                | Exportação de currículos                 |
+| **DOCX**               | Exportação de currículos                 |
+| **GitHub**             | Versionamento do código                  |
+| **Lovable**            | Desenvolvimento assistido por IA         |
 
 ---
 
@@ -508,24 +514,31 @@ O objetivo não foi apenas utilizar IA como funcionalidade do produto, mas tamb�
 O desenvolvimento do RadarCV proporcionou aprendizados em diferentes áreas.
 
 - ### Desenvolvimento de produto
+
 Foi necessário transformar uma ideia inicial em um fluxo de utilização coerente, conectando análise de vaga, geração de currículo, edição, armazenamento e exportação.
 
 - ### Integração entre IA e aplicação
+
 Um dos desafios foi estruturar a comunicação entre a aplicação e os processos de Inteligência Artificial, mantendo os dados organizados e utilizáveis pelas etapas seguintes.
 
 - ### Persistência de dados
+
 Outro ponto importante foi garantir que análises, currículos e versões permanecessem disponíveis após sua criação.
 
 - ### Versionamento
+
 O gerenciamento de diferentes versões de currículos exigiu uma estrutura capaz de relacionar documentos às análises que deram origem a eles.
 
 - ### ATS
+
 O projeto também permitiu explorar conceitos relacionados a sistemas de rastreamento de candidatos e à necessidade de estruturar currículos de forma adequada para processamento automatizado.
 
 - ### Segurança
+
 A utilização de autenticação, RLS e armazenamento controlado permitiu aprofundar o entendimento sobre proteção e isolamento de dados em aplicações multiusuário.
 
 - ### Desenvolvimento assistido por IA
+
 O projeto também serviu como laboratório para compreender os benefícios e limitações do desenvolvimento utilizando ferramentas de geração de código e assistência por Inteligência Artificial.
 
 ---
@@ -602,12 +615,8 @@ Essas evoluções representam os próximos passos do RadarCV e poderão ser impl
 ---
 
 # <img src="https://github.com/poliato2015-max.png" width="40" height="40" style="border-radius: 50%;" alt="Marcelo Poliato"> Autor
+
 Desenvolvido por **Marcelo Poliato de Oliveira** como projeto prático de desenvolvimento assistido por IA Generativa.
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Marcelo%20Poliato-0077B5?logo=linkedin)](https://www.linkedin.com/in/marcelo-poliato)
 [![GitHub](https://img.shields.io/badge/GitHub-poliato2015--max-181717?logo=github)](https://github.com/poliato2015-max)
-
-
-
-
-

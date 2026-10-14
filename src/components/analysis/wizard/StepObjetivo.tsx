@@ -17,9 +17,7 @@ export function StepObjetivo({ data, onChange, onAnalyze, onBack }: StepObjetivo
   const toggle = (id: string) => {
     onChange({
       ...data,
-      goals: data.goals.includes(id)
-        ? data.goals.filter((g) => g !== id)
-        : [...data.goals, id],
+      goals: data.goals.includes(id) ? data.goals.filter((g) => g !== id) : [...data.goals, id],
     });
   };
 
@@ -50,10 +48,7 @@ export function StepObjetivo({ data, onChange, onAnalyze, onBack }: StepObjetivo
               <Checkbox checked={active} onCheckedChange={() => toggle(opt.id)} />
               <div className="flex items-center gap-2">
                 <Target
-                  className={cn(
-                    "h-4 w-4",
-                    active ? "text-primary" : "text-muted-foreground",
-                  )}
+                  className={cn("h-4 w-4", active ? "text-primary" : "text-muted-foreground")}
                 />
                 <span className="font-medium text-foreground">{opt.label}</span>
               </div>

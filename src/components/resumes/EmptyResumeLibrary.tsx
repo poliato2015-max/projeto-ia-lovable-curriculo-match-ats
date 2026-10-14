@@ -36,8 +36,8 @@ export function EmptyResumeLibrary({ onImport }: EmptyResumeLibraryProps) {
         Importe seu primeiro currículo
       </h2>
       <p className="mt-3 max-w-md text-sm text-muted-foreground md:text-base">
-        O RadarCV utiliza Inteligência Artificial para analisar seu currículo
-        e gerar versões otimizadas para cada vaga.
+        O RadarCV utiliza Inteligência Artificial para analisar seu currículo e gerar versões
+        otimizadas para cada vaga.
       </p>
 
       <Button size="lg" className="mt-6" onClick={onImport}>
@@ -57,12 +57,8 @@ export function EmptyResumeLibrary({ onImport }: EmptyResumeLibraryProps) {
                   <step.icon className="h-4 w-4" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-xs font-semibold text-muted-foreground">
-                    Passo {i + 1}
-                  </p>
-                  <p className="text-sm font-medium text-foreground">
-                    {step.label}
-                  </p>
+                  <p className="text-xs font-semibold text-muted-foreground">Passo {i + 1}</p>
+                  <p className="text-sm font-medium text-foreground">{step.label}</p>
                 </div>
               </li>
             ))}

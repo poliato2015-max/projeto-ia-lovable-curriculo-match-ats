@@ -73,8 +73,8 @@ export function HeroSection() {
             Seu currículo está preparado para passar pelos sistemas ATS?
           </h1>
           <p className="mt-4 max-w-xl text-sm text-muted-foreground md:text-base">
-            Analise qualquer vaga, descubra seu Match ATS, receba recomendações inteligentes e
-            gere uma versão otimizada do seu currículo utilizando Inteligência Artificial.
+            Analise qualquer vaga, descubra seu Match ATS, receba recomendações inteligentes e gere
+            uma versão otimizada do seu currículo utilizando Inteligência Artificial.
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Button asChild size="lg" className="gap-1.5">
@@ -83,11 +83,7 @@ export function HeroSection() {
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              onClick={() => scrollToSection("como-funciona")}
-            >
+            <Button size="lg" variant="outline" onClick={() => scrollToSection("como-funciona")}>
               Ver como funciona
             </Button>
           </div>
@@ -153,7 +149,11 @@ const features = [
   { icon: FileSearch, title: "Diagnóstico ATS", text: "Compare automaticamente currículo e vaga." },
   { icon: Target, title: "Match Inteligente", text: "Receba uma pontuação de aderência." },
   { icon: Brain, title: "Recomendações Inteligentes", text: "Saiba exatamente onde melhorar." },
-  { icon: FileCheck2, title: "Currículo ATS", text: "Gere uma versão otimizada pronta para exportação." },
+  {
+    icon: FileCheck2,
+    title: "Currículo ATS",
+    text: "Gere uma versão otimizada pronta para exportação.",
+  },
 ];
 
 export function FeaturesSection() {
@@ -186,10 +186,26 @@ export function FeaturesSection() {
 }
 
 const steps = [
-  { icon: ClipboardList, title: "Cole a vaga", text: "Informe título, empresa e a descrição da vaga desejada." },
-  { icon: FileText, title: "Escolha o currículo", text: "Use um currículo salvo, cole o texto ou importe um novo arquivo." },
-  { icon: ListChecks, title: "Receba o diagnóstico", text: "Match ATS, palavras-chave, lacunas e recomendações priorizadas." },
-  { icon: Wand2, title: "Gere o currículo ATS", text: "Uma versão otimizada, pronta para revisar e exportar." },
+  {
+    icon: ClipboardList,
+    title: "Cole a vaga",
+    text: "Informe título, empresa e a descrição da vaga desejada.",
+  },
+  {
+    icon: FileText,
+    title: "Escolha o currículo",
+    text: "Use um currículo salvo, cole o texto ou importe um novo arquivo.",
+  },
+  {
+    icon: ListChecks,
+    title: "Receba o diagnóstico",
+    text: "Match ATS, palavras-chave, lacunas e recomendações priorizadas.",
+  },
+  {
+    icon: Wand2,
+    title: "Gere o currículo ATS",
+    text: "Uma versão otimizada, pronta para revisar e exportar.",
+  },
 ];
 
 export function HowItWorksSection() {
@@ -248,7 +264,10 @@ export function BenefitsSection() {
       <SectionHeading title="Tudo que você precisa para aumentar suas chances nas candidaturas." />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {benefits.map((b) => (
-          <Card key={b.label} className="border-border/70 shadow-sm transition-shadow hover:shadow-md">
+          <Card
+            key={b.label}
+            className="border-border/70 shadow-sm transition-shadow hover:shadow-md"
+          >
             <CardContent className="flex items-center gap-3 p-5">
               <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
                 <b.icon className="h-5 w-5" />
@@ -341,5 +360,3 @@ export function LandingFooter() {
     </footer>
   );
 }
-
-

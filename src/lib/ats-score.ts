@@ -2,12 +2,7 @@
  * Classificação única do Match ATS usada em toda a aplicação.
  * Qualquer tela que precise rotular um score deve usar estas funções.
  */
-export type ScoreTierId =
-  | "excelente"
-  | "muito-bom"
-  | "bom"
-  | "atencao"
-  | "baixa";
+export type ScoreTierId = "excelente" | "muito-bom" | "bom" | "atencao" | "baixa";
 
 export interface ScoreTier {
   id: ScoreTierId;

@@ -22,7 +22,10 @@ export function AnalysisLoading({ durationMs = 2000 }: AnalysisLoadingProps) {
 
   return (
     <div className="space-y-4" aria-busy="true" aria-live="polite">
-      <ContentCard title="Analisando compatibilidade" description="Processando dados da vaga com IA...">
+      <ContentCard
+        title="Analisando compatibilidade"
+        description="Processando dados da vaga com IA..."
+      >
         <div className="space-y-4">
           <Progress value={progress} className="h-2" />
           <div className="grid gap-3 text-xs text-muted-foreground sm:grid-cols-2">

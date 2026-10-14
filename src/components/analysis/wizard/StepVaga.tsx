@@ -39,9 +39,7 @@ export function StepVaga({ data, onChange, onNext }: StepVagaProps) {
       onChange({ ...data, fileName: file.name, description: text });
       toast.success("Arquivo anexado", { description: file.name });
     } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Não foi possível ler este arquivo.",
-      );
+      toast.error(error instanceof Error ? error.message : "Não foi possível ler este arquivo.");
     } finally {
       setReading(false);
     }
@@ -79,7 +77,8 @@ export function StepVaga({ data, onChange, onNext }: StepVagaProps) {
             onChange={(e) => onChange({ ...data, company: e.target.value })}
           />
           <p className="text-xs text-muted-foreground">
-            Caso a vaga não informe a empresa, utilize "Cliente confidencial" ou "Empresa não divulgada".
+            Caso a vaga não informe a empresa, utilize "Cliente confidencial" ou "Empresa não
+            divulgada".
           </p>
         </div>
       </div>

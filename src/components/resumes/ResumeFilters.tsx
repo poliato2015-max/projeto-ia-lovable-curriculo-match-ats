@@ -17,11 +17,7 @@ interface ResumeFiltersProps {
 
 export function ResumeFilters({ active, onChange }: ResumeFiltersProps) {
   return (
-    <div
-      role="tablist"
-      aria-label="Filtros de currículos"
-      className="flex flex-wrap gap-2"
-    >
+    <div role="tablist" aria-label="Filtros de currículos" className="flex flex-wrap gap-2">
       {FILTERS.map((f) => {
         const isActive = active === f.key;
         return (

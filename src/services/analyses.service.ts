@@ -48,10 +48,7 @@ export interface ListAnalysesResult {
 }
 
 /** Lista paginada das análises do usuário autenticado (RLS garante o isolamento). */
-export async function listAnalyses(
-  page = 0,
-  pageSize = 20,
-): Promise<ListAnalysesResult> {
+export async function listAnalyses(page = 0, pageSize = 20): Promise<ListAnalysesResult> {
   const from = page * pageSize;
   const { data, error } = await supabase
     .from("analyses")

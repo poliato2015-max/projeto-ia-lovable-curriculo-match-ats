@@ -36,3 +36,13 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# --- Configurações de IA ---
+.agents/
+.claude/
+.reversa/
+_reversa_forward/
+_reversa_sdd/
+AGENTS.md
+CLAUDE.md
+

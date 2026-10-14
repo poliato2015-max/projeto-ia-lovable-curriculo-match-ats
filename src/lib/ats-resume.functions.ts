@@ -58,9 +58,7 @@ export const generateAtsResume = createServerFn({ method: "POST" })
     }
 
     if (!resumeText) {
-      throw new Error(
-        "Não encontramos o conteúdo do currículo original para gerar a versão ATS.",
-      );
+      throw new Error("Não encontramos o conteúdo do currículo original para gerar a versão ATS.");
     }
 
     return generateAtsWithAI({

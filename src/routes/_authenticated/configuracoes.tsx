@@ -118,8 +118,8 @@ function SettingsPage() {
           ) : !originalResumes || originalResumes.length === 0 ? (
             <div className="space-y-3">
               <p className="text-sm text-muted-foreground">
-                Você ainda não possui currículos originais cadastrados. Apenas currículos
-                importados podem ser definidos como padrão.
+                Você ainda não possui currículos originais cadastrados. Apenas currículos importados
+                podem ser definidos como padrão.
               </p>
               <Button asChild variant="outline" className="gap-2">
                 <Link to="/curriculos">

@@ -1,34 +1,16 @@
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import {
-  Copy,
-  FileDown,
-  FileText,
-  Loader2,
-  Pencil,
-  Sparkles,
-  FileUp,
-  Wand2,
-} from "lucide-react";
+import { Copy, FileDown, FileText, Loader2, Pencil, Sparkles, FileUp, Wand2 } from "lucide-react";
 import { toast } from "sonner";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ensureResumeText, loadAtsOrigin } from "@/services/resumes.service";
 import { useResumeMutations } from "@/hooks/useResumes";
 import { generateAtsResume } from "@/lib/ats-resume.functions";
-import {
-  copyResumeContent,
-  exportResumeDocx,
-  exportResumePdf,
-} from "@/lib/resume-export";
+import { copyResumeContent, exportResumeDocx, exportResumePdf } from "@/lib/resume-export";
 import type { Resume } from "./types";
 
 interface ResumeViewDialogProps {
@@ -38,12 +20,7 @@ interface ResumeViewDialogProps {
   onEdit?: (r: Resume) => void;
 }
 
-export function ResumeViewDialog({
-  resume,
-  open,
-  onOpenChange,
-  onEdit,
-}: ResumeViewDialogProps) {
+export function ResumeViewDialog({ resume, open, onOpenChange, onEdit }: ResumeViewDialogProps) {
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -89,9 +66,7 @@ export function ResumeViewDialog({
       await copyResumeContent(content);
       toast.success("Currículo copiado");
     } catch (err) {
-      toast.error(
-        err instanceof Error ? err.message : "Não foi possível copiar o currículo.",
-      );
+      toast.error(err instanceof Error ? err.message : "Não foi possível copiar o currículo.");
     }
   };
 
@@ -101,9 +76,7 @@ export function ResumeViewDialog({
       if (format === "pdf") await exportResumePdf(content, resume.name);
       else await exportResumeDocx(content, resume.name);
     } catch (err) {
-      toast.error(
-        err instanceof Error ? err.message : "Não foi possível exportar o currículo.",
-      );
+      toast.error(err instanceof Error ? err.message : "Não foi possível exportar o currículo.");
     } finally {
       setExporting(null);
     }
@@ -157,9 +130,7 @@ export function ResumeViewDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] overflow-hidden sm:max-w-3xl">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            {resume.name}
-          </DialogTitle>
+          <DialogTitle className="flex items-center gap-2">{resume.name}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4">
@@ -173,18 +144,13 @@ export function ResumeViewDialog({
                   : "border-primary/20 bg-primary/10 text-primary",
               )}
             >
-              {isAts ? (
-                <Sparkles className="h-3 w-3" />
-              ) : (
-                <FileUp className="h-3 w-3" />
-              )}
+              {isAts ? <Sparkles className="h-3 w-3" /> : <FileUp className="h-3 w-3" />}
               {isAts ? "ATS Gerado" : "Importado"}
             </Badge>
             <span className="text-sm text-muted-foreground">{resume.role}</span>
             {isAts && resume.company && (
               <span className="text-sm text-muted-foreground">
-                • Gerado para{" "}
-                <span className="font-medium text-foreground">{resume.company}</span>
+                • Gerado para <span className="font-medium text-foreground">{resume.company}</span>
               </span>
             )}
           </div>

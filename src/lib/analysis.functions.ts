@@ -42,7 +42,8 @@ function validate(data: unknown): RunAnalysisInput {
     resumeText: str(d["resumeText"]),
     resumeId: typeof d["resumeId"] === "string" ? d["resumeId"] : null,
     resumeTitle: typeof d["resumeTitle"] === "string" ? d["resumeTitle"] : null,
-    resumeType: d["resumeType"] === "ats" ? "ats" : d["resumeType"] === "original" ? "original" : null,
+    resumeType:
+      d["resumeType"] === "ats" ? "ats" : d["resumeType"] === "original" ? "original" : null,
     objectives: Array.isArray(d["objectives"])
       ? (d["objectives"] as unknown[]).filter((v): v is string => typeof v === "string")
       : [],

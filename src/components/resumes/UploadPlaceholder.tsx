@@ -68,9 +68,7 @@ export function UploadPlaceholder({
       <p className="text-sm font-medium text-foreground">
         {dragging ? "Solte o arquivo aqui" : "Arraste um arquivo ou clique para selecionar"}
       </p>
-      <p className="mt-1 text-xs text-muted-foreground">
-        Formatos aceitos: {accepted.join(", ")}
-      </p>
+      <p className="mt-1 text-xs text-muted-foreground">Formatos aceitos: {accepted.join(", ")}</p>
       <Button
         type="button"
         size="sm"

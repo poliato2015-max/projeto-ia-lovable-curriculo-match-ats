@@ -48,8 +48,7 @@ export function ImportResumeDialog({
         <DialogHeader>
           <DialogTitle>Importar Currículo</DialogTitle>
           <DialogDescription>
-            Envie um arquivo para que a IA extraia suas informações
-            profissionais.
+            Envie um arquivo para que a IA extraia suas informações profissionais.
           </DialogDescription>
         </DialogHeader>
 
@@ -76,9 +75,7 @@ export function ImportResumeDialog({
           />
         )}
 
-        {error && (
-          <p className="text-center text-xs text-destructive">{error}</p>
-        )}
+        {error && <p className="text-center text-xs text-destructive">{error}</p>}
         <p className="text-center text-xs text-muted-foreground">
           Formatos suportados: PDF, DOCX, TXT ou Markdown • até 10 MB
         </p>

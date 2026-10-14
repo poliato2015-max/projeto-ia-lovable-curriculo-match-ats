@@ -133,10 +133,7 @@ interface ChartPoint {
 /** Limite acima do qual os pontos passam a ser agrupados por dia. */
 const GROUPING_THRESHOLD = 20;
 
-function buildChartData(
-  timeline: DashboardData["timeline"],
-  period: PeriodValue,
-): ChartPoint[] {
+function buildChartData(timeline: DashboardData["timeline"], period: PeriodValue): ChartPoint[] {
   const filtered =
     period === "all"
       ? timeline
@@ -193,7 +190,6 @@ function buildChartData(
 function DashboardContent({ data }: { data: DashboardData }) {
   const [period, setPeriod] = useState<PeriodValue>(30);
   const chartData = useMemo(() => buildChartData(data.timeline, period), [data.timeline, period]);
-
 
   const distributionRows = [
     { label: "Alta compatibilidade", hint: "80% a 100%", value: data.distribution.high },
@@ -366,10 +362,7 @@ function DashboardContent({ data }: { data: DashboardData }) {
       </section>
 
       <section className="mt-6">
-        <ContentCard
-          title="Próximo passo"
-          description="Orientação baseada nas suas análises"
-        >
+        <ContentCard title="Próximo passo" description="Orientação baseada nas suas análises">
           {data.nextSteps.length === 0 ? (
             <p className="text-sm text-muted-foreground">
               Continue realizando análises para que o RadarCV consiga identificar padrões e sugerir

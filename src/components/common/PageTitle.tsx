@@ -10,12 +10,7 @@ interface PageTitleProps {
 
 export function PageTitle({ title, description, actions, className }: PageTitleProps) {
   return (
-    <div
-      className={cn(
-        "grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4 pb-6",
-        className,
-      )}
-    >
+    <div className={cn("grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4 pb-6", className)}>
       <div className="min-w-0">
         <h1 className="truncate text-2xl font-bold tracking-tight text-foreground md:text-3xl">
           {title}

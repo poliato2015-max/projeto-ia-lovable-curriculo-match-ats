@@ -93,10 +93,7 @@ function HistoricoPage() {
   const [sort, setSort] = useState<SortOption>("recent");
   const [pendingDelete, setPendingDelete] = useState<AnalysisRecord | null>(null);
 
-  const analyses = useMemo(
-    () => data?.pages.flatMap((page) => page.items) ?? [],
-    [data],
-  );
+  const analyses = useMemo(() => data?.pages.flatMap((page) => page.items) ?? [], [data]);
 
   const stats = useMemo(() => {
     if (analyses.length === 0) {
@@ -313,9 +310,7 @@ function SummaryCard({ label, value }: { label: string; value: string }) {
         <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
           {label}
         </span>
-        <p className="mt-2 truncate text-2xl font-bold tracking-tight text-foreground">
-          {value}
-        </p>
+        <p className="mt-2 truncate text-2xl font-bold tracking-tight text-foreground">{value}</p>
       </CardContent>
     </Card>
   );
@@ -334,9 +329,7 @@ function AnalysisHistoryCard({
     <Card className="border-border/70 transition-shadow hover:shadow-md">
       <CardContent className="flex flex-col gap-4 p-5 md:flex-row md:items-center md:justify-between">
         <div className="min-w-0 space-y-1.5">
-          <h3 className="truncate text-base font-semibold text-foreground">
-            {analysis.jobTitle}
-          </h3>
+          <h3 className="truncate text-base font-semibold text-foreground">{analysis.jobTitle}</h3>
           <p className="flex items-center gap-1.5 truncate text-sm text-muted-foreground">
             <Building2 className="h-3.5 w-3.5 shrink-0" />
             {analysis.company || "—"}
@@ -359,9 +352,7 @@ function AnalysisHistoryCard({
           <div className="text-right">
             <p className="text-3xl font-bold tracking-tight text-foreground">
               {analysis.matchScore ?? "—"}
-              {analysis.matchScore !== null && (
-                <span className="text-base font-semibold">%</span>
-              )}
+              {analysis.matchScore !== null && <span className="text-base font-semibold">%</span>}
             </p>
             <span
               className={cn(
@@ -375,19 +366,11 @@ function AnalysisHistoryCard({
 
           <div className="flex items-center gap-2">
             <Button asChild variant="outline" size="sm">
-              <Link
-                to="/historico/$analysisId"
-                params={{ analysisId: analysis.id }}
-              >
+              <Link to="/historico/$analysisId" params={{ analysisId: analysis.id }}>
                 Ver análise
               </Link>
             </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label="Excluir análise"
-              onClick={onDelete}
-            >
+            <Button variant="ghost" size="icon" aria-label="Excluir análise" onClick={onDelete}>
               <Trash2 className="h-4 w-4 text-destructive" />
             </Button>
           </div>

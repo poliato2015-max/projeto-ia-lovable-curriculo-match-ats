@@ -82,13 +82,14 @@ export async function ensureResumeText(resume: Resume): Promise<string> {
 
   const text = await extractFileText(data, resume.fileName ?? resume.filePath);
   if (!text.trim()) {
-    throw new Error("Não conseguimos extrair o texto deste currículo. Cole o conteúdo manualmente.");
+    throw new Error(
+      "Não conseguimos extrair o texto deste currículo. Cole o conteúdo manualmente.",
+    );
   }
 
   await supabase.from("resumes").update({ raw_text: text }).eq("id", resume.id);
   return text;
 }
-
 
 export interface ImportResumeInput {
   file: File;
@@ -218,9 +219,7 @@ export async function saveAtsResume(input: SaveAtsResumeInput): Promise<SaveAtsR
   const resume = mapRowToResume(created as ResumeRow);
 
   let version = 1;
-  const countQuery = supabase
-    .from("ats_resumes")
-    .select("id", { count: "exact", head: true });
+  const countQuery = supabase.from("ats_resumes").select("id", { count: "exact", head: true });
   const { count } = input.analysisId
     ? await countQuery.eq("analysis_id", input.analysisId)
     : input.sourceResumeId
@@ -337,10 +336,7 @@ export async function loadAtsOrigin(resume: Resume): Promise<AtsOriginContext> {
  * registrada em `ats_resumes` sincronizada, preservando a associação com a análise
  * e com o currículo original.
  */
-export async function updateResumeContent(
-  resume: Resume,
-  content: string,
-): Promise<Resume> {
+export async function updateResumeContent(resume: Resume, content: string): Promise<Resume> {
   const text = content.trim();
   if (!text) throw new Error("O conteúdo do currículo não pode ficar vazio.");
 

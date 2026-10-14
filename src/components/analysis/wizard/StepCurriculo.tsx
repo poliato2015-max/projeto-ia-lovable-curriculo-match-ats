@@ -63,9 +63,7 @@ export function StepCurriculo({ data, onChange, onNext, onBack }: StepCurriculoP
         description: `${file.name} • salvo na sua Biblioteca de Currículos.`,
       });
     } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Não foi possível ler este arquivo.",
-      );
+      toast.error(error instanceof Error ? error.message : "Não foi possível ler este arquivo.");
     } finally {
       setBusy(false);
     }
@@ -179,9 +177,7 @@ export function StepCurriculo({ data, onChange, onNext, onBack }: StepCurriculoP
                 <p className="truncate text-sm font-semibold text-foreground">
                   {data.savedResume.name}
                 </p>
-                <p className="truncate text-xs text-muted-foreground">
-                  {data.savedResume.role}
-                </p>
+                <p className="truncate text-xs text-muted-foreground">{data.savedResume.role}</p>
               </div>
               <Button variant="ghost" size="sm" onClick={() => setDialogOpen(true)}>
                 Trocar

@@ -64,7 +64,6 @@ const SYSTEM_PROMPT = [
   "(cite o dado inventado, a seção faltante ou o trecho prolixo quando houver).",
 ].join("\n");
 
-
 /** Avalia os critérios de conteúdo do Checklist ATS com base no conteúdo real. */
 export async function evaluateContentChecks(
   input: ContentChecksInput,

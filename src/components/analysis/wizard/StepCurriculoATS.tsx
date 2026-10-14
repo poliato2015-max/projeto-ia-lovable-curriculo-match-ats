@@ -33,11 +33,7 @@ import {
   checkSections,
   type ChecklistItem,
 } from "@/lib/ats-checklist";
-import {
-  copyResumeContent,
-  exportResumeDocx,
-  exportResumePdf,
-} from "@/lib/resume-export";
+import { copyResumeContent, exportResumeDocx, exportResumePdf } from "@/lib/resume-export";
 import type { AnalysisResult } from "../analysis-types";
 
 interface StepCurriculoATSProps {
@@ -200,7 +196,6 @@ export function StepCurriculoATS({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-
   const wordCount = content.trim().split(/\s+/).filter(Boolean).length;
 
   const documentTitle = `curriculo-ats-${jobTitle || "vaga"}`;
@@ -222,9 +217,7 @@ export function StepCurriculoATS({
       if (format === "pdf") await exportResumePdf(content, documentTitle);
       else await exportResumeDocx(content, documentTitle);
     } catch (err) {
-      toast.error(
-        err instanceof Error ? err.message : "Não foi possível exportar o currículo.",
-      );
+      toast.error(err instanceof Error ? err.message : "Não foi possível exportar o currículo.");
     } finally {
       setExporting(null);
     }
@@ -267,14 +260,23 @@ export function StepCurriculoATS({
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2 pt-1">
-            <Badge className="border border-primary/20 bg-primary/10 text-primary" variant="secondary">
+            <Badge
+              className="border border-primary/20 bg-primary/10 text-primary"
+              variant="secondary"
+            >
               Match ATS {result.score}%
             </Badge>
-            <Badge variant="secondary" className="border border-border/70 bg-surface/60 text-foreground">
+            <Badge
+              variant="secondary"
+              className="border border-border/70 bg-surface/60 text-foreground"
+            >
               {wordCount} palavras
             </Badge>
             {savedVersion !== null && (
-              <Badge variant="secondary" className="border border-secondary/30 bg-secondary/10 text-secondary">
+              <Badge
+                variant="secondary"
+                className="border border-secondary/30 bg-secondary/10 text-secondary"
+              >
                 Salvo • v{savedVersion}
               </Badge>
             )}
@@ -476,7 +478,6 @@ export function StepCurriculoATS({
             )}
           </ContentCard>
 
-
           <ContentCard
             title="Palavras-chave aplicadas"
             description="Termos reais do seu currículo destacados."
@@ -528,8 +529,7 @@ export function StepCurriculoATS({
             }
           >
             <p className="text-sm leading-relaxed text-muted-foreground">
-              {notes ||
-                "As otimizações usam exclusivamente o conteúdo do seu currículo original."}
+              {notes || "As otimizações usam exclusivamente o conteúdo do seu currículo original."}
             </p>
           </ContentCard>
         </aside>

@@ -28,12 +28,7 @@ interface EditResumeDialogProps {
   }) => Promise<void> | void;
 }
 
-export function EditResumeDialog({
-  resume,
-  open,
-  onOpenChange,
-  onSave,
-}: EditResumeDialogProps) {
+export function EditResumeDialog({ resume, open, onOpenChange, onSave }: EditResumeDialogProps) {
   const [title, setTitle] = useState("");
   const [position, setPosition] = useState("");
   const [company, setCompany] = useState("");

@@ -33,9 +33,7 @@ async function extractPdf(buffer: ArrayBuffer): Promise<string> {
     const page = await doc.getPage(i);
     const content = await page.getTextContent();
     const items = content.items as Array<{ str?: string; hasEOL?: boolean }>;
-    pages.push(
-      items.map((item) => (item.str ?? "") + (item.hasEOL ? "\n" : " ")).join(""),
-    );
+    pages.push(items.map((item) => (item.str ?? "") + (item.hasEOL ? "\n" : " ")).join(""));
   }
   return normalize(pages.join("\n\n"));
 }
