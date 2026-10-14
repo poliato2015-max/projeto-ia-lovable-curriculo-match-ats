@@ -2,6 +2,8 @@ import { createServerFn } from "@tanstack/react-start";
 
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { analyzeWithAI } from "@/lib/analysis.server";
+import { createLLMClient } from "@/lib/llm/factory";
+import { healthCheck } from "@/lib/llm/health";
 import type { AnalysisResult } from "@/components/analysis/analysis-types";
 
 export interface RunAnalysisInput {
@@ -51,6 +53,9 @@ function validate(data: unknown): RunAnalysisInput {
   };
 }
 
+// Lazy health check flag
+let healthCheckDone = false;
+
 /**
  * Executa a análise ATS com IA e persiste o resultado completo para o usuário
  * autenticado. A UI recebe o resultado mesmo que a gravação falhe.
@@ -84,7 +89,23 @@ export const runAnalysis = createServerFn({ method: "POST" })
       );
     }
 
-    const result = await analyzeWithAI({
+    // Criar LLMClient via factory (config via env vars)
+    const client = createLLMClient({
+      provider: (process.env.LLM_PROVIDER as any) || "lovable",
+      apiKey: process.env.LLM_API_KEY || process.env.LOVABLE_API_KEY || "",
+      model: process.env.LLM_MODEL,
+      baseUrl: process.env.LLM_BASE_URL,
+      orgId: process.env.LLM_ORG_ID,
+      timeoutMs: process.env.LLM_TIMEOUT_MS ? Number(process.env.LLM_TIMEOUT_MS) : undefined,
+    });
+
+    // Health check opcional (apenas primeira execução, non-blocking)
+    if (!healthCheckDone) {
+      healthCheckDone = true;
+      healthCheck(client.config).catch(() => {}); // fire and forget, log only
+    }
+
+    const result = await analyzeWithAI(client, {
       jobTitle: data.jobTitle,
       company: data.company,
       jobUrl: data.jobUrl,

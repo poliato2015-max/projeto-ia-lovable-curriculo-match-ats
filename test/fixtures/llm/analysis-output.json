@@ -1,0 +1,60 @@
+{
+  "score": 87,
+  "summary": "Candidato com excelente aderência à vaga de Desenvolvedor React Sênior. Possui 6 anos de experiência com React/TypeScript/Next.js, liderança técnica comprovada (Tech Lead de 4 desenvolvedores), arquitetura de design system, testes automatizados (85%+ cobertura) e otimização de Core Web Vitals. Experiência com GraphQL, micro-frontends, CI/CD e cloud (AWS). Stack alinhada aos requisitos.",
+  "jobSummary": "Vaga para Desenvolvedor React Sênior na TechCorp com foco em React, TypeScript, Next.js, GraphQL, testes, CI/CD e arquitetura de componentes. Diferenciais: Node.js, AWS, Docker, Kubernetes.",
+  "hardSkills": [
+    { "name": "React", "status": "match", "description": "6 anos de experiência, migração AngularJS→React, Next.js 13" },
+    { "name": "TypeScript", "status": "match", "description": "Uso extensivo em todos projetos recentes, tipagem forte" },
+    { "name": "Next.js", "status": "match", "description": "Next.js 13 com App Router, migração completa em TechStart" },
+    { "name": "GraphQL", "status": "match", "description": "Apollo Client, integração com APIs GraphQL em banking e produto" },
+    { "name": "Testes (Jest/RTL)", "status": "match", "description": "Cobertura 85%+, testes unitários e E2E (Cypress)" },
+    { "name": "CI/CD", "status": "match", "description": "GitHub Actions, Docker, ECS Fargate, pipelines completos" },
+    { "name": "Arquitetura de Componentes", "status": "match", "description": "Design System 40+ componentes, Storybook, Chromatic" },
+    { "name": "Performance Web", "status": "match", "description": "Core Web Vitals: LCP 2.1s→1.2s, CLS 0.15→0.02" },
+    { "name": "Node.js", "status": "partial", "description": "Experiência backend Node.js/Express/NestJS, mas foco frontend" },
+    { "name": "AWS", "status": "partial", "description": "AWS Certified Solutions Architect, deploy em ECS Fargate" }
+  ],
+  "softSkills": [
+    { "name": "Liderança Técnica", "status": "match", "description": "Tech Lead de 4 desenvolvedores, definição de padrões, code reviews" },
+    { "name": "Mentoria", "status": "match", "description": "Mentoria de 2 desenvolvedores júnior em DigitalBank" },
+    { "name": "Comunicação", "status": "match", "description": "Code reviews diários, definição de padrões arquiteturais" },
+    { "name": "Resolução de Problemas", "status": "match", "description": "Otimização de performance, migração de legado, troubleshooting" }
+  ],
+  "keywordsFound": [
+    "React", "TypeScript", "Next.js", "GraphQL", "Jest", "React Testing Library",
+    "Cypress", "CI/CD", "GitHub Actions", "Docker", "AWS", "Design System",
+    "Storybook", "Micro-frontends", "Module Federation", "Core Web Vitals",
+    "Tailwind", "Redux", "Zustand", "PostgreSQL", "Prisma"
+  ],
+  "keywordsMissing": [
+    "Kubernetes", "Terraform", "NestJS"
+  ],
+  "experienceMatch": 92,
+  "education": "Bacharelado em Ciência da Computação - USP (2014-2018)",
+  "languages": ["Português (Nativo)", "Inglês (Avançado - C1)", "Espanhol (Intermediário)"],
+  "strengths": [
+    "Experiência direta e profunda com stack principal da vaga (React/TypeScript/Next.js)",
+    "Liderança técnica comprovada com gestão de time e definição de padrões",
+    "Design System e arquitetura de componentes em escala (40+ componentes)",
+    "Forte cultura de testes (85%+ cobertura) e qualidade de código",
+    "Otimização de performance mensurável (Core Web Vitals)",
+    "Experiência fullstack complementar (Node.js, PostgreSQL, AWS)"
+  ],
+  "recommendations": [
+    "Destacar certificação AWS Solutions Architect no topo do currículo",
+    "Incluir projeto específico de Kubernetes/Terraform se tiver (mesmo que estudo)",
+    "Quantificar impacto da liderança: 'reduziu tempo de deploy 60%', 'aumentou velocidade do time 40%'",
+    "Considerar adicionar seção de 'Projetos Relevantes' com links GitHub"
+  ],
+  "improvements": [
+    "Experiência com Kubernetes mencionada como diferencial - considerar curso/certificação",
+    "Terraform listado como diferencial - experiência prática seria diferencial competitivo",
+    "NestJS experiência parcial - aprofundar se vaga exigir backend forte"
+  ],
+  "nextSteps": [
+    "Aplicar para a vaga com currículo ATS otimizado destacando React/Next.js/TypeScript liderança",
+    "Preparar exemplos concretos de design system e otimização de performance para entrevista",
+    "Revisar se certificação AWS e projetos cloud estão bem posicionados no currículo",
+    "Considerar gerar versão ATS do currículo para maximizar match nas palavras-chave"
+  ]
+}
